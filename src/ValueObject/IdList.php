@@ -121,22 +121,16 @@ abstract class IdList implements \Iterator, \Countable
     /** @throws IdListDoesNotContainId */
     public function mustContainId(BaseId $id): void
     {
-        foreach ($this->ids as $existingId) {
-            if ($existingId->isEqualTo($id)) {
-                return;
-            }
+        if ($this->notContainsId($id)) {
+            throw new IdListDoesNotContainId($id);
         }
-
-        throw new IdListDoesNotContainId($id);
     }
 
     /** @throws IdListDoesContainId */
     public function mustNotContainId(BaseId $id): void
     {
-        foreach ($this->ids as $existingId) {
-            if ($existingId->isEqualTo($id)) {
-                throw new IdListDoesContainId($id);
-            }
+        if ($this->containsId($id)) {
+            throw new IdListDoesContainId($id);
         }
     }
 

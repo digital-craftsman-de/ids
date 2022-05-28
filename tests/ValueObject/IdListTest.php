@@ -6,7 +6,11 @@ namespace DigitalCraftsman\Ids\ValueObject;
 
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
+use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
 use PHPUnit\Framework\TestCase;
 
@@ -24,6 +28,28 @@ final class IdListTest extends TestCase
     {
         // -- Arrange & Act
         new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+    }
+
+    /**
+     * @test
+     * @covers ::__construct
+     * @covers ::mustNotContainDuplicateIds
+     */
+    public function id_list_construction_fails_with_duplicates(): void
+    {
+        // -- Assert
+        $this->expectException(DuplicateIds::class);
+
+        // -- Arrange & Act
+        $duplicateId = UserId::generateRandom();
+
+        new UserIdList([
+            $duplicateId,
+            $duplicateId,
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
@@ -210,6 +236,181 @@ final class IdListTest extends TestCase
 
         self::assertTrue($diffList->containsId($idMarkus));
         self::assertTrue($diffList->containsId($idTom));
+    }
+
+    // -- Must and must not contain
+
+    /**
+     * @test
+     * @covers ::mustContainId
+     * @covers ::mustNotContainId
+     * @doesNotPerformAssertions
+     */
+    public function id_list_must_and_must_not_contains_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $listWithAllIds = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            $idAnton,
+            $idPaul,
+        ]);
+
+        // -- Act & Assert
+        $listWithAllIds->mustContainId($idMarkus);
+        $partialList->mustNotContainId($idMarkus);
+    }
+
+    /**
+     * @test
+     * @covers ::mustContainId
+     */
+    public function id_list_must_contain_throws_exception(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesNotContainId::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $partialList = UserIdList::fromIds([
+            $idAnton,
+            $idPaul,
+        ]);
+
+        // -- Act
+        $partialList->mustContainId($idMarkus);
+    }
+
+    /**
+     * @test
+     * @covers ::mustNotContainId
+     */
+    public function id_list_must_not_contain_throws_exception(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesContainId::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $partialList = UserIdList::fromIds([
+            $idAnton,
+            $idPaul,
+        ]);
+
+        // -- Act
+        $partialList->mustNotContainId($idAnton);
+    }
+
+    // -- Must be empty
+
+    /**
+     * @test
+     * @covers ::mustBeEmpty
+     * @doesNotPerformAssertions
+     */
+    public function id_list_must_be_empty_works(): void
+    {
+        // -- Arrange
+        $emptyList = UserIdList::emptyList();
+        $notEmptyList = new UserIdList([
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act
+        $emptyList->mustBeEmpty();
+    }
+
+    /**
+     * @test
+     * @covers ::mustBeEmpty
+     */
+    public function id_list_must_be_empty_throws_exception_when_not_empty(): void
+    {
+        // -- Assert
+        $this->expectException(IdListIsNotEmpty::class);
+
+        // -- Arrange
+        $notEmptyList = new UserIdList([
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act
+        $notEmptyList->mustBeEmpty();
+    }
+
+    // -- Empty
+
+    /**
+     * @test
+     * @covers ::isEmpty
+     * @covers ::isNotEmpty
+     */
+    public function id_list_is_empty_works(): void
+    {
+        // -- Arrange
+        $emptyList = UserIdList::emptyList();
+        $notEmptyList = new UserIdList([
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act & Assert
+        self::assertTrue($emptyList->isEmpty());
+        self::assertFalse($notEmptyList->isEmpty());
+
+        self::assertTrue($notEmptyList->isNotEmpty());
+        self::assertFalse($emptyList->isNotEmpty());
+    }
+
+    // -- Map
+
+    /**
+     * @test
+     * @covers ::map
+     */
+    public function id_list_map_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $listWithAllIds = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $expectedArray = [
+            (string) $idAnton,
+            (string) $idMarkus,
+            (string) $idPaul,
+            (string) $idTom,
+        ];
+
+        // -- Act
+        $stringArray = $listWithAllIds->map(
+            static fn (UserId $userId) => (string) $userId,
+        );
+
+        // -- Assert
+        self::assertSame($expectedArray, $stringArray);
     }
 
     // -- Contains
