@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class BaseIdTypeTest extends TestCase
 {
     /** @test */
-    public function convert_from_and_to_php_value_works(): void
+    public function convert_from_and_to_id_php_value_works(): void
     {
         // -- Arrange
         $userId = UserId::generateRandom();
