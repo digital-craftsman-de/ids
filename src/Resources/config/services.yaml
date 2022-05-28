@@ -1,1 +1,7 @@
 services:
+
+  DigitalCraftsman\Ids\Serializer\IdNormalizer:
+    tags: [ { name: 'serializer.normalizer' } ]
+
+  DigitalCraftsman\Ids\Serializer\IdListNormalizer:
+    tags: [ { name: 'serializer.normalizer' } ]
