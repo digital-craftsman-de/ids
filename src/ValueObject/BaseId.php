@@ -34,18 +34,6 @@ abstract class BaseId implements \Stringable
         return new static($id);
     }
 
-    // String normalizable
-
-    public static function denormalize(string $string): self
-    {
-        return new static($string);
-    }
-
-    public function normalize(): string
-    {
-        return $this->value;
-    }
-
     // Magic
 
     public function __toString(): string

@@ -53,6 +53,7 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
         return $type::fromIds($ids);
     }
 
+    /** @codeCoverageIgnore */
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
