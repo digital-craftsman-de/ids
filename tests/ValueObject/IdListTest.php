@@ -73,9 +73,9 @@ final class IdListTest extends TestCase
 
     /**
      * @test
-     * @covers ::merge
+     * @covers ::fromIdLists
      */
-    public function merge_works(): void
+    public function from_id_lists_works(): void
     {
         // -- Arrange
         $idList1 = new UserIdList([
@@ -91,7 +91,7 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Act
-        $mergedIdList = UserIdList::merge([
+        $mergedIdList = UserIdList::fromIdLists([
             $idList1,
             $idList2,
         ]);
@@ -102,9 +102,9 @@ final class IdListTest extends TestCase
 
     /**
      * @test
-     * @covers ::merge
+     * @covers ::fromIdLists
      */
-    public function merge_with_duplicates_works(): void
+    public function from_id_lists_with_duplicates_works(): void
     {
         // -- Arrange
         $idList1 = new UserIdList([
@@ -120,7 +120,7 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Act
-        $mergedIdList = UserIdList::merge([
+        $mergedIdList = UserIdList::fromIdLists([
             $idList1,
             $idList2,
         ]);
