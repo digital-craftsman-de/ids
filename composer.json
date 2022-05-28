@@ -1,0 +1,34 @@
+{
+  "name": "digital-craftsman/ids",
+  "description": "Working with value objects for ids in Symfony",
+  "type": "symfony-bundle",
+  "require": {
+    "php": "8.0.*|8.1.*",
+    "symfony/framework-bundle": "^5.4|^6.0",
+    "symfony/serializer": "^5.4|^6.0",
+    "ramsey/uuid": "^4.0",
+    "doctrine/dbal": "^2.13.8"
+  },
+  "require-dev": {
+    "vimeo/psalm": "^4.12",
+    "friendsofphp/php-cs-fixer": "^3.3",
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "DigitalCraftsman\\Ids\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DigitalCraftsman\\Ids\\": "tests/"
+    }
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Christian Kolb",
+      "email": "info@digital-craftsman.de"
+    }
+  ]
+}
