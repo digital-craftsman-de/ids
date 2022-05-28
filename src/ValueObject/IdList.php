@@ -136,7 +136,7 @@ abstract class IdList implements \Iterator, \Countable
         return array_values(array_map($mapFunction, $this->ids));
     }
 
-    // Accessors
+    // -- Accessors
 
     public function containsId(BaseId $baseId): bool
     {
@@ -162,12 +162,12 @@ abstract class IdList implements \Iterator, \Countable
 
     public function isEmpty(): bool
     {
-        return count($this->ids) === 0;
+        return $this->count() === 0;
     }
 
     public function isNotEmpty(): bool
     {
-        return count($this->ids) > 0;
+        return $this->count() > 0;
     }
 
     public function isInSameOrder(self $orderedList): bool
