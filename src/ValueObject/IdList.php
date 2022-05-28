@@ -20,7 +20,7 @@ abstract class IdList implements \Iterator, \Countable
      */
     public array $ids;
 
-    public int $index;
+    public int $index = 0;
 
     // Construction
 
@@ -31,7 +31,6 @@ abstract class IdList implements \Iterator, \Countable
         self::mustNotContainDuplicateIds($ids);
 
         $this->ids = array_values($ids);
-        $this->index = 0;
     }
 
     /** @param array<int, BaseId> $ids */
