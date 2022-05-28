@@ -19,6 +19,7 @@ abstract class IdListType extends Type
     /** @psalm-return class-string<BaseId> */
     abstract protected function getIdClass(): string;
 
+    /** @codeCoverageIgnore */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getJsonTypeDeclarationSQL($column);
@@ -57,11 +58,13 @@ abstract class IdListType extends Type
         return $idListClass::fromIds($ids);
     }
 
+    /** @codeCoverageIgnore */
     public function getName(): string
     {
         return $this->getTypeName();
     }
 
+    /** @codeCoverageIgnore */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;
