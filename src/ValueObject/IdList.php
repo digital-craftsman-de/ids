@@ -182,6 +182,11 @@ abstract class IdList implements \Iterator, \Countable
         return true;
     }
 
+    public function idAtPosition(int $position): BaseId
+    {
+        return $this->ids[$position];
+    }
+
     /** @return array<int, string> */
     public function idsAsStringList(): array
     {
@@ -268,12 +273,5 @@ abstract class IdList implements \Iterator, \Countable
     public function count(): int
     {
         return count($this->ids);
-    }
-
-    // -- Internals
-
-    private function idAtPosition(int $position): BaseId
-    {
-        return $this->ids[$position];
     }
 }

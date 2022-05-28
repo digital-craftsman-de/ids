@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\Ids\Test\ValueObject\MutableUserIdList;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
@@ -14,8 +15,8 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\IdList */
-final class IdListTest extends TestCase
+/** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\MutableIdList */
+final class MutableIdListTest extends TestCase
 {
     // -- Construct
 
@@ -27,7 +28,7 @@ final class IdListTest extends TestCase
     public function id_list_construction_works(): void
     {
         // -- Arrange & Act
-        new UserIdList([
+        new MutableUserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
@@ -47,7 +48,7 @@ final class IdListTest extends TestCase
         // -- Arrange & Act
         $duplicateId = UserId::generateRandom();
 
-        new UserIdList([
+        new MutableUserIdList([
             $duplicateId,
             $duplicateId,
             UserId::generateRandom(),
@@ -64,7 +65,7 @@ final class IdListTest extends TestCase
     public function id_list_construction_from_ids_works(): void
     {
         // -- Arrange & Act
-        UserIdList::fromIds([
+        MutableUserIdList::fromIds([
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
@@ -78,7 +79,7 @@ final class IdListTest extends TestCase
     public function empty_list_works(): void
     {
         // -- Arrange
-        $emptyIdList = UserIdList::emptyList();
+        $emptyIdList = MutableUserIdList::emptyList();
 
         // -- Act & Assert
         self::assertCount(0, $emptyIdList);
@@ -93,13 +94,13 @@ final class IdListTest extends TestCase
     public function from_id_lists_works(): void
     {
         // -- Arrange
-        $idList1 = new UserIdList([
+        $idList1 = new MutableUserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
 
-        $idList2 = new UserIdList([
+        $idList2 = new MutableUserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
@@ -122,20 +123,20 @@ final class IdListTest extends TestCase
     public function from_id_lists_with_duplicates_works(): void
     {
         // -- Arrange
-        $idList1 = new UserIdList([
+        $idList1 = new MutableUserIdList([
             new UserId('41918847-b781-4046-94ce-2fddf5674d9e'),
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
 
-        $idList2 = new UserIdList([
+        $idList2 = new MutableUserIdList([
             new UserId('41918847-b781-4046-94ce-2fddf5674d9e'),
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
 
         // -- Act
-        $mergedIdList = UserIdList::fromIdLists([
+        $mergedIdList = MutableUserIdList::fromIdLists([
             $idList1,
             $idList2,
         ]);
@@ -153,7 +154,7 @@ final class IdListTest extends TestCase
     public function add_id_works(): void
     {
         // -- Arrange
-        $idList = new UserIdList([
+        $idList = new MutableUserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
@@ -161,13 +162,12 @@ final class IdListTest extends TestCase
         $newId = UserId::generateRandom();
 
         // -- Act
-        $addedList = $idList->addId($newId);
+        $idList->addId($newId);
 
         // -- Assert
-        self::assertCount(2, $idList);
-        self::assertCount(3, $addedList);
+        self::assertCount(3, $idList);
 
-        self::assertTrue($addedList->containsId($newId));
+        self::assertTrue($idList->containsId($newId));
     }
 
     /**
@@ -181,7 +181,7 @@ final class IdListTest extends TestCase
 
         // -- Arrange
         $existingUserId = UserId::generateRandom();
-        $idList = new UserIdList([
+        $idList = new MutableUserIdList([
             $existingUserId,
             UserId::generateRandom(),
         ]);
@@ -201,20 +201,19 @@ final class IdListTest extends TestCase
         // -- Arrange
         $idToRemove = UserId::generateRandom();
 
-        $idList = new UserIdList([
+        $idList = new MutableUserIdList([
             $idToRemove,
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
 
         // -- Act
-        $removedList = $idList->removeId($idToRemove);
+        $idList->removeId($idToRemove);
 
         // -- Assert
-        self::assertCount(3, $idList);
-        self::assertCount(2, $removedList);
+        self::assertCount(2, $idList);
 
-        self::assertTrue($removedList->notContainsId($idToRemove));
+        self::assertTrue($idList->notContainsId($idToRemove));
     }
 
     // -- Diff
@@ -231,26 +230,26 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
-        $originalList = UserIdList::fromIds([
+        $fullList = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
             $idTom,
         ]);
 
-        $partialList = UserIdList::fromIds([
+        $partialList = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
 
         // -- Act
-        $diffList = $originalList->diff($partialList);
+        $fullList->diff($partialList);
 
         // -- Assert
-        self::assertCount(2, $diffList);
+        self::assertCount(2, $fullList);
 
-        self::assertTrue($diffList->containsId($idMarkus));
-        self::assertTrue($diffList->containsId($idTom));
+        self::assertTrue($fullList->containsId($idMarkus));
+        self::assertTrue($fullList->containsId($idTom));
     }
 
     // -- Must and must not contain
@@ -269,14 +268,14 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
-        $listWithAllIds = UserIdList::fromIds([
+        $listWithAllIds = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
             $idTom,
         ]);
 
-        $partialList = UserIdList::fromIds([
+        $partialList = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
@@ -300,7 +299,7 @@ final class IdListTest extends TestCase
         $idMarkus = UserId::generateRandom();
         $idPaul = UserId::generateRandom();
 
-        $partialList = UserIdList::fromIds([
+        $partialList = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
@@ -322,7 +321,7 @@ final class IdListTest extends TestCase
         $idAnton = UserId::generateRandom();
         $idPaul = UserId::generateRandom();
 
-        $partialList = UserIdList::fromIds([
+        $partialList = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
@@ -341,7 +340,7 @@ final class IdListTest extends TestCase
     public function id_list_must_be_empty_works(): void
     {
         // -- Arrange
-        $emptyList = UserIdList::emptyList();
+        $emptyList = MutableUserIdList::emptyList();
 
         // -- Act
         $emptyList->mustBeEmpty();
@@ -357,7 +356,7 @@ final class IdListTest extends TestCase
         $this->expectException(IdListIsNotEmpty::class);
 
         // -- Arrange
-        $notEmptyList = new UserIdList([
+        $notEmptyList = new MutableUserIdList([
             UserId::generateRandom(),
         ]);
 
@@ -376,7 +375,7 @@ final class IdListTest extends TestCase
     {
         // -- Arrange
         $emptyList = UserIdList::emptyList();
-        $notEmptyList = new UserIdList([
+        $notEmptyList = new MutableUserIdList([
             UserId::generateRandom(),
         ]);
 
@@ -402,7 +401,7 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
-        $listWithAllIds = UserIdList::fromIds([
+        $listWithAllIds = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
@@ -440,14 +439,14 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
-        $listWithAllIds = UserIdList::fromIds([
+        $listWithAllIds = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
             $idTom,
         ]);
 
-        $partialList = UserIdList::fromIds([
+        $partialList = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
@@ -475,21 +474,21 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
-        $originalList = UserIdList::fromIds([
+        $originalList = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
             $idTom,
         ]);
 
-        $copyOfOriginalList = UserIdList::fromIds([
+        $copyOfOriginalList = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
             $idTom,
         ]);
 
-        $partialList = UserIdList::fromIds([
+        $partialList = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
@@ -517,14 +516,14 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
-        $originalList = UserIdList::fromIds([
+        $originalList = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
             $idTom,
         ]);
 
-        $partialList = UserIdList::fromIds([
+        $partialList = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
@@ -542,7 +541,7 @@ final class IdListTest extends TestCase
     public function id_list_count_works(): void
     {
         // -- Arrange
-        $idList = new UserIdList([
+        $idList = new MutableUserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
@@ -569,7 +568,7 @@ final class IdListTest extends TestCase
         $idMarkus = UserId::generateRandom();
         $idPaul = UserId::generateRandom();
 
-        $idList = new UserIdList([
+        $idList = new MutableUserIdList([
             $idAnton,
             $idMarkus,
             $idPaul,
@@ -611,7 +610,7 @@ final class IdListTest extends TestCase
         $idMarkus = UserId::generateRandom();
         $idPaul = UserId::generateRandom();
 
-        $idList = new UserIdList([
+        $idList = new MutableUserIdList([
             0 => $idAnton,
             1 => $idMarkus,
             3 => $idPaul,
@@ -649,7 +648,7 @@ final class IdListTest extends TestCase
         $idTom = UserId::generateRandom();
 
         // Ordered alphabetically
-        $orderedIdList = UserIdList::fromIds([
+        $orderedIdList = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
@@ -657,12 +656,12 @@ final class IdListTest extends TestCase
         ]);
 
         // In order but with missing ids
-        $idListThatIsInOrder = UserIdList::fromIds([
+        $idListThatIsInOrder = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
 
-        $idListThatIsNotInOrder = UserIdList::fromIds([
+        $idListThatIsNotInOrder = MutableUserIdList::fromIds([
             $idPaul,
             $idMarkus,
         ]);
@@ -671,8 +670,6 @@ final class IdListTest extends TestCase
         self::assertTrue($idListThatIsInOrder->isInSameOrder($orderedIdList));
         self::assertFalse($idListThatIsNotInOrder->isInSameOrder($orderedIdList));
     }
-
-    // -- Ids as string
 
     /**
      * @test
@@ -686,7 +683,7 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
-        $orderedIdList = UserIdList::fromIds([
+        $orderedIdList = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
