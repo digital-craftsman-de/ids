@@ -203,21 +203,12 @@ abstract class IdList implements \Iterator, \Countable
     {
         $orderedListWithIdenticalIds = $orderedList->intersect($this);
         foreach ($this->ids as $index => $id) {
-            if (!$orderedListWithIdenticalIds->hasIdAtPosition($index)) {
-                return false;
-            }
-
             if ($orderedListWithIdenticalIds->idAtPosition($index)->isNotEqualTo($id)) {
                 return false;
             }
         }
 
         return true;
-    }
-
-    public function hasIdAtPosition(int $position): bool
-    {
-        return array_key_exists($position, $this->ids);
     }
 
     public function idAtPosition(int $position): BaseId

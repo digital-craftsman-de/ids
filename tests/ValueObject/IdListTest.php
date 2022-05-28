@@ -424,6 +424,8 @@ final class IdListTest extends TestCase
     /**
      * @test
      * @covers ::isInSameOrder
+     * @covers ::idAtPosition
+     * @covers ::intersect
      */
     public function id_list_is_in_same_order_works(): void
     {
