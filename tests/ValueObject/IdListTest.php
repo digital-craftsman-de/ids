@@ -190,6 +190,35 @@ final class IdListTest extends TestCase
         $idList->addId($existingUserId);
     }
 
+    /**
+     * @test
+     * @covers ::addIdWhenNotInList
+     */
+    public function add_id_when_not_in_list_works(): void
+    {
+        // -- Arrange
+        $existingId = UserId::generateRandom();
+        $idList = new UserIdList([
+            $existingId,
+            UserId::generateRandom(),
+        ]);
+
+        $newId = UserId::generateRandom();
+
+        // -- Act
+        $notAddedList = $idList->addIdWhenNotInList($existingId);
+        $addedList = $idList->addIdWhenNotInList($newId);
+
+        // -- Assert
+        self::assertCount(2, $idList);
+        self::assertCount(2, $notAddedList);
+        self::assertCount(3, $addedList);
+
+        self::assertTrue($notAddedList->containsId($existingId));
+        self::assertTrue($addedList->containsId($existingId));
+        self::assertTrue($addedList->containsId($newId));
+    }
+
     // -- Remove id
 
     /**

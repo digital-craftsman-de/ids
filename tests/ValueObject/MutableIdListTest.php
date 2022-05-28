@@ -190,6 +190,32 @@ final class MutableIdListTest extends TestCase
         $idList->addId($existingUserId);
     }
 
+    /**
+     * @test
+     * @covers ::addIdWhenNotInList
+     */
+    public function add_id_when_not_in_list_works(): void
+    {
+        // -- Arrange
+        $existingId = UserId::generateRandom();
+        $idList = new MutableUserIdList([
+            $existingId,
+            UserId::generateRandom(),
+        ]);
+
+        $newId = UserId::generateRandom();
+
+        // -- Act
+        $idList->addIdWhenNotInList($existingId);
+        $idList->addIdWhenNotInList($newId);
+
+        // -- Assert
+        self::assertCount(3, $idList);
+
+        self::assertTrue($idList->containsId($existingId));
+        self::assertTrue($idList->containsId($newId));
+    }
+
     // -- Remove id
 
     /**

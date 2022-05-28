@@ -81,6 +81,18 @@ abstract class IdList implements \Iterator, \Countable
         return new static($ids);
     }
 
+    public function addIdWhenNotInList(BaseId $id): static
+    {
+        if ($this->containsId($id)) {
+            return new static($this->ids);
+        }
+
+        $ids = $this->ids;
+        $ids[] = $id;
+
+        return new static($ids);
+    }
+
     public function removeId(BaseId $id): static
     {
         $ids = array_filter(

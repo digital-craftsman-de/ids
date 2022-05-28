@@ -83,6 +83,13 @@ abstract class MutableIdList implements \Iterator, \Countable
         $this->ids[] = $id;
     }
 
+    public function addIdWhenNotInList(BaseId $id): void
+    {
+        if ($this->notContainsId($id)) {
+            $this->ids[] = $id;
+        }
+    }
+
     public function removeId(BaseId $id): void
     {
         $this->ids = array_values(array_filter(
