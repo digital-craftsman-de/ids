@@ -7,7 +7,7 @@ namespace DigitalCraftsman\Ids\Doctrine;
 use DigitalCraftsman\Ids\Test\Doctrine\UserIdListType;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
-use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use PHPUnit\Framework\TestCase;
 
 final class IdListTypeTest extends TestCase
@@ -23,7 +23,7 @@ final class IdListTypeTest extends TestCase
             UserId::generateRandom(),
         ]);
         $userIdListType = new UserIdListType();
-        $platform = new PostgreSQL100Platform();
+        $platform = new PostgreSQLPlatform();
 
         // -- Act
         $databaseValue = $userIdListType->convertToDatabaseValue($userIdList, $platform);
@@ -31,5 +31,20 @@ final class IdListTypeTest extends TestCase
 
         // -- Assert
         self::assertEquals($userIdList, $phpValue);
+    }
+
+    /** @test */
+    public function convert_from_and_to_value_value_works(): void
+    {
+        // -- Arrange
+        $userIdListType = new UserIdListType();
+        $platform = new PostgreSQLPlatform();
+
+        // -- Act
+        $databaseValue = $userIdListType->convertToDatabaseValue(null, $platform);
+        $phpValue = $userIdListType->convertToPHPValue($databaseValue, $platform);
+
+        // -- Assert
+        self::assertNull($phpValue);
     }
 }

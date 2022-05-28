@@ -15,6 +15,7 @@ abstract class BaseIdType extends Type
     /** @return class-string<BaseId> */
     abstract protected function getIdClass(): string;
 
+    /** @codeCoverageIgnore */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getGuidTypeDeclarationSQL($column);
@@ -40,11 +41,13 @@ abstract class BaseIdType extends Type
         return $this->getIdClass()::fromString($value);
     }
 
+    /** @codeCoverageIgnore */
     public function getName(): string
     {
         return $this->getTypeName();
     }
 
+    /** @codeCoverageIgnore */
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool
     {
         return true;

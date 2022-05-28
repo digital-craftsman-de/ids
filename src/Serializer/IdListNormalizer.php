@@ -33,11 +33,15 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
     }
 
     /**
-     * @param array<int, string>   $data
+     * @param ?array<int, string>  $data
      * @param class-string<IdList> $type
      */
-    public function denormalize($data, $type, $format = null, array $context = []): IdList
+    public function denormalize($data, $type, $format = null, array $context = []): ?IdList
     {
+        if ($data === null) {
+            return null;
+        }
+
         if (!$this->isValid($data)) {
             throw new UnexpectedValueException('Expected a valid list.');
         }
@@ -53,6 +57,7 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
         return $type::fromIds($ids);
     }
 
+    /** @codeCoverageIgnore */
     public function hasCacheableSupportsMethod(): bool
     {
         return true;

@@ -35,7 +35,7 @@ if ($userId->isEqualTo($command->userId)) {
 
 ### Symfony serializer
 
-If you're injecting the `SymfonySerializer` directly, there is nothing to do. The normalizer for the id is automatically registered.
+If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer for the id is automatically registered.
 
 ```php
 public function __construct(

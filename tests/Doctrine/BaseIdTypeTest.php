@@ -6,7 +6,7 @@ namespace DigitalCraftsman\Ids\Doctrine;
 
 use DigitalCraftsman\Ids\Test\Doctrine\UserIdType;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
-use Doctrine\DBAL\Platforms\PostgreSQL100Platform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use PHPUnit\Framework\TestCase;
 
 final class BaseIdTypeTest extends TestCase
@@ -17,7 +17,7 @@ final class BaseIdTypeTest extends TestCase
         // -- Arrange
         $userId = UserId::generateRandom();
         $userIdType = new UserIdType();
-        $platform = new PostgreSQL100Platform();
+        $platform = new PostgreSQLPlatform();
 
         // -- Act
         $databaseValue = $userIdType->convertToDatabaseValue($userId, $platform);
@@ -25,5 +25,20 @@ final class BaseIdTypeTest extends TestCase
 
         // -- Assert
         self::assertEquals($userId, $phpValue);
+    }
+
+    /** @test */
+    public function convert_from_and_to_null_value_works(): void
+    {
+        // -- Arrange
+        $userIdType = new UserIdType();
+        $platform = new PostgreSQLPlatform();
+
+        // -- Act
+        $databaseValue = $userIdType->convertToDatabaseValue(null, $platform);
+        $phpValue = $userIdType->convertToPHPValue($databaseValue, $platform);
+
+        // -- Assert
+        self::assertNull($phpValue);
     }
 }

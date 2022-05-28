@@ -22,7 +22,7 @@ abstract class IdList implements \Iterator, \Countable
 
     public int $index = 0;
 
-    // Construction
+    // -- Construction
 
     /** @param array<int, BaseId> $ids */
     final public function __construct(
@@ -49,7 +49,7 @@ abstract class IdList implements \Iterator, \Countable
      *
      * @param array<int, static> $idLists
      */
-    final public static function merge(array $idLists): static
+    final public static function fromIdLists(array $idLists): static
     {
         $ids = [];
         foreach ($idLists as $idList) {
@@ -63,13 +63,15 @@ abstract class IdList implements \Iterator, \Countable
         return new static($uniqueIds);
     }
 
+    // -- Configuration
+
     abstract public static function handlesIdClass(): string;
 
-    // Mutation
+    // Transformers
 
     public function addId(BaseId $id): static
     {
-        if (in_array($id, $this->ids, false)) {
+        if ($this->containsId($id)) {
             throw new IdAlreadyInList($id);
         }
 
@@ -81,9 +83,10 @@ abstract class IdList implements \Iterator, \Countable
 
     public function removeId(BaseId $id): static
     {
-        $ids = array_filter($this->ids, static function (BaseId $currentId) use ($id) {
-            return $currentId->isNotEqualTo($id);
-        });
+        $ids = array_filter(
+            $this->ids,
+            static fn (BaseId $currentId) => $currentId->isNotEqualTo($id),
+        );
 
         return new static($ids);
     }
@@ -116,27 +119,100 @@ abstract class IdList implements \Iterator, \Countable
         return new static($idsInList);
     }
 
-    // Guards
+    /**
+     * Psalm doesn't yet realize when a function is pure and when not. To prevent us from marking every single use by hand (which will
+     * reduce the readability), we ignore the purity for now and will change the call here to pure-callable as soon as Psalm can handle
+     * it.
+     *
+     * @template R
+     *
+     * @psalm-param impure-Closure(BaseId):R $mapFunction
+     *
+     * @return array<int, R>
+     */
+    public function map(\Closure $mapFunction): array
+    {
+        /** @psalm-suppress ImpureFunctionCall */
+        return array_values(array_map($mapFunction, $this->ids));
+    }
+
+    // -- Accessors
+
+    public function containsId(BaseId $baseId): bool
+    {
+        /** @psalm-suppress ArgumentTypeCoercion */
+        return $baseId->isExistingInList($this->ids);
+    }
+
+    public function notContainsId(BaseId $baseId): bool
+    {
+        /** @psalm-suppress ArgumentTypeCoercion */
+        return $baseId->isNotExistingInList($this->ids);
+    }
+
+    public function isEqualTo(self $idList): bool
+    {
+        return $this->diff($idList)->count() === 0;
+    }
+
+    public function isNotEqualTo(self $idList): bool
+    {
+        return !$this->isEqualTo($idList);
+    }
+
+    public function isEmpty(): bool
+    {
+        return $this->count() === 0;
+    }
+
+    public function isNotEmpty(): bool
+    {
+        return $this->count() > 0;
+    }
+
+    public function isInSameOrder(self $orderedList): bool
+    {
+        $orderedListWithIdenticalIds = $orderedList->intersect($this);
+        foreach ($this->ids as $index => $id) {
+            if ($orderedListWithIdenticalIds->idAtPosition($index)->isNotEqualTo($id)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function idAtPosition(int $position): BaseId
+    {
+        return $this->ids[$position];
+    }
+
+    /** @return array<int, string> */
+    public function idsAsStringList(): array
+    {
+        $ids = [];
+        foreach ($this->ids as $id) {
+            $ids[] = (string) $id;
+        }
+
+        return $ids;
+    }
+
+    // -- Guards
 
     /** @throws IdListDoesNotContainId */
     public function mustContainId(BaseId $id): void
     {
-        foreach ($this->ids as $existingId) {
-            if ($existingId->isEqualTo($id)) {
-                return;
-            }
+        if ($this->notContainsId($id)) {
+            throw new IdListDoesNotContainId($id);
         }
-
-        throw new IdListDoesNotContainId($id);
     }
 
     /** @throws IdListDoesContainId */
     public function mustNotContainId(BaseId $id): void
     {
-        foreach ($this->ids as $existingId) {
-            if ($existingId->isEqualTo($id)) {
-                throw new IdListDoesContainId($id);
-            }
+        if ($this->containsId($id)) {
+            throw new IdListDoesContainId($id);
         }
     }
 
@@ -165,99 +241,7 @@ abstract class IdList implements \Iterator, \Countable
         }
     }
 
-    // Accessors
-
-    public function containsId(BaseId $baseId): bool
-    {
-        /** @psalm-suppress ArgumentTypeCoercion */
-        return $baseId->isExistingInList($this->ids);
-    }
-
-    public function notContainsId(BaseId $baseId): bool
-    {
-        /** @psalm-suppress ArgumentTypeCoercion */
-        return $baseId->isNotExistingInList($this->ids);
-    }
-
-    public function isEqualTo(self $idList): bool
-    {
-        return $this->diff($idList)->count() === 0;
-    }
-
-    public function isNotEqualTo(self $idList): bool
-    {
-        return !$this->isEqualTo($idList);
-    }
-
-    public function isEmpty(): bool
-    {
-        return count($this->ids) === 0;
-    }
-
-    public function isNotEmpty(): bool
-    {
-        return count($this->ids) > 0;
-    }
-
-    public function isInSameOrder(self $orderedList): bool
-    {
-        $orderedListWithIdenticalIds = $orderedList->intersect($this);
-        foreach ($this->ids as $index => $id) {
-            if (!$orderedListWithIdenticalIds->hasIdAtPosition($index)) {
-                return false;
-            }
-
-            if ($orderedListWithIdenticalIds->idAtPosition($index)->isNotEqualTo($id)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public function hasIdAtPosition(int $position): bool
-    {
-        return array_key_exists($position, $this->ids);
-    }
-
-    public function idAtPosition(int $position): BaseId
-    {
-        return $this->ids[$position];
-    }
-
-    // Transformer
-
-    /**
-     * Psalm doesn't yet realize when a function is pure and when not. To prevent us from marking every single use by hand (which will
-     * reduce the readability), we ignore the purity for now and will change the call here to pure-callable as soon as Psalm can handle
-     * it.
-     *
-     * @template R
-     *
-     * @psalm-param impure-Closure(BaseId):R $mapFunction
-     *
-     * @return array<int, R>
-     */
-    public function map(\Closure $mapFunction): array
-    {
-        /** @psalm-suppress ImpureFunctionCall */
-        return array_values(array_map($mapFunction, $this->ids));
-    }
-
-    // Getter
-
-    /** @return array<int, string> */
-    public function idsAsStringList(): array
-    {
-        $ids = [];
-        foreach ($this->ids as $id) {
-            $ids[] = (string) $id;
-        }
-
-        return $ids;
-    }
-
-    // Iterator
+    // -- Iterator
 
     public function current(): BaseId
     {
@@ -284,7 +268,7 @@ abstract class IdList implements \Iterator, \Countable
         return array_key_exists($this->index, $this->ids);
     }
 
-    // Countable
+    // -- Countable
 
     public function count(): int
     {

@@ -42,6 +42,7 @@ final class IdNormalizer implements NormalizerInterface, DenormalizerInterface, 
         return $type::fromString($data);
     }
 
+    /** @codeCoverageIgnore */
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
