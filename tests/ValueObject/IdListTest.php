@@ -158,6 +158,69 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     * @covers ::emptyList
+     */
+    public function empty_list_works(): void
+    {
+        $emptyIdList = UserIdList::emptyList();
+
+        self::assertCount(0, $emptyIdList);
+    }
+
+    /**
+     * @test
+     * @covers ::merge
+     */
+    public function merge_works(): void
+    {
+        $idList1 = new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idList2 = new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $mergedIdList = UserIdList::merge([
+            $idList1,
+            $idList2,
+        ]);
+
+        self::assertCount(6, $mergedIdList);
+    }
+
+    /**
+     * @test
+     * @covers ::merge
+     */
+    public function merge_with_duplicates_works(): void
+    {
+        $idList1 = new UserIdList([
+            new UserId('41918847-b781-4046-94ce-2fddf5674d9e'),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idList2 = new UserIdList([
+            new UserId('41918847-b781-4046-94ce-2fddf5674d9e'),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $mergedIdList = UserIdList::merge([
+            $idList1,
+            $idList2,
+        ]);
+
+        self::assertCount(5, $mergedIdList);
+    }
+
+    /**
+     * @test
      * @covers ::diff
      */
     public function id_list_diff_works(): void
