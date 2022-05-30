@@ -48,16 +48,40 @@ $requestingUser->userId->mustNotBeEqualTo($command->targetUserId);
 If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer for the id is automatically registered.
 
 ```php
+namespace App\DTO;
+
+final class UserPayload
+{
+    public function __construct(
+        UserId $userId,
+        string $firstName,
+        string $lastName,
+    ) {
+    }
+}
+```
+
+```php
 public function __construct(
     private SerializerInterface $serializer,
 ) {
 }
 
-public function handle(): void
+public function handle(UserPayload $userPayload): string
 {
-    $this->serializer->serialize(...)
+    return $this->serializer->serialize($userPayload, JsonEncoder::FORMAT);
 }
 ```
+
+```json
+{
+  "userId": "15d6208b-7cf2-49e5-a193-301d594d98a7",
+  "firstName": "Tomas",
+  "lastName": "Bauer"
+}
+```
+
+This can be combined with the [CQRS bundle](https://github.com/digital-craftsman-de/cqrs) to have serialized ids there.
 
 ### Doctrine types
 
