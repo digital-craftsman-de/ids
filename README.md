@@ -10,7 +10,7 @@ As it's a central part of an application, it's tested thoroughly.
 
 ### Creating a new id
 
-The bulk of the logic is in the `BaseId` class. Creating a new id is as simple as creating a new class and extending from it like the following:
+The bulk of the logic is in the `Id` class. Creating a new id is as simple as creating a new class and extending from it like the following:
 
 ```php
 <?php
@@ -141,6 +141,123 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'user_id')]
     public UserId $id;
+    
+    ...
+}
+```
+
+## Working with id lists
+
+Id lists are wrapper for an array of ids. They contain a few utility functions and improved type safety.
+
+The `IdList` is immutable. Therefore, the mutation methods (like `add`, `remove`, ...) always return a new instance of the list.
+
+There is an alternative variant `MutableIdList` which offers the same functionality but is not immutable. Make sure you have a look into the [Doctrine edge cases](./docs/doctrine-edge-cases.md) before using it.
+
+### Creating a new id list
+
+The bulk of the logic is in the `IdList` class. Creating a new id list is as simple as creating a new class and extending from it like the following:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\ValueObject;
+
+use DigitalCraftsman\Ids\ValueObject\IdList;
+
+/** @psalm-immutable */
+final class UserIdList extends IdLIst
+{
+    public static function handlesIdClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
+Now you're already able to use it in your code like this:
+
+```php
+$userIdList = new UserIdList($userIds);
+```
+
+```php
+if ($idsOfEnabledUsers->contains($command->userId)) {
+    ...
+}
+```
+
+```php
+$idsOfEnabledUsers->mustContain($command->targetUserId);
+```
+
+### Symfony serializer
+
+If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer for the id list is automatically registered.
+
+### Doctrine types
+
+To use an id list in your entities, you just need to register a new type for the id list. Create a new class for the new id list like the following:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Doctrine;
+
+use App\ValueObject\UserId;
+use App\ValueObject\UserIdList;
+use DigitalCraftsman\Ids\Doctrine\IdListType;
+
+final class UserIdListType extends IdListType
+{
+    protected function getTypeName(): string
+    {
+        return 'user_id_list';
+    }
+
+    protected function getIdListClass(): string
+    {
+        return UserIdList::class;
+    }
+    
+    protected function getIdClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
+Then register the new type in your `config/packages/doctrine.yaml` file:
+
+```yaml
+doctrine:
+  dbal:
+    types:
+      user_id_list: App\Doctrine\UserIdListType
+```
+
+Then you're already able to add it into your entity like this:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use App\ValueObject\UserIdList;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity(repositoryClass: InvestorRepository::class)]
+#[ORM\Table(name: 'investor')]
+class Investor
+{
+    #[ORM\Column(name: 'ids_of_users_with_access', type: 'user_id_list')]
+    public UserIdList $idsOfUsersWithAccess;
     
     ...
 }
