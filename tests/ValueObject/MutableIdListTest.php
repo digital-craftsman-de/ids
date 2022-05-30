@@ -278,6 +278,42 @@ final class MutableIdListTest extends TestCase
         self::assertTrue($fullList->containsId($idTom));
     }
 
+    // -- Intersect
+
+    /**
+     * @test
+     * @covers ::intersect
+     */
+    public function id_list_intersect_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $fullList = MutableUserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $partialList = MutableUserIdList::fromIds([
+            $idAnton,
+            $idPaul,
+        ]);
+
+        // -- Act
+        $fullList->intersect($partialList);
+
+        // -- Assert
+        self::assertCount(2, $fullList);
+
+        self::assertTrue($fullList->containsId($idAnton));
+        self::assertTrue($fullList->containsId($idPaul));
+    }
+
     // -- Must and must not contain
 
     /**
