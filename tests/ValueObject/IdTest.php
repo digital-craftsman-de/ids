@@ -11,8 +11,8 @@ use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-/** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\BaseId */
-final class BaseIdTest extends TestCase
+/** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\Id */
+final class IdTest extends TestCase
 {
     /**
      * @test

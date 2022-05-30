@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Doctrine;
 
-use DigitalCraftsman\Ids\ValueObject\BaseId;
+use DigitalCraftsman\Ids\ValueObject\Id;
 use DigitalCraftsman\Ids\ValueObject\MutableIdList;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
@@ -16,7 +16,7 @@ abstract class MutableIdListType extends Type
     /** @psalm-return class-string<MutableIdList> */
     abstract protected function getIdListClass(): string;
 
-    /** @psalm-return class-string<BaseId> */
+    /** @psalm-return class-string<Id> */
     abstract protected function getIdClass(): string;
 
     /** @codeCoverageIgnore */

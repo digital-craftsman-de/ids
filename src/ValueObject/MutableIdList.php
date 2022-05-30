@@ -16,7 +16,7 @@ abstract class MutableIdList implements \Iterator, \Countable
     /**
      * The id type has to be overwritten in the child class so that the correct id type is used in denormalization.
      *
-     * @var array<int, BaseId>
+     * @var array<int, Id>
      */
     public array $ids;
 
@@ -28,7 +28,7 @@ abstract class MutableIdList implements \Iterator, \Countable
      * The optional parameter $withValidation is only here to be used while in normalization to improve performance and
      * must never be used when creating ids at any other point.
      *
-     * @param array<int, BaseId> $ids
+     * @param array<int, Id> $ids
      */
     final public function __construct(
         array $ids,
@@ -38,7 +38,7 @@ abstract class MutableIdList implements \Iterator, \Countable
         $this->ids = array_values($ids);
     }
 
-    /** @param array<int, BaseId> $ids */
+    /** @param array<int, Id> $ids */
     final public static function fromIds(array $ids): static
     {
         return new static($ids);
@@ -74,7 +74,7 @@ abstract class MutableIdList implements \Iterator, \Countable
 
     // -- Transformers
 
-    public function addId(BaseId $id): void
+    public function addId(Id $id): void
     {
         if ($this->containsId($id)) {
             throw new IdAlreadyInList($id);
@@ -83,18 +83,18 @@ abstract class MutableIdList implements \Iterator, \Countable
         $this->ids[] = $id;
     }
 
-    public function addIdWhenNotInList(BaseId $id): void
+    public function addIdWhenNotInList(Id $id): void
     {
         if ($this->notContainsId($id)) {
             $this->ids[] = $id;
         }
     }
 
-    public function removeId(BaseId $id): void
+    public function removeId(Id $id): void
     {
         $this->ids = array_values(array_filter(
             $this->ids,
-            static fn (BaseId $currentId) => $currentId->isNotEqualTo($id),
+            static fn (Id $currentId) => $currentId->isNotEqualTo($id),
         ));
     }
 
@@ -133,7 +133,7 @@ abstract class MutableIdList implements \Iterator, \Countable
      *
      * @template R
      *
-     * @psalm-param impure-Closure(BaseId):R $mapFunction
+     * @psalm-param impure-Closure(Id):R $mapFunction
      *
      * @return array<int, R>
      */
@@ -156,13 +156,13 @@ abstract class MutableIdList implements \Iterator, \Countable
         return $ids;
     }
 
-    public function containsId(BaseId $baseId): bool
+    public function containsId(Id $baseId): bool
     {
         /** @psalm-suppress ArgumentTypeCoercion */
         return $baseId->isExistingInList($this->ids);
     }
 
-    public function notContainsId(BaseId $baseId): bool
+    public function notContainsId(Id $baseId): bool
     {
         /** @psalm-suppress ArgumentTypeCoercion */
         return $baseId->isNotExistingInList($this->ids);
@@ -214,7 +214,7 @@ abstract class MutableIdList implements \Iterator, \Countable
         return true;
     }
 
-    public function idAtPosition(int $position): BaseId
+    public function idAtPosition(int $position): Id
     {
         return $this->ids[$position];
     }
@@ -222,7 +222,7 @@ abstract class MutableIdList implements \Iterator, \Countable
     // -- Guards
 
     /** @throws IdListDoesNotContainId */
-    public function mustContainId(BaseId $id): void
+    public function mustContainId(Id $id): void
     {
         if ($this->notContainsId($id)) {
             throw new IdListDoesNotContainId($id);
@@ -230,7 +230,7 @@ abstract class MutableIdList implements \Iterator, \Countable
     }
 
     /** @throws IdListDoesContainId */
-    public function mustNotContainId(BaseId $id): void
+    public function mustNotContainId(Id $id): void
     {
         if ($this->containsId($id)) {
             throw new IdListDoesContainId($id);
@@ -264,7 +264,7 @@ abstract class MutableIdList implements \Iterator, \Countable
 
     // -- Iterator
 
-    public function current(): BaseId
+    public function current(): Id
     {
         return $this->ids[$this->index];
     }

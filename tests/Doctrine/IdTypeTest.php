@@ -9,7 +9,7 @@ use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use PHPUnit\Framework\TestCase;
 
-final class BaseIdTypeTest extends TestCase
+final class IdTypeTest extends TestCase
 {
     /** @test */
     public function convert_from_and_to_id_php_value_works(): void

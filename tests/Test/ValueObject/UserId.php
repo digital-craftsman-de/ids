@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Test\ValueObject;
 
-use DigitalCraftsman\Ids\ValueObject\BaseId;
+use DigitalCraftsman\Ids\ValueObject\Id;
 
 /** @psalm-immutable */
-final class UserId extends BaseId
+final class UserId extends Id
 {
 }

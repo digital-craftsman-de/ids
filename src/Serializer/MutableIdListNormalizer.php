@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Serializer;
 
-use DigitalCraftsman\Ids\ValueObject\BaseId;
+use DigitalCraftsman\Ids\ValueObject\Id;
 use DigitalCraftsman\Ids\ValueObject\MutableIdList;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -48,7 +48,7 @@ final class MutableIdListNormalizer implements NormalizerInterface, Denormalizer
 
         $idClass = $type::handlesIdClass();
 
-        /** @var array<int, BaseId> $ids */
+        /** @var array<int, Id> $ids */
         $ids = array_map(
             static fn (string $id) => new $idClass($id),
             $data,

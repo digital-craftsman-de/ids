@@ -10,7 +10,7 @@ use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
 use Ramsey\Uuid\Uuid;
 
 /** @psalm-immutable */
-abstract class BaseId implements \Stringable
+abstract class Id implements \Stringable
 {
     // Construction
 

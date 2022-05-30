@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Doctrine;
 
-use DigitalCraftsman\Ids\ValueObject\BaseId;
+use DigitalCraftsman\Ids\ValueObject\Id;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
-abstract class BaseIdType extends Type
+abstract class IdType extends Type
 {
     abstract protected function getTypeName(): string;
 
-    /** @return class-string<BaseId> */
+    /** @return class-string<Id> */
     abstract protected function getIdClass(): string;
 
     /** @codeCoverageIgnore */
@@ -21,7 +21,7 @@ abstract class BaseIdType extends Type
         return $platform->getGuidTypeDeclarationSQL($column);
     }
 
-    /** @param ?BaseId $value */
+    /** @param ?Id $value */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -32,7 +32,7 @@ abstract class BaseIdType extends Type
     }
 
     /** @param ?string $value */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?BaseId
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?Id
     {
         if ($value === null) {
             return null;

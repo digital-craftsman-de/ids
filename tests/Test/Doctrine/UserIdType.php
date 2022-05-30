@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Test\Doctrine;
 
-use DigitalCraftsman\Ids\Doctrine\BaseIdType;
+use DigitalCraftsman\Ids\Doctrine\IdType;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 
-final class UserIdType extends BaseIdType
+final class UserIdType extends IdType
 {
     protected function getTypeName(): string
     {

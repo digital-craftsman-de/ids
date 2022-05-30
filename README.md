@@ -19,10 +19,10 @@ declare(strict_types=1);
 
 namespace App\ValueObject;
 
-use DigitalCraftsman\Ids\ValueObject\BaseId;
+use DigitalCraftsman\Ids\ValueObject\Id;
 
 /** @psalm-immutable */
-final class UserId extends BaseId
+final class UserId extends Id
 {
 }
 ```
@@ -31,10 +31,16 @@ Now you're already able to use it in your code like this:
 
 ```php
 $userId = UserId::generateRandom();
+```
 
+```php
 if ($userId->isEqualTo($command->userId)) {
     ...
 }
+```
+
+```php
+$requestingUser->userId->mustNotBeEqualTo($command->targetUserId);
 ```
 
 ### Symfony serializer
@@ -65,9 +71,9 @@ declare(strict_types=1);
 namespace App\Doctrine;
 
 use App\ValueObject\UserId;
-use DigitalCraftsman\Ids\Doctrine\BaseIdType;
+use DigitalCraftsman\Ids\Doctrine\IdType;
 
-final class UserIdType extends BaseIdType
+final class UserIdType extends IdType
 {
     protected function getTypeName(): string
     {
