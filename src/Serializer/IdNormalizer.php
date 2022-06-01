@@ -11,13 +11,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class IdNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Id;
     }
 
     /** @param class-string $type */
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return is_subclass_of($type, Id::class);
     }
