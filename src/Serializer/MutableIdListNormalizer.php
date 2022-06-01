@@ -14,13 +14,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class MutableIdListNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @param MutableIdList|object $data */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof MutableIdList;
     }
 
     /** @param class-string $type */
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return class_exists($type)
             && get_parent_class($type) === MutableIdList::class;

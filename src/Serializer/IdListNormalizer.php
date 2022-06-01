@@ -14,13 +14,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class IdListNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
     /** @param IdList|object $data */
-    public function supportsNormalization($data, $format = null): bool
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof IdList;
     }
 
     /** @param class-string $type */
-    public function supportsDenormalization($data, $type, $format = null): bool
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return class_exists($type)
             && get_parent_class($type) === IdList::class;
