@@ -29,7 +29,7 @@ abstract class Id implements \Stringable
         return new static($id);
     }
 
-    final public static function fromString(string $id): static
+    public static function fromString(string $id): static
     {
         return new static($id);
     }
