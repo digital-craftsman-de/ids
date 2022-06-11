@@ -15,7 +15,7 @@ abstract class Id implements \Stringable
     // Construction
 
     final public function __construct(
-        private string $value,
+        protected string $value,
     ) {
         if (!Uuid::isValid($value)) {
             throw new InvalidId($value);
@@ -29,7 +29,7 @@ abstract class Id implements \Stringable
         return new static($id);
     }
 
-    final public static function fromString(string $id): static
+    public static function fromString(string $id): static
     {
         return new static($id);
     }
