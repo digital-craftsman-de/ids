@@ -530,6 +530,7 @@ final class MutableIdListTest extends TestCase
      */
     public function id_list_is_equal_to(): void
     {
+
         // -- Arrange
         $idAnton = UserId::generateRandom();
         $idMarkus = UserId::generateRandom();
