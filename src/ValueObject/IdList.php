@@ -111,8 +111,15 @@ abstract class IdList implements \Iterator, \Countable
                 $idsNotInList[] = $id;
             }
         }
+        foreach ($idList as $id) {
+            if ($this->notContainsId($id)) {
+                $idsNotInList[] = $id;
+            }
+        }
 
-        return new static($idsNotInList);
+        $uniqueIds = array_unique($idsNotInList, SORT_STRING);
+
+        return new static($uniqueIds);
     }
 
     /**
