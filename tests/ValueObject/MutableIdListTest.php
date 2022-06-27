@@ -617,6 +617,52 @@ final class MutableIdListTest extends TestCase
 
     /**
      * @test
+     * @covers ::isEqualTo
+     * @covers ::isNotEqualTo
+     */
+    public function empty_id_list_is_not_equal_to(): void
+    {
+        // -- Arrange
+        $idTom = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+
+        $mutableEmptyUserIdList = MutableUserIdList::fromIds([]);
+        $mutableUserIdList = MutableUserIdList::fromIds([
+            $idTom,
+            $idMarkus,
+        ]);
+
+        // -- Act & Assert
+        $this->assertFalse($mutableEmptyUserIdList->isEqualTo($mutableUserIdList));
+
+        $this->assertTrue($mutableEmptyUserIdList->isNotEqualTo($mutableUserIdList));
+    }
+
+    /**
+     * @test
+     * @covers ::isEqualTo
+     * @covers ::isNotEqualTo
+     */
+    public function id_list_is_not_equal_to_empty_id_list(): void
+    {
+        // -- Arrange
+        $idTom = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+
+        $mutableEmptyUserIdList = MutableUserIdList::fromIds([]);
+        $mutableUserIdList = MutableUserIdList::fromIds([
+            $idTom,
+            $idMarkus,
+        ]);
+
+        // -- Act & Assert
+        $this->assertFalse($mutableUserIdList->isEqualTo($mutableEmptyUserIdList));
+
+        $this->assertTrue($mutableUserIdList->isNotEqualTo($mutableEmptyUserIdList));
+    }
+
+    /**
+     * @test
      * @covers ::mustBeEqualTo
      */
     public function must_not_be_equal_to(): void

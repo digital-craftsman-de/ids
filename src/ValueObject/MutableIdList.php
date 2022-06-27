@@ -177,6 +177,10 @@ abstract class MutableIdList implements \Iterator, \Countable
 
     public function isEqualTo(self $idList): bool
     {
+        if ($this->count() !== $idList->count()) {
+            return false;
+        }
+
         foreach ($this->ids as $id) {
             if ($idList->notContainsId($id)) {
                 return false;

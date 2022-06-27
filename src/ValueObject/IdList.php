@@ -171,7 +171,17 @@ abstract class IdList implements \Iterator, \Countable
 
     public function isEqualTo(self $idList): bool
     {
-        return $this->diff($idList)->count() === 0;
+        if ($this->count() !== $idList->count()) {
+            return false;
+        }
+
+        foreach ($this->ids as $id) {
+            if ($idList->notContainsId($id)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function isNotEqualTo(self $idList): bool
