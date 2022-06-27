@@ -273,13 +273,48 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Act
-        $diffList = $originalList->diff($partialList);
+        $diffListFromOriginalList = $originalList->diff($partialList);
+        $diffListFromPartialList = $partialList->diff($originalList);
 
         // -- Assert
-        self::assertCount(2, $diffList);
+        self::assertCount(2, $diffListFromOriginalList);
+        self::assertCount(2, $diffListFromPartialList);
 
-        self::assertTrue($diffList->containsId($idMarkus));
-        self::assertTrue($diffList->containsId($idTom));
+        self::assertTrue($diffListFromOriginalList->containsId($idMarkus));
+        self::assertTrue($diffListFromOriginalList->containsId($idTom));
+
+        self::assertTrue($diffListFromPartialList->containsId($idMarkus));
+        self::assertTrue($diffListFromPartialList->containsId($idTom));
+    }
+
+    /**
+     * @test
+     * @covers ::diff
+     */
+    public function id_list_diff_works_with_empty_list(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $originalList = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $emptyList = UserIdList::emptyList();
+
+        // -- Act
+        $diffListFromOriginal = $originalList->diff($emptyList);
+        $diffListFromEmpty = $emptyList->diff($originalList);
+
+        // -- Assert
+        self::assertCount(4, $diffListFromOriginal);
+        self::assertCount(4, $diffListFromEmpty);
     }
 
     // -- Intersect

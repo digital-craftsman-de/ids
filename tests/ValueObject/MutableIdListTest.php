@@ -256,26 +256,78 @@ final class MutableIdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
-        $fullList = MutableUserIdList::fromIds([
+        $fullList1 = MutableUserIdList::fromIds([
             $idAnton,
             $idMarkus,
             $idPaul,
             $idTom,
         ]);
+        $partialList1 = MutableUserIdList::fromIds([
+            $idAnton,
+            $idPaul,
+        ]);
 
-        $partialList = MutableUserIdList::fromIds([
+        $fullList2 = MutableUserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+        $partialList2 = MutableUserIdList::fromIds([
             $idAnton,
             $idPaul,
         ]);
 
         // -- Act
-        $fullList->diff($partialList);
+        $fullList1->diff($partialList1);
+        $partialList2->diff($fullList2);
 
         // -- Assert
-        self::assertCount(2, $fullList);
+        self::assertCount(2, $fullList1);
+        self::assertCount(2, $partialList2);
 
-        self::assertTrue($fullList->containsId($idMarkus));
-        self::assertTrue($fullList->containsId($idTom));
+        self::assertTrue($fullList1->containsId($idMarkus));
+        self::assertTrue($fullList1->containsId($idTom));
+
+        self::assertTrue($partialList2->containsId($idMarkus));
+        self::assertTrue($partialList2->containsId($idTom));
+    }
+
+    /**
+     * @test
+     * @covers ::diff
+     */
+    public function id_list_diff_works_with_empty(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $fullList1 = MutableUserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+        $emptyList1 = MutableUserIdList::emptyList();
+
+        $fullList2 = MutableUserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+        $emptyList2 = MutableUserIdList::emptyList();
+
+        // -- Act
+        $fullList1->diff($emptyList1);
+        $emptyList2->diff($fullList2);
+
+        // -- Assert
+        self::assertCount(4, $fullList1);
+        self::assertCount(4, $emptyList2);
     }
 
     // -- Intersect

@@ -106,8 +106,15 @@ abstract class MutableIdList implements \Iterator, \Countable
                 $idsNotInList[] = $id;
             }
         }
+        foreach ($idList as $id) {
+            if ($this->notContainsId($id)) {
+                $idsNotInList[] = $id;
+            }
+        }
 
-        $this->ids = $idsNotInList;
+        $uniqueIds = array_unique($idsNotInList, SORT_STRING);
+
+        $this->ids = $uniqueIds;
     }
 
     /**
