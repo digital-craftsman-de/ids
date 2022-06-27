@@ -569,6 +569,52 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     * @covers ::isEqualTo
+     * @covers ::isNotEqualTo
+     */
+    public function empty_id_list_is_not_equal_to(): void
+    {
+        // -- Arrange
+        $idTom = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+
+        $emptyIdList = UserIdList::fromIds([]);
+        $userIdList = UserIdList::fromIds([
+            $idTom,
+            $idMarkus,
+        ]);
+
+        // -- Act & Assert
+        $this->assertFalse($emptyIdList->isEqualTo($userIdList));
+
+        $this->assertTrue($emptyIdList->isNotEqualTo($userIdList));
+    }
+
+    /**
+     * @test
+     * @covers ::isEqualTo
+     * @covers ::isNotEqualTo
+     */
+    public function id_list_is_not_equal_to_empty_id_List(): void
+    {
+        // -- Arrange
+        $idTom = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+
+        $emptyIdList = UserIdList::fromIds([]);
+        $userIdList = UserIdList::fromIds([
+            $idTom,
+            $idMarkus,
+        ]);
+
+        // -- Act & Assert
+        $this->assertFalse($userIdList->isEqualTo($emptyIdList));
+
+        $this->assertTrue($userIdList->isNotEqualTo($emptyIdList));
+    }
+
+    /**
+     * @test
      * @covers ::mustBeEqualTo
      */
     public function must_not_be_equal_to(): void
