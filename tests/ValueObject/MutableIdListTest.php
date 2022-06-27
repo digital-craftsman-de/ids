@@ -591,7 +591,7 @@ final class MutableIdListTest extends TestCase
      * @covers ::isEqualTo
      * @covers ::isNotEqualTo
      */
-    public function id_list_is_not_equal_to_empty_id_List(): void
+    public function id_list_is_not_equal_to_empty_id_list(): void
     {
         // -- Arrange
         $idTom = UserId::generateRandom();
