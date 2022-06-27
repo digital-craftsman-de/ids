@@ -574,16 +574,16 @@ final class MutableIdListTest extends TestCase
         $idTom = UserId::generateRandom();
         $idMarkus = UserId::generateRandom();
 
-        $emptyIdList = MutableUserIdList::fromIds([]);
-        $userIdList = MutableUserIdList::fromIds([
+        $mutableEmptyUserIdList = MutableUserIdList::fromIds([]);
+        $mutableUserIdList = MutableUserIdList::fromIds([
             $idTom,
             $idMarkus,
         ]);
 
         // -- Act & Assert
-        $this->assertFalse($emptyIdList->isEqualTo($userIdList));
+        $this->assertFalse($mutableEmptyUserIdList->isEqualTo($mutableUserIdList));
 
-        $this->assertTrue($emptyIdList->isNotEqualTo($userIdList));
+        $this->assertTrue($mutableEmptyUserIdList->isNotEqualTo($mutableUserIdList));
     }
 
     /**
@@ -597,16 +597,16 @@ final class MutableIdListTest extends TestCase
         $idTom = UserId::generateRandom();
         $idMarkus = UserId::generateRandom();
 
-        $emptyIdList = MutableUserIdList::fromIds([]);
-        $userIdList = MutableUserIdList::fromIds([
+        $mutableEmptyUserIdList = MutableUserIdList::fromIds([]);
+        $mutableUserIdList = MutableUserIdList::fromIds([
             $idTom,
             $idMarkus,
         ]);
 
         // -- Act & Assert
-        $this->assertFalse($userIdList->isEqualTo($emptyIdList));
+        $this->assertFalse($mutableUserIdList->isEqualTo($mutableEmptyUserIdList));
 
-        $this->assertTrue($userIdList->isNotEqualTo($emptyIdList));
+        $this->assertTrue($mutableUserIdList->isNotEqualTo($mutableEmptyUserIdList));
     }
 
     /**
