@@ -6,6 +6,7 @@ namespace DigitalCraftsman\Ids\ValueObject;
 
 use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
@@ -34,6 +35,7 @@ abstract class MutableIdList implements \Iterator, \Countable
         array $ids,
     ) {
         self::mustNotContainDuplicateIds($ids);
+        self::mustOnlyContainIdsOfHandledClass($ids);
 
         $this->ids = array_values($ids);
     }
@@ -262,6 +264,16 @@ abstract class MutableIdList implements \Iterator, \Countable
         /** @noinspection TypeUnsafeComparisonInspection */
         if ($ids != array_unique($ids)) {
             throw new DuplicateIds();
+        }
+    }
+
+    /** @throws IdClassNotHandledInList */
+    public static function mustOnlyContainIdsOfHandledClass(array $ids): void
+    {
+        foreach ($ids as $id) {
+            if ($id::class !== static::handlesIdClass()) {
+                throw new IdClassNotHandledInList(static::class, $id::class);
+            }
         }
     }
 
