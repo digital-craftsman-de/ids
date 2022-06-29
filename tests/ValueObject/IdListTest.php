@@ -61,7 +61,7 @@ final class IdListTest extends TestCase
     /**
      * @test
      * @covers ::__construct
-     * @covers ::mustOnlyContainIdsOfManagedClass
+     * @covers ::mustOnlyContainIdsOfHandledClass
      */
     public function id_list_construction_fails_with_ids_of_different_id_class(): void
     {

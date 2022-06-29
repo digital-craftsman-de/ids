@@ -30,7 +30,7 @@ abstract class IdList implements \Iterator, \Countable
         array $ids,
     ) {
         self::mustNotContainDuplicateIds($ids);
-        self::mustOnlyContainIdsOfManagedClass($ids);
+        self::mustOnlyContainIdsOfHandledClass($ids);
 
         $this->ids = array_values($ids);
     }
@@ -265,7 +265,7 @@ abstract class IdList implements \Iterator, \Countable
     }
 
     /** @throws IdClassNotHandledInList */
-    public static function mustOnlyContainIdsOfManagedClass(array $ids): void
+    public static function mustOnlyContainIdsOfHandledClass(array $ids): void
     {
         foreach ($ids as $id) {
             if ($id::class !== static::handlesIdClass()) {
