@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\Ids\Test\ValueObject\ProjectId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
@@ -53,6 +55,25 @@ final class IdListTest extends TestCase
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
+        ]);
+    }
+
+    /**
+     * @test
+     * @covers ::__construct
+     * @covers ::mustOnlyContainIdsOfHandledClass
+     */
+    public function id_list_construction_fails_with_ids_of_different_id_class(): void
+    {
+        // -- Assert
+        $this->expectException(IdClassNotHandledInList::class);
+
+        // -- Arrange & Act
+        new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+            ProjectId::generateRandom(),
         ]);
     }
 
