@@ -258,7 +258,11 @@ abstract class MutableIdList implements \Iterator, \Countable
         }
     }
 
-    /** @throws DuplicateIds */
+    /**
+     * @param array<int, Id> $ids
+     *
+     * @throws DuplicateIds
+     */
     public static function mustNotContainDuplicateIds(array $ids): void
     {
         /** @noinspection TypeUnsafeComparisonInspection */
@@ -267,7 +271,11 @@ abstract class MutableIdList implements \Iterator, \Countable
         }
     }
 
-    /** @throws IdClassNotHandledInList */
+    /**
+     * @param array<int, Id> $ids
+     *
+     * @throws IdClassNotHandledInList
+     */
     public static function mustOnlyContainIdsOfHandledClass(array $ids): void
     {
         foreach ($ids as $id) {
