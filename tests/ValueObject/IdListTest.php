@@ -596,6 +596,8 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
+        $idMarc = UserId::generateRandom();
+
         $originalList = UserIdList::fromIds([
             $idAnton,
             $idMarkus,
@@ -615,9 +617,17 @@ final class IdListTest extends TestCase
             $idPaul,
         ]);
 
+        $listWithOneExchanged = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idMarc,
+        ]);
+
         // -- Act & Assert
         self::assertTrue($originalList->isEqualTo($copyOfOriginalList));
         self::assertFalse($originalList->isEqualTo($partialList));
+        self::assertFalse($originalList->isEqualTo($listWithOneExchanged));
 
         self::assertTrue($originalList->isNotEqualTo($partialList));
         self::assertFalse($originalList->isNotEqualTo($copyOfOriginalList));
