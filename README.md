@@ -155,8 +155,6 @@ Id lists are wrapper for an array of ids. They contain a few utility functions a
 
 The `IdList` is immutable. Therefore, the mutation methods (like `add`, `remove`, ...) always return a new instance of the list.
 
-There is an alternative variant `MutableIdList` which offers the same functionality but is not immutable. Make sure you have a look into the [Doctrine edge cases](./docs/doctrine-edge-cases.md) before using it.
-
 ### Creating a new id list
 
 The bulk of the logic is in the `IdList` class. Creating a new id list is as simple as creating a new class and extending from it like the following:
