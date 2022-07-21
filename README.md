@@ -9,6 +9,16 @@ As it's a central part of an application, it's tested thoroughly.
 [![Total Downloads](http://poser.pugx.org/digital-craftsman/ids/downloads)](https://packagist.org/packages/digital-craftsman/ids)
 [![License](http://poser.pugx.org/digital-craftsman/ids/license)](https://packagist.org/packages/digital-craftsman/ids)
 
+## Installation and configuration
+
+Install package through composer:
+
+```shell
+composer require digital-craftsman/ids
+```
+
+Additionally, you ether need the `uuid` PHP extension installed or the polyfill `symfony/polyfill-uuid` in your composer requirements.
+
 ## Working with ids
 
 ### Creating a new id
