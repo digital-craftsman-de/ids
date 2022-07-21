@@ -69,7 +69,7 @@ abstract class IdList implements \Iterator, \Countable
 
     abstract public static function handlesIdClass(): string;
 
-    // Transformers
+    // -- Transformers
 
     public function addId(Id $id): static
     {
@@ -155,6 +155,16 @@ abstract class IdList implements \Iterator, \Countable
     {
         /** @psalm-suppress ImpureFunctionCall */
         return array_values(array_map($mapFunction, $this->ids));
+    }
+
+    public function filter(\Closure $filterFunction): static
+    {
+        $filteredIds = array_filter(
+            $this->ids,
+            $filterFunction,
+        );
+
+        return new static($filteredIds);
     }
 
     // -- Accessors
