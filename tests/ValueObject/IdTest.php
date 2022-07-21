@@ -9,7 +9,6 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
 
 /** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\Id */
 final class IdTest extends TestCase
@@ -25,6 +24,7 @@ final class IdTest extends TestCase
         // -- Act
         new UserId('f41e0af4-88c4-4d79-9c1a-6e8ea34a956f');
         UserId::fromString('f41e0af4-88c4-4d79-9c1a-6e8ea34a956f');
+        UserId::generateRandom();
     }
 
     /**
@@ -76,7 +76,7 @@ final class IdTest extends TestCase
     public function user_id_is_existing_in_list(): void
     {
         // -- Arrange
-        $uuid = Uuid::uuid4()->toString();
+        $uuid = uuid_create();
 
         $userIdToSearch = new UserId($uuid);
 
@@ -112,7 +112,7 @@ final class IdTest extends TestCase
     public function user_id_is_not_existing_in_list(): void
     {
         // -- Arrange
-        $uuid = Uuid::uuid4()->toString();
+        $uuid = uuid_create();
 
         $userIdToSearch = new UserId($uuid);
 
