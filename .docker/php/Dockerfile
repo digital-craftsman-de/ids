@@ -10,6 +10,9 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 
+RUN chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions uuid
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     ln -s $(composer config --global home) /root/composer
 ENV PATH=$PATH:/root/composer/vendor/bin COMPOSER_ALLOW_SUPERUSER=1

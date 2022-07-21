@@ -7,7 +7,6 @@ namespace DigitalCraftsman\Ids\ValueObject;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
-use Ramsey\Uuid\Uuid;
 
 /** @psalm-immutable */
 abstract class Id implements \Stringable
@@ -17,16 +16,14 @@ abstract class Id implements \Stringable
     final public function __construct(
         protected string $value,
     ) {
-        if (!Uuid::isValid($value)) {
+        if (!uuid_is_valid($value)) {
             throw new InvalidId($value);
         }
     }
 
     final public static function generateRandom(): static
     {
-        $id = Uuid::uuid4()->toString();
-
-        return new static($id);
+        return new static(uuid_create());
     }
 
     public static function fromString(string $id): static
