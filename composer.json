@@ -6,13 +6,16 @@
     "php": "8.0.*|8.1.*",
     "symfony/framework-bundle": "^5.4|^6.0",
     "symfony/serializer": "^5.4|^6.0",
-    "ramsey/uuid": "^4.0",
-    "doctrine/dbal": "^2.13.8|^3.3.6"
+    "doctrine/dbal": "^2.13.8|^3.3.6",
+    "symfony/polyfill-uuid": "^1.26"
   },
   "require-dev": {
     "vimeo/psalm": "^4.12",
     "friendsofphp/php-cs-fixer": "^3.3",
     "phpunit/phpunit": "^9.5"
+  },
+  "suggest": {
+    "ext-uuid": "*"
   },
   "autoload": {
     "psr-4": {

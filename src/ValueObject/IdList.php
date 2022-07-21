@@ -263,7 +263,7 @@ abstract class IdList implements \Iterator, \Countable
     public static function mustNotContainDuplicateIds(array $ids): void
     {
         /** @noinspection TypeUnsafeComparisonInspection */
-        if ($ids != array_unique($ids)) {
+        if (count($ids) != count(array_unique($ids))) {
             throw new DuplicateIds();
         }
     }
@@ -275,8 +275,9 @@ abstract class IdList implements \Iterator, \Countable
      */
     public static function mustOnlyContainIdsOfHandledClass(array $ids): void
     {
+        $idClass = static::handlesIdClass();
         foreach ($ids as $id) {
-            if ($id::class !== static::handlesIdClass()) {
+            if ($id::class !== $idClass) {
                 throw new IdClassNotHandledInList(static::class, $id::class);
             }
         }
