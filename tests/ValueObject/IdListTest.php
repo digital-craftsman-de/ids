@@ -546,6 +546,46 @@ final class IdListTest extends TestCase
         self::assertSame($expectedArray, $stringArray);
     }
 
+    // -- Filter
+
+    /**
+     * @test
+     * @covers ::filter
+     */
+    public function id_list_filter_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $listWithAllIds = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $externalIdsToMatch = UserIdList::fromIds([
+            $idAnton,
+            $idTom,
+        ]);
+
+        $expectedArray = [
+            (string) $idMarkus,
+            (string) $idPaul,
+        ];
+
+        // -- Act
+        $filteredList = $listWithAllIds->filter(
+            static fn (UserId $userId) => $externalIdsToMatch->notContainsId($userId),
+        );
+
+        // -- Assert
+        self::assertSame($expectedArray, $filteredList->idsAsStringList());
+    }
+
     // -- Contains
 
     /**
