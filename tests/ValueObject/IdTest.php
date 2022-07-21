@@ -76,7 +76,7 @@ final class IdTest extends TestCase
     public function user_id_is_existing_in_list(): void
     {
         // -- Arrange
-        $uuid = Uuid::uuid4()->toString();
+        $uuid = uuid_create();
 
         $userIdToSearch = new UserId($uuid);
 
@@ -112,7 +112,7 @@ final class IdTest extends TestCase
     public function user_id_is_not_existing_in_list(): void
     {
         // -- Arrange
-        $uuid = Uuid::uuid4()->toString();
+        $uuid = uuid_create();
 
         $userIdToSearch = new UserId($uuid);
 
