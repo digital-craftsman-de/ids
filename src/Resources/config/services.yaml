@@ -5,6 +5,3 @@ services:
 
   DigitalCraftsman\Ids\Serializer\IdListNormalizer:
     tags: [ { name: 'serializer.normalizer' } ]
-
-  DigitalCraftsman\Ids\Serializer\MutableIdListNormalizer:
-    tags: [ { name: 'serializer.normalizer' } ]

@@ -4,7 +4,10 @@ A Symfony bundle to work with id and id list value objects in Symfony. It includ
 
 As it's a central part of an application, it's tested thoroughly.
 
+[![Latest Unstable Version](http://poser.pugx.org/digital-craftsman/ids/v/unstable)](https://packagist.org/packages/digital-craftsman/ids)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/ids/branch/main/graph/badge.svg?token=BL0JKZYLBG)](https://codecov.io/gh/digital-craftsman-de/ids)
+[![Total Downloads](http://poser.pugx.org/digital-craftsman/ids/downloads)](https://packagist.org/packages/digital-craftsman/ids)
+[![License](http://poser.pugx.org/digital-craftsman/ids/license)](https://packagist.org/packages/digital-craftsman/ids)
 
 ## Working with ids
 
@@ -151,8 +154,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 Id lists are wrapper for an array of ids. They contain a few utility functions and improved type safety.
 
 The `IdList` is immutable. Therefore, the mutation methods (like `add`, `remove`, ...) always return a new instance of the list.
-
-There is an alternative variant `MutableIdList` which offers the same functionality but is not immutable. Make sure you have a look into the [Doctrine edge cases](./docs/doctrine-edge-cases.md) before using it.
 
 ### Creating a new id list
 
