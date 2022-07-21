@@ -6,16 +6,18 @@
     "php": "8.0.*|8.1.*",
     "symfony/framework-bundle": "^5.4|^6.0",
     "symfony/serializer": "^5.4|^6.0",
-    "doctrine/dbal": "^2.13.8|^3.3.6",
-    "symfony/polyfill-uuid": "^1.26"
+    "doctrine/dbal": "^2.13.8|^3.3.6"
   },
   "require-dev": {
     "vimeo/psalm": "^4.12",
     "friendsofphp/php-cs-fixer": "^3.3",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5",
+    "symfony/polyfill-uuid": "^1.26",
+    "ext-uuid": "^1.2"
   },
   "suggest": {
-    "ext-uuid": "*"
+    "ext-uuid": "Necessary for uuid creation. You need ether the uuid extension or symfony/polyfill-uuid.",
+    "symfony/polyfill-uuid": "Necessary for uuid creation. You need ether symfony/polyfill-uuid or the uuid extension."
   },
   "autoload": {
     "psr-4": {
