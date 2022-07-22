@@ -178,7 +178,7 @@ namespace App\ValueObject;
 
 use DigitalCraftsman\Ids\ValueObject\IdList;
 
-/** @psalm-immutable */
+/** @extends IdList<UserId> */
 final class UserIdList extends IdLIst
 {
     public static function handlesIdClass(): string
