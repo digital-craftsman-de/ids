@@ -73,6 +73,7 @@ final class IdListNormalizerTest extends TestCase
         ];
 
         // -- Act
+        /** @psalm-suppress InvalidScalarArgument */
         $normalizer->denormalize($invalidData, UserIdList::class);
     }
 

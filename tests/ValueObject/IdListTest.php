@@ -69,6 +69,7 @@ final class IdListTest extends TestCase
         $this->expectException(IdClassNotHandledInList::class);
 
         // -- Arrange & Act
+        /** @psalm-suppress InvalidArgument */
         new UserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),
@@ -538,6 +539,7 @@ final class IdListTest extends TestCase
         ];
 
         // -- Act
+        /** @var array<int, string> */
         $stringArray = $listWithAllIds->map(
             static fn (UserId $userId) => (string) $userId,
         );

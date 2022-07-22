@@ -12,12 +12,21 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
 
+/**
+ * @template T extends Id
+ * @psalm-consistent-constructor
+ *
+ * I think Psalm has an issue here as the constructor is final and the parameter is the template the child class will extend from, but I
+ * didn't find a solution without suppressing this psalm check.
+ *
+ * @psalm-suppress UnsafeGenericInstantiation
+ */
 abstract class IdList implements \Iterator, \Countable
 {
     /**
-     * The id type has to be overwritten in the child class so that the correct id type is used in denormalization.
-     *
      * @var array<int, Id>
+     * @psalm-var array<int, T>
+     * @psalm-readonly
      */
     public array $ids;
 
@@ -25,7 +34,10 @@ abstract class IdList implements \Iterator, \Countable
 
     // -- Construction
 
-    /** @param array<int, Id> $ids */
+    /**
+     * @param array<int, Id> $ids
+     * @psalm-param array<int, T> $ids
+     */
     final public function __construct(
         array $ids,
     ) {
@@ -35,7 +47,12 @@ abstract class IdList implements \Iterator, \Countable
         $this->ids = array_values($ids);
     }
 
-    /** @param array<int, Id> $ids */
+    /**
+     * @template TT of T
+     *
+     * @param array<int, Id> $ids
+     * @psalm-param array<int, TT> $ids
+     */
     final public static function fromIds(array $ids): static
     {
         return new static($ids);
@@ -71,6 +88,7 @@ abstract class IdList implements \Iterator, \Countable
 
     // -- Transformers
 
+    /** @psalm-param T $id */
     public function addId(Id $id): static
     {
         if ($this->containsId($id)) {
@@ -83,6 +101,7 @@ abstract class IdList implements \Iterator, \Countable
         return new static($ids);
     }
 
+    /** @psalm-param T $id */
     public function addIdWhenNotInList(Id $id): static
     {
         if ($this->containsId($id)) {
@@ -95,6 +114,7 @@ abstract class IdList implements \Iterator, \Countable
         return new static($ids);
     }
 
+    /** @psalm-param T $id */
     public function removeId(Id $id): static
     {
         $ids = array_filter(
@@ -105,6 +125,7 @@ abstract class IdList implements \Iterator, \Countable
         return new static($ids);
     }
 
+    /** @param static $idList */
     public function diff(self $idList): static
     {
         $idsNotInList = [];
@@ -127,6 +148,8 @@ abstract class IdList implements \Iterator, \Countable
     /**
      * Returns an id list of ids which exist in both lists. The order of the new list is the same as the list on which the function is
      * triggered from. The supplied list is only used for validation and not for order.
+     *
+     * @param static $idList
      */
     public function intersect(self $idList): static
     {
@@ -147,7 +170,7 @@ abstract class IdList implements \Iterator, \Countable
      *
      * @template R
      *
-     * @psalm-param impure-Closure(Id):R $mapFunction
+     * @psalm-param impure-Closure(T):R $mapFunction
      *
      * @return array<int, R>
      */
@@ -169,18 +192,21 @@ abstract class IdList implements \Iterator, \Countable
 
     // -- Accessors
 
+    /** @psalm-param T $id */
     public function containsId(Id $baseId): bool
     {
         /** @psalm-suppress ArgumentTypeCoercion */
         return $baseId->isExistingInList($this->ids);
     }
 
+    /** @psalm-param T $id */
     public function notContainsId(Id $baseId): bool
     {
         /** @psalm-suppress ArgumentTypeCoercion */
         return $baseId->isNotExistingInList($this->ids);
     }
 
+    /** @param static $idList */
     public function isEqualTo(self $idList): bool
     {
         if ($this->count() !== $idList->count()) {
@@ -196,6 +222,7 @@ abstract class IdList implements \Iterator, \Countable
         return true;
     }
 
+    /** @param static $idList */
     public function isNotEqualTo(self $idList): bool
     {
         return !$this->isEqualTo($idList);
@@ -211,6 +238,7 @@ abstract class IdList implements \Iterator, \Countable
         return $this->count() > 0;
     }
 
+    /** @param static $orderedList */
     public function isInSameOrder(self $orderedList): bool
     {
         $orderedListWithIdenticalIds = $orderedList->intersect($this);
@@ -223,6 +251,7 @@ abstract class IdList implements \Iterator, \Countable
         return true;
     }
 
+    /** @psalm-return T */
     public function idAtPosition(int $position): Id
     {
         return $this->ids[$position];
@@ -241,7 +270,11 @@ abstract class IdList implements \Iterator, \Countable
 
     // -- Guards
 
-    /** @throws IdListDoesNotContainId */
+    /**
+     * @psalm-param T $id
+     *
+     * @throws IdListDoesNotContainId
+     */
     public function mustContainId(Id $id): void
     {
         if ($this->notContainsId($id)) {
@@ -249,7 +282,11 @@ abstract class IdList implements \Iterator, \Countable
         }
     }
 
-    /** @throws IdListDoesContainId */
+    /**
+     * @psalm-param T $id
+     *
+     * @throws IdListDoesContainId
+     */
     public function mustNotContainId(Id $id): void
     {
         if ($this->containsId($id)) {
@@ -257,7 +294,11 @@ abstract class IdList implements \Iterator, \Countable
         }
     }
 
-    /** @throws IdListIsNotEmpty */
+    /**
+     * @psalm-param T $id
+     *
+     * @throws IdListIsNotEmpty
+     */
     public function mustBeEmpty(): void
     {
         if ($this->isNotEmpty()) {
@@ -266,7 +307,10 @@ abstract class IdList implements \Iterator, \Countable
     }
 
     /**
+     * @template TT of T
+     *
      * @param array<int, Id> $ids
+     * @psalm-param array<int, TT> $ids
      *
      * @throws DuplicateIds
      */
@@ -279,7 +323,10 @@ abstract class IdList implements \Iterator, \Countable
     }
 
     /**
+     * @template TT of T
+     *
      * @param array<int, Id> $ids
+     * @psalm-param array<int, TT> $ids
      *
      * @throws IdClassNotHandledInList
      */
@@ -303,6 +350,7 @@ abstract class IdList implements \Iterator, \Countable
 
     // -- Iterator
 
+    /** @psalm-return T */
     public function current(): Id
     {
         return $this->ids[$this->index];
