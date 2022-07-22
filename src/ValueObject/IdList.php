@@ -351,6 +351,7 @@ abstract class IdList implements \Iterator, \Countable
 
     // -- Iterator
 
+    /** @psalm-return T */
     public function current(): Id
     {
         return $this->ids[$this->index];
