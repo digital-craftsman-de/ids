@@ -24,10 +24,9 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
 abstract class IdList implements \Iterator, \Countable
 {
     /**
-     * The id type has to be overwritten in the child class so that the correct id type is used in denormalization.
-     *
      * @var array<int, Id>
      * @psalm-var array<int, T>
+     * @psalm-readonly
      */
     public array $ids;
 
