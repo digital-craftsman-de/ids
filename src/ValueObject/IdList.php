@@ -180,6 +180,7 @@ abstract class IdList implements \Iterator, \Countable
         return array_values(array_map($mapFunction, $this->ids));
     }
 
+    /** @psalm-param impure-Closure(T) $filterFunction */
     public function filter(\Closure $filterFunction): static
     {
         $filteredIds = array_filter(
@@ -188,6 +189,30 @@ abstract class IdList implements \Iterator, \Countable
         );
 
         return new static($filteredIds);
+    }
+
+    /** @psalm-param impure-Closure(T) $everyFunction */
+    public function every(\Closure $everyFunction): bool
+    {
+        foreach ($this->ids as $id) {
+            if ($everyFunction($id) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /** @psalm-param impure-Closure(T) $someFunction */
+    public function some(\Closure $someFunction): bool
+    {
+        foreach ($this->ids as $id) {
+            if ($someFunction($id) === true) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // -- Accessors
