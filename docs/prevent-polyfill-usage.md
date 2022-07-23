@@ -9,3 +9,13 @@ When you've installed the `uuid` PHP extension, there is no reason to install an
   }
 }
 ```
+
+Just make sure you've added `ext-uuid` to your `composer.json` requirements like the following:
+
+```json
+{
+  "require": {
+    "ext-uuid": "*"
+  }
+}
+```
