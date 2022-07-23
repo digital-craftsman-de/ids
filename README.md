@@ -17,7 +17,7 @@ Install package through composer:
 composer require digital-craftsman/ids
 ```
 
-Additionally, you ether need the [`uuid` PHP extension](https://pecl.php.net/package/uuid) installed or the polyfill `symfony/polyfill-uuid` as part of your composer requirements. Using the `uuid` extension is around twice as fast when handling thousands of ids in one request.
+It's recommended that you install the [`uuid` PHP extension](https://pecl.php.net/package/uuid) for better performance of id creation and validation.  `symfony/polyfill-uuid` is used as a fallback. You can [prevent installing the polyfill](./docs/prevent-polyfill-usage.md) when you've installed the PHP extension.
 
 ## Working with ids
 
