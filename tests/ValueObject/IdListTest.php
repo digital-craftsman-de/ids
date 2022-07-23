@@ -683,6 +683,44 @@ final class IdListTest extends TestCase
         self::assertFalse($noneIdIsIncluded);
     }
 
+    // -- Reduce
+
+    /**
+     * @test
+     * @covers ::reduce
+     */
+    public function id_list_reduce_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $amountsPerUser = [
+            (string) $idAnton => 20,
+            (string) $idMarkus => 30,
+            (string) $idPaul => 25,
+            (string) $idTom => 17,
+        ];
+
+        $listWithIdsOfAllUsers = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        // -- Act
+        $amountsOfAllUsers = $listWithIdsOfAllUsers->reduce(
+            static fn (int $carry, UserId $userId) => $carry + $amountsPerUser[(string) $userId],
+            0,
+        );
+
+        // -- Assert
+        self::assertSame(92, $amountsOfAllUsers);
+    }
+
     // -- Contains
 
     /**

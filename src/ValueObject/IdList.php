@@ -183,12 +183,10 @@ abstract class IdList implements \Iterator, \Countable
     /** @psalm-param impure-Closure(T) $filterFunction */
     public function filter(\Closure $filterFunction): static
     {
-        $filteredIds = array_filter(
+        return new static(array_filter(
             $this->ids,
             $filterFunction,
-        );
-
-        return new static($filteredIds);
+        ));
     }
 
     /** @psalm-param impure-Closure(T) $everyFunction */
@@ -213,6 +211,19 @@ abstract class IdList implements \Iterator, \Countable
         }
 
         return false;
+    }
+
+    /**
+     * @template R
+     *
+     * @psalm-param impure-Closure(R $carry, T):R $reduceFunction
+     * @psalm-param R $initial
+     *
+     * @return R
+     */
+    public function reduce(\Closure $reduceFunction, mixed $initial = null): mixed
+    {
+        return array_reduce($this->ids, $reduceFunction, $initial);
     }
 
     // -- Accessors
