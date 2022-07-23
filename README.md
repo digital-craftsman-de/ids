@@ -4,7 +4,8 @@ A Symfony bundle to work with id and id list value objects in Symfony. It includ
 
 As it's a central part of an application, it's tested thoroughly.
 
-[![Latest Unstable Version](http://poser.pugx.org/digital-craftsman/ids/v/unstable)](https://packagist.org/packages/digital-craftsman/ids)
+[![Latest Stable Version](http://poser.pugx.org/digital-craftsman/ids/v)](https://packagist.org/packages/digital-craftsman/ids)
+[![PHP Version Require](http://poser.pugx.org/digital-craftsman/ids/require/php)](https://packagist.org/packages/digital-craftsman/ids)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/ids/branch/main/graph/badge.svg?token=BL0JKZYLBG)](https://codecov.io/gh/digital-craftsman-de/ids)
 [![Total Downloads](http://poser.pugx.org/digital-craftsman/ids/downloads)](https://packagist.org/packages/digital-craftsman/ids)
 [![License](http://poser.pugx.org/digital-craftsman/ids/license)](https://packagist.org/packages/digital-craftsman/ids)
@@ -17,7 +18,9 @@ Install package through composer:
 composer require digital-craftsman/ids
 ```
 
-Additionally, you ether need the [`uuid` PHP extension](https://pecl.php.net/package/uuid) installed or the polyfill `symfony/polyfill-uuid` as part of your composer requirements. Using the `uuid` extension is around twice as fast when handling thousands of ids in one request.
+It's recommended that you install the [`uuid` PHP extension](https://pecl.php.net/package/uuid) for better performance of id creation and validation.  `symfony/polyfill-uuid` is used as a fallback. You can [prevent installing the polyfill](./docs/prevent-polyfill-usage.md) when you've installed the PHP extension.
+
+> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/ids:0.1.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
 
 ## Working with ids
 
