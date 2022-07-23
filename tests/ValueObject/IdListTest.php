@@ -588,6 +588,139 @@ final class IdListTest extends TestCase
         self::assertSame($expectedArray, $filteredList->idsAsStringList());
     }
 
+    // -- Every
+
+    /**
+     * @test
+     * @covers ::every
+     */
+    public function id_list_every_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idChris = UserId::generateRandom();
+
+        $listWithAllIdsOfGroupSparta = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $listWithIdsThatAreAllInGroupSparta = UserIdList::fromIds([
+            $idAnton,
+            $idTom,
+        ]);
+
+        $listWithIdsThatAreNotAllInGroupSparta = UserIdList::fromIds([
+            $idAnton,
+            $idTom,
+            $idChris,
+        ]);
+
+        // -- Act
+        $everyIdIsIncluded = $listWithIdsThatAreAllInGroupSparta->every(
+            static fn (UserId $userId) => $listWithAllIdsOfGroupSparta->containsId($userId),
+        );
+        $notEveryIdIsIncluded = $listWithIdsThatAreNotAllInGroupSparta->every(
+            static fn (UserId $userId) => $listWithAllIdsOfGroupSparta->containsId($userId),
+        );
+
+        // -- Assert
+        self::assertTrue($everyIdIsIncluded);
+        self::assertFalse($notEveryIdIsIncluded);
+    }
+
+    // -- Some
+
+    /**
+     * @test
+     * @covers ::some
+     */
+    public function id_list_some_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idChris = UserId::generateRandom();
+        $idQuirin = UserId::generateRandom();
+
+        $listWithAllIdsOfGroupSparta = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $listWithIdsThatContainSomeOfSpartaGroup = UserIdList::fromIds([
+            $idAnton,
+            $idTom,
+            $idChris,
+        ]);
+
+        $listWithIdsThatContainNoneOfSpartaGroup = UserIdList::fromIds([
+            $idChris,
+            $idQuirin,
+        ]);
+
+        // -- Act
+        $someIdIsIncluded = $listWithIdsThatContainSomeOfSpartaGroup->some(
+            static fn (UserId $userId) => $listWithAllIdsOfGroupSparta->containsId($userId),
+        );
+        $noneIdIsIncluded = $listWithIdsThatContainNoneOfSpartaGroup->some(
+            static fn (UserId $userId) => $listWithAllIdsOfGroupSparta->containsId($userId),
+        );
+
+        // -- Assert
+        self::assertTrue($someIdIsIncluded);
+        self::assertFalse($noneIdIsIncluded);
+    }
+
+    // -- Reduce
+
+    /**
+     * @test
+     * @covers ::reduce
+     */
+    public function id_list_reduce_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $amountsPerUser = [
+            (string) $idAnton => 20,
+            (string) $idMarkus => 30,
+            (string) $idPaul => 25,
+            (string) $idTom => 17,
+        ];
+
+        $listWithIdsOfAllUsers = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        // -- Act
+        $amountsOfAllUsers = $listWithIdsOfAllUsers->reduce(
+            static fn (int $carry, UserId $userId) => $carry + $amountsPerUser[(string) $userId],
+            0,
+        );
+
+        // -- Assert
+        self::assertSame(92, $amountsOfAllUsers);
+    }
+
     // -- Contains
 
     /**

@@ -163,6 +163,8 @@ abstract class IdList implements \Iterator, \Countable
         return new static($idsInList);
     }
 
+    // -- Functional programming
+
     /**
      * Psalm doesn't yet realize when a function is pure and when not. To prevent us from marking every single use by hand (which will
      * reduce the readability), we ignore the purity for now and will change the call here to pure-callable as soon as Psalm can handle
@@ -170,24 +172,60 @@ abstract class IdList implements \Iterator, \Countable
      *
      * @template R
      *
-     * @psalm-param impure-Closure(T):R $mapFunction
+     * @psalm-param callable(T):R $mapFunction
      *
      * @return array<int, R>
      */
-    public function map(\Closure $mapFunction): array
+    public function map(callable $mapFunction): array
     {
         /** @psalm-suppress ImpureFunctionCall */
         return array_values(array_map($mapFunction, $this->ids));
     }
 
-    public function filter(\Closure $filterFunction): static
+    /** @psalm-param callable(T):bool $filterFunction */
+    public function filter(callable $filterFunction): static
     {
-        $filteredIds = array_filter(
+        return new static(array_filter(
             $this->ids,
             $filterFunction,
-        );
+        ));
+    }
 
-        return new static($filteredIds);
+    /** @psalm-param callable(T):bool $everyFunction */
+    public function every(callable $everyFunction): bool
+    {
+        foreach ($this->ids as $id) {
+            if ($everyFunction($id) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /** @psalm-param callable(T):bool $someFunction */
+    public function some(callable $someFunction): bool
+    {
+        foreach ($this->ids as $id) {
+            if ($someFunction($id) === true) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @template R
+     *
+     * @psalm-param callable(R $carry, T):R $reduceFunction
+     * @psalm-param R $initial
+     *
+     * @return R
+     */
+    public function reduce(callable $reduceFunction, mixed $initial = null): mixed
+    {
+        return array_reduce($this->ids, $reduceFunction, $initial);
     }
 
     // -- Accessors
