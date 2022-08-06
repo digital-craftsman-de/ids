@@ -84,6 +84,11 @@ abstract class IdList implements \Iterator, \Countable
 
     // -- Configuration
 
+    /**
+     * @template TT of T
+     *
+     * @return class-string<TT>
+     */
     abstract public static function handlesIdClass(): string;
 
     // -- Transformers
@@ -233,15 +238,13 @@ abstract class IdList implements \Iterator, \Countable
     /** @psalm-param T $id */
     public function containsId(Id $baseId): bool
     {
-        /** @psalm-suppress ArgumentTypeCoercion */
-        return $baseId->isExistingInList($this->ids);
+        return $baseId->isExistingInList($this);
     }
 
     /** @psalm-param T $id */
     public function notContainsId(Id $baseId): bool
     {
-        /** @psalm-suppress ArgumentTypeCoercion */
-        return $baseId->isNotExistingInList($this->ids);
+        return $baseId->isNotExistingInList($this);
     }
 
     /** @param static $idList */
@@ -372,7 +375,7 @@ abstract class IdList implements \Iterator, \Countable
     {
         $idClass = static::handlesIdClass();
         foreach ($ids as $id) {
-            if ($id::class !== $idClass) {
+            if (!$id instanceof $idClass) {
                 throw new IdClassNotHandledInList(static::class, $id::class);
             }
         }

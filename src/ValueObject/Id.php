@@ -51,18 +51,14 @@ abstract class Id implements \Stringable
     }
 
     /**
-     * Comparison without strict to made with @see __toString(). We use this method so we don't use it in strict mode on
-     * accident somewhere.
-     *
-     * @param array<int, static> $list
+     * Comparison without strict to made with @see __toString(). We use this method so we don't use it in strict mode on accident somewhere.
      */
-    public function isExistingInList(array $list): bool
+    public function isExistingInList(IdList $list): bool
     {
-        return in_array($this, $list, false);
+        return in_array($this, $list->ids, false);
     }
 
-    /** @param array<int, static> $list */
-    public function isNotExistingInList(array $list): bool
+    public function isNotExistingInList(IdList $list): bool
     {
         return !$this->isExistingInList($list);
     }

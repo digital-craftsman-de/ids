@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\Ids\Test\ValueObject\AdminId;
+use DigitalCraftsman\Ids\Test\ValueObject\InstructorId;
 use DigitalCraftsman\Ids\Test\ValueObject\ProjectId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
@@ -33,6 +35,23 @@ final class IdListTest extends TestCase
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
+        ]);
+    }
+
+    /**
+     * @test
+     * @covers ::__construct
+     * @covers ::mustOnlyContainIdsOfHandledClass
+     * @doesNotPerformAssertions
+     */
+    public function id_list_construction_works_with_ids_of_subclass(): void
+    {
+        // -- Arrange & Act
+        new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+            InstructorId::generateRandom(),
+            AdminId::generateRandom(),
         ]);
     }
 
@@ -539,7 +558,7 @@ final class IdListTest extends TestCase
         ];
 
         // -- Act
-        /** @var array<int, string> */
+        /** @var array<int, string> $stringArray */
         $stringArray = $listWithAllIds->map(
             static fn (UserId $userId) => (string) $userId,
         );
