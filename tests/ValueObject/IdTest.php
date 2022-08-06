@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\ValueObject;
 
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
+use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
@@ -85,19 +86,19 @@ final class IdTest extends TestCase
 
         $userIdNotInList = UserId::generateRandom();
 
-        $listOfUserIdsIncludingSameInstance = [
+        $listOfUserIdsIncludingSameInstance = new UserIdList([
             $userIdToSearch,
             $userId1,
             $userId2,
-        ];
+        ]);
 
         $copyOfStringValue = UserId::fromString((string) $userIdToSearch);
 
-        $listOfUserIdsIncludingEqualInstance = [
+        $listOfUserIdsIncludingEqualInstance = new UserIdList([
             $copyOfStringValue,
             $userId1,
             $userId2,
-        ];
+        ]);
 
         // -- Act & Assert
         self::assertTrue($userIdToSearch->isExistingInList($listOfUserIdsIncludingSameInstance));
@@ -119,10 +120,10 @@ final class IdTest extends TestCase
         $userId1 = UserId::generateRandom();
         $userId2 = UserId::generateRandom();
 
-        $listOfUserIdsWithoutIdToSearch = [
+        $listOfUserIdsWithoutIdToSearch = new UserIdList([
             $userId1,
             $userId2,
-        ];
+        ]);
 
         // -- Act & Assert
         self::assertFalse($userIdToSearch->isExistingInList($listOfUserIdsWithoutIdToSearch));
