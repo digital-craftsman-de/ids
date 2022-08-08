@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\ValueObject;
 
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
-use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
@@ -67,66 +66,6 @@ final class IdTest extends TestCase
 
         // -- Act & Assert
         self::assertTrue($userId1->isNotEqualTo($userId2));
-    }
-
-    /**
-     * @test
-     * @covers ::isExistingInList
-     * @covers ::isNotExistingInList
-     */
-    public function user_id_is_existing_in_list(): void
-    {
-        // -- Arrange
-        $uuid = uuid_create();
-
-        $userIdToSearch = new UserId($uuid);
-
-        $userId1 = UserId::generateRandom();
-        $userId2 = UserId::generateRandom();
-
-        $userIdNotInList = UserId::generateRandom();
-
-        $listOfUserIdsIncludingSameInstance = new UserIdList([
-            $userIdToSearch,
-            $userId1,
-            $userId2,
-        ]);
-
-        $copyOfStringValue = UserId::fromString((string) $userIdToSearch);
-
-        $listOfUserIdsIncludingEqualInstance = new UserIdList([
-            $copyOfStringValue,
-            $userId1,
-            $userId2,
-        ]);
-
-        // -- Act & Assert
-        self::assertTrue($userIdToSearch->isExistingInList($listOfUserIdsIncludingSameInstance));
-        self::assertTrue($userIdToSearch->isExistingInList($listOfUserIdsIncludingEqualInstance));
-        self::assertTrue($userIdNotInList->isNotExistingInList($listOfUserIdsIncludingEqualInstance));
-    }
-
-    /**
-     * @test
-     * @covers ::isExistingInList
-     */
-    public function user_id_is_not_existing_in_list(): void
-    {
-        // -- Arrange
-        $uuid = uuid_create();
-
-        $userIdToSearch = new UserId($uuid);
-
-        $userId1 = UserId::generateRandom();
-        $userId2 = UserId::generateRandom();
-
-        $listOfUserIdsWithoutIdToSearch = new UserIdList([
-            $userId1,
-            $userId2,
-        ]);
-
-        // -- Act & Assert
-        self::assertFalse($userIdToSearch->isExistingInList($listOfUserIdsWithoutIdToSearch));
     }
 
     /**

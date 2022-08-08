@@ -20,7 +20,7 @@ composer require digital-craftsman/ids
 
 It's recommended that you install the [`uuid` PHP extension](https://pecl.php.net/package/uuid) for better performance of id creation and validation.  `symfony/polyfill-uuid` is used as a fallback. You can [prevent installing the polyfill](./docs/prevent-polyfill-usage.md) when you've installed the PHP extension.
 
-> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/ids:0.2.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
+> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/ids:0.3.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
 
 ## Working with ids
 

@@ -145,6 +145,7 @@ abstract class IdList implements \Iterator, \Countable
             }
         }
 
+        // The sort value is used explicitly to convey the importance of sorting by string cast.
         $uniqueIds = array_unique($idsNotInList, SORT_STRING);
 
         return new static($uniqueIds);
@@ -236,15 +237,16 @@ abstract class IdList implements \Iterator, \Countable
     // -- Accessors
 
     /** @psalm-param T $id */
-    public function containsId(Id $baseId): bool
+    public function containsId(Id $id): bool
     {
-        return $baseId->isExistingInList($this);
+        // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
+        return in_array($id, $this->ids, false);
     }
 
     /** @psalm-param T $id */
-    public function notContainsId(Id $baseId): bool
+    public function notContainsId(Id $id): bool
     {
-        return $baseId->isNotExistingInList($this);
+        return !$this->containsId($id);
     }
 
     /** @param static $idList */

@@ -50,19 +50,6 @@ abstract class Id implements \Stringable
         return $this->value !== $id->value;
     }
 
-    /**
-     * Comparison without strict to made with @see __toString(). We use this method so we don't use it in strict mode on accident somewhere.
-     */
-    public function isExistingInList(IdList $list): bool
-    {
-        return in_array($this, $list->ids, false);
-    }
-
-    public function isNotExistingInList(IdList $list): bool
-    {
-        return !$this->isExistingInList($list);
-    }
-
     // Guards
 
     /** @throws IdNotEqual */
