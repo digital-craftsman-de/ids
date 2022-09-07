@@ -21,7 +21,7 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
  *
  * @psalm-suppress UnsafeGenericInstantiation
  */
-abstract class IdList implements \Iterator, \Countable
+abstract class IdList implements \IteratorAggregate, \Countable
 {
     /**
      * @var array<int, Id>
@@ -29,8 +29,6 @@ abstract class IdList implements \Iterator, \Countable
      * @psalm-readonly
      */
     public array $ids;
-
-    public int $index = 0;
 
     // -- Construction
 
@@ -391,32 +389,11 @@ abstract class IdList implements \Iterator, \Countable
         }
     }
 
-    // -- Iterator
+    // -- Iterator aggregate
 
-    /** @psalm-return T */
-    public function current(): Id
+    public function getIterator(): \Iterator
     {
-        return $this->ids[$this->index];
-    }
-
-    public function next(): void
-    {
-        ++$this->index;
-    }
-
-    public function key(): int
-    {
-        return $this->index;
-    }
-
-    public function rewind(): void
-    {
-        $this->index = 0;
-    }
-
-    public function valid(): bool
-    {
-        return array_key_exists($this->index, $this->ids);
+        return new \ArrayIterator($this->ids);
     }
 
     // -- Countable
