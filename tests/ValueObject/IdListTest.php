@@ -927,11 +927,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
-     * @covers ::current
-     * @covers ::next
-     * @covers ::key
-     * @covers ::rewind
-     * @covers ::valid
+     * @covers ::getIterator
      */
     public function id_list_iteration_works(): void
     {
@@ -941,6 +937,12 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
 
         $idList = new UserIdList([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+        ]);
+
+        $duplicatedIdList = new UserIdList([
             $idAnton,
             $idMarkus,
             $idPaul,
@@ -965,15 +967,14 @@ final class IdListTest extends TestCase
 
         // -- Assert
         self::assertSame($expectedString, $concatenatedIds);
+
+        // Id list is equal after iteration
+        self::assertEquals($duplicatedIdList, $idList);
     }
 
     /**
      * @test
-     * @covers ::current
-     * @covers ::next
-     * @covers ::key
-     * @covers ::rewind
-     * @covers ::valid
+     * @covers ::getIterator
      */
     public function id_list_works_with_gaps_in_input_list(): void
     {

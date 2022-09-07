@@ -389,13 +389,12 @@ abstract class IdList implements \IteratorAggregate, \Countable
         }
     }
 
-    // -- Iterator
+    // -- Iterator aggregate
 
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator($this->ids);
     }
-
 
     // -- Countable
 
