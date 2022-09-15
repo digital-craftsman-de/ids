@@ -24,7 +24,7 @@ reset: .reset
 
 ## install	Install PHP dependencies.
 .PHONY: .install
-.install: install-8.0
+install: install-8.0
 
 ## install-8.0	Install with PHP 8.0.
 .PHONY: install-8.0
