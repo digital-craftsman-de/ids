@@ -10,7 +10,7 @@ jobs:
       - name: Install
         run: |
           cp .github/workflows/.env .env
-          make install
+          make install-8.0
       - name: Run PHP tests
         run: make php-8.0-tests-ci
       - name: Upload to Codecov
@@ -28,7 +28,7 @@ jobs:
       - name: Install
         run: |
           cp .github/workflows/.env .env
-          make install
+          make install-8.1
       - name: Run PHP tests
         run: make php-8.1-tests-ci
 

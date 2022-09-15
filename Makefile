@@ -27,8 +27,17 @@ reset: .reset
 install: .install
 
 .PHONY: .install
-.install:
+.install: install-8.0
+
+## install-8.0	Install with PHP 8.0.
+.PHONY: .install-8.0
+.install-8.0:
 	docker-compose run --rm php-8.0 composer install
+
+## install-8.1	Install with PHP 8.1.
+.PHONY: .install-8.1
+.install-8.1:
+	docker-compose run --rm php-8.1 composer install
 
 ## build		Build the Docker images.
 .PHONY: build
@@ -83,10 +92,10 @@ php-8.1-tests:
 php-8.0-tests-ci:
 	docker-compose run --rm php-8.0 ./vendor/bin/phpunit --coverage-clover ./coverage.xml
 
-## php-8.1-tests-ci		Run the tests for PHP 8.1 with coverage report for CI.
+## php-8.1-tests-ci		Run the tests for PHP 8.1 for CI.
 .PHONY: php-8.1-tests-ci
 php-8.1-tests-ci:
-	docker-compose run --rm php-8.1 ./vendor/bin/phpunit --coverage-clover ./coverage.xml
+	docker-compose run --rm php-8.1 ./vendor/bin/phpunit
 
 ## php-8.0-tests-html-coverage		Run the PHP tests with coverage report as HTML.
 .PHONY: php-8.0-tests-html-coverage
