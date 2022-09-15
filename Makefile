@@ -23,20 +23,17 @@ reset: .reset
 ##
 
 ## install	Install PHP dependencies.
-.PHONY: install
-install: .install
-
 .PHONY: .install
 .install: install-8.0
 
 ## install-8.0	Install with PHP 8.0.
-.PHONY: .install-8.0
-.install-8.0:
+.PHONY: install-8.0
+install-8.0:
 	docker-compose run --rm php-8.0 composer install
 
 ## install-8.1	Install with PHP 8.1.
-.PHONY: .install-8.1
-.install-8.1:
+.PHONY: install-8.1
+install-8.1:
 	docker-compose run --rm php-8.1 composer install
 
 ## build		Build the Docker images.
