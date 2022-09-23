@@ -14,6 +14,7 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
 
 /**
  * @template T extends Id
+ *
  * @psalm-consistent-constructor
  *
  * I think Psalm has an issue here as the constructor is final and the parameter is the template the child class will extend from, but I
@@ -25,7 +26,9 @@ abstract class IdList implements \IteratorAggregate, \Countable
 {
     /**
      * @var array<int, Id>
+     *
      * @psalm-var array<int, T>
+     *
      * @psalm-readonly
      */
     public array $ids;
@@ -34,6 +37,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
 
     /**
      * @param array<int, Id> $ids
+     *
      * @psalm-param array<int, T> $ids
      */
     final public function __construct(
@@ -49,6 +53,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
      * @template TT of T
      *
      * @param array<int, Id> $ids
+     *
      * @psalm-param array<int, TT> $ids
      */
     final public static function fromIds(array $ids): static
@@ -91,7 +96,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
 
     // -- Transformers
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function addId(Id $id): static
     {
         if ($this->containsId($id)) {
@@ -104,11 +109,11 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function addIdWhenNotInList(Id $id): static
     {
         if ($this->containsId($id)) {
-            return new static($this->ids);
+            return $this;
         }
 
         $ids = $this->ids;
@@ -117,7 +122,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function removeId(Id $id): static
     {
         $ids = array_filter(
@@ -234,14 +239,14 @@ abstract class IdList implements \IteratorAggregate, \Countable
 
     // -- Accessors
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function containsId(Id $id): bool
     {
         // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
         return in_array($id, $this->ids, false);
     }
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function notContainsId(Id $id): bool
     {
         return !$this->containsId($id);
@@ -292,7 +297,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return true;
     }
 
-    /** @psalm-return T */
+    /** @return T */
     public function idAtPosition(int $position): Id
     {
         return $this->ids[$position];
@@ -312,7 +317,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     // -- Guards
 
     /**
-     * @psalm-param T $id
+     * @param T $id
      *
      * @throws IdListDoesNotContainId
      */
@@ -324,7 +329,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @psalm-param T $id
+     * @param T $id
      *
      * @throws IdListDoesContainId
      */
@@ -336,7 +341,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @psalm-param T $id
+     * @param T $id
      *
      * @throws IdListIsNotEmpty
      */
@@ -351,6 +356,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
      * @template TT of T
      *
      * @param array<int, Id> $ids
+     *
      * @psalm-param array<int, TT> $ids
      *
      * @throws DuplicateIds
@@ -367,6 +373,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
      * @template TT of T
      *
      * @param array<int, Id> $ids
+     *
      * @psalm-param array<int, TT> $ids
      *
      * @throws IdClassNotHandledInList

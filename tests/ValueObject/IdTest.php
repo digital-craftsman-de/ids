@@ -15,8 +15,10 @@ final class IdTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::__construct
      * @covers ::fromString
+     *
      * @doesNotPerformAssertions
      */
     public function construction_works(): void
@@ -29,6 +31,7 @@ final class IdTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::__construct
      */
     public function construction_with_invalid_id_fails(): void
@@ -42,6 +45,7 @@ final class IdTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::isEqualTo
      */
     public function user_id_is_equal(): void
@@ -56,6 +60,7 @@ final class IdTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::isNotEqualTo
      */
     public function user_id_is_not_equal(): void
@@ -70,7 +75,9 @@ final class IdTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustBeEqualTo
+     *
      * @doesNotPerformAssertions
      */
     public function user_id_must_be_equal(): void
@@ -85,7 +92,9 @@ final class IdTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustNotBeEqualTo
+     *
      * @doesNotPerformAssertions
      */
     public function user_id_must_not_be_equal(): void
@@ -100,6 +109,7 @@ final class IdTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustBeEqualTo
      */
     public function user_id_must_be_equal_fails(): void
@@ -117,6 +127,7 @@ final class IdTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustNotBeEqualTo
      */
     public function user_id_must_not_be_equal_fails(): void

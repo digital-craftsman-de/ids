@@ -14,6 +14,7 @@ final class IdListNormalizerTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::normalize
      * @covers ::denormalize
      * @covers ::isValid
@@ -40,6 +41,7 @@ final class IdListNormalizerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::denormalize
      */
     public function id_list_denormalization_with_null_works(): void
@@ -56,6 +58,7 @@ final class IdListNormalizerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::denormalize
      * @covers ::isValid
      */
@@ -79,6 +82,7 @@ final class IdListNormalizerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::supportsNormalization
      */
     public function supports_normalization(): void
@@ -94,6 +98,7 @@ final class IdListNormalizerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::supportsDenormalization
      */
     public function supports_denormalization(): void

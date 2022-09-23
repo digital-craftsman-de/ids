@@ -25,7 +25,9 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::__construct
+     *
      * @doesNotPerformAssertions
      */
     public function id_list_construction_works(): void
@@ -40,8 +42,10 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::__construct
      * @covers ::mustOnlyContainIdsOfHandledClass
+     *
      * @doesNotPerformAssertions
      */
     public function id_list_construction_works_with_ids_of_subclass(): void
@@ -57,6 +61,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::__construct
      * @covers ::mustNotContainDuplicateIds
      */
@@ -79,6 +84,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::__construct
      * @covers ::mustOnlyContainIdsOfHandledClass
      */
@@ -99,7 +105,9 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::fromIds
+     *
      * @doesNotPerformAssertions
      */
     public function id_list_construction_from_ids_works(): void
@@ -114,6 +122,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::emptyList
      */
     public function empty_list_works(): void
@@ -129,6 +138,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::fromIdLists
      */
     public function from_id_lists_works(): void
@@ -158,6 +168,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::fromIdLists
      */
     public function from_id_lists_with_duplicates_works(): void
@@ -189,6 +200,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::addId
      */
     public function add_id_works(): void
@@ -213,6 +225,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::addId
      */
     public function add_id_fails_with_duplicate_id(): void
@@ -233,6 +246,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::addIdWhenNotInList
      */
     public function add_id_when_not_in_list_works(): void
@@ -264,6 +278,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::removeId
      */
     public function remove_id_works(): void
@@ -291,6 +306,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::diff
      */
     public function id_list_diff_works(): void
@@ -330,6 +346,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::diff
      */
     public function id_list_diff_works_with_empty_list(): void
@@ -362,6 +379,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::intersect
      */
     public function id_list_intersect_works(): void
@@ -398,8 +416,10 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustContainId
      * @covers ::mustNotContainId
+     *
      * @doesNotPerformAssertions
      */
     public function id_list_must_and_must_not_contains_works(): void
@@ -429,6 +449,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustContainId
      */
     public function id_list_must_contain_throws_exception(): void
@@ -452,6 +473,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustNotContainId
      */
     public function id_list_must_not_contain_throws_exception(): void
@@ -476,7 +498,9 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustBeEmpty
+     *
      * @doesNotPerformAssertions
      */
     public function id_list_must_be_empty_works(): void
@@ -490,6 +514,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustBeEmpty
      */
     public function id_list_must_be_empty_throws_exception_when_not_empty(): void
@@ -510,6 +535,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::isEmpty
      * @covers ::isNotEmpty
      */
@@ -533,6 +559,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::map
      */
     public function id_list_map_works(): void
@@ -571,6 +598,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::filter
      */
     public function id_list_filter_works(): void
@@ -611,6 +639,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::every
      */
     public function id_list_every_works(): void
@@ -658,6 +687,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::some
      */
     public function id_list_some_works(): void
@@ -706,6 +736,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::reduce
      */
     public function id_list_reduce_works(): void
@@ -744,6 +775,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::containsId
      * @covers ::notContainsId
      */
@@ -779,6 +811,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::isEqualTo
      * @covers ::isNotEqualTo
      */
@@ -829,6 +862,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::isEqualTo
      * @covers ::isNotEqualTo
      */
@@ -852,6 +886,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::isEqualTo
      * @covers ::isNotEqualTo
      */
@@ -875,6 +910,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::mustBeEqualTo
      */
     public function must_not_be_equal_to(): void
@@ -908,6 +944,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::count
      */
     public function id_list_count_works(): void
@@ -927,6 +964,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::getIterator
      */
     public function id_list_iteration_works(): void
@@ -974,6 +1012,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::getIterator
      */
     public function id_list_works_with_gaps_in_input_list(): void
@@ -1008,6 +1047,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::isInSameOrder
      * @covers ::idAtPosition
      * @covers ::intersect
@@ -1048,6 +1088,7 @@ final class IdListTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::idsAsStringList
      */
     public function id_list_as_string_works(): void
