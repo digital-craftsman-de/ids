@@ -12,6 +12,7 @@ final class IdNormalizerTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::normalize
      * @covers ::denormalize
      */
@@ -32,6 +33,7 @@ final class IdNormalizerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::denormalize
      */
     public function id_denormalization_with_null_works(): void
@@ -48,6 +50,7 @@ final class IdNormalizerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::supportsNormalization
      */
     public function supports_normalization(): void
@@ -63,6 +66,7 @@ final class IdNormalizerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::supportsDenormalization
      */
     public function supports_denormalization(): void

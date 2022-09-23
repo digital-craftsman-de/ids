@@ -14,6 +14,7 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
 
 /**
  * @template T extends Id
+ *
  * @psalm-consistent-constructor
  *
  * I think Psalm has an issue here as the constructor is final and the parameter is the template the child class will extend from, but I
@@ -25,7 +26,9 @@ abstract class IdList implements \IteratorAggregate, \Countable
 {
     /**
      * @var array<int, Id>
+     *
      * @psalm-var array<int, T>
+     *
      * @psalm-readonly
      */
     public array $ids;
@@ -34,6 +37,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
 
     /**
      * @param array<int, Id> $ids
+     *
      * @psalm-param array<int, T> $ids
      */
     final public function __construct(
@@ -49,6 +53,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
      * @template TT of T
      *
      * @param array<int, Id> $ids
+     *
      * @psalm-param array<int, TT> $ids
      */
     final public static function fromIds(array $ids): static
@@ -351,6 +356,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
      * @template TT of T
      *
      * @param array<int, Id> $ids
+     *
      * @psalm-param array<int, TT> $ids
      *
      * @throws DuplicateIds
@@ -367,6 +373,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
      * @template TT of T
      *
      * @param array<int, Id> $ids
+     *
      * @psalm-param array<int, TT> $ids
      *
      * @throws IdClassNotHandledInList

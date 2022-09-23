@@ -30,6 +30,7 @@ final class IdNormalizer implements NormalizerInterface, DenormalizerInterface, 
 
     /**
      * @param ?string $data
+     *
      * @psalm-param class-string<Id> $type
      */
     public function denormalize($data, $type, $format = null, array $context = []): ?Id
