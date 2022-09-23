@@ -96,7 +96,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
 
     // -- Transformers
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function addId(Id $id): static
     {
         if ($this->containsId($id)) {
@@ -109,7 +109,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function addIdWhenNotInList(Id $id): static
     {
         if ($this->containsId($id)) {
@@ -122,7 +122,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function removeId(Id $id): static
     {
         $ids = array_filter(
@@ -239,14 +239,14 @@ abstract class IdList implements \IteratorAggregate, \Countable
 
     // -- Accessors
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function containsId(Id $id): bool
     {
         // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
         return in_array($id, $this->ids, false);
     }
 
-    /** @psalm-param T $id */
+    /** @param T $id */
     public function notContainsId(Id $id): bool
     {
         return !$this->containsId($id);
@@ -297,7 +297,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return true;
     }
 
-    /** @psalm-return T */
+    /** @return T */
     public function idAtPosition(int $position): Id
     {
         return $this->ids[$position];
@@ -317,7 +317,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     // -- Guards
 
     /**
-     * @psalm-param T $id
+     * @param T $id
      *
      * @throws IdListDoesNotContainId
      */
@@ -329,7 +329,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @psalm-param T $id
+     * @param T $id
      *
      * @throws IdListDoesContainId
      */
@@ -341,7 +341,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @psalm-param T $id
+     * @param T $id
      *
      * @throws IdListIsNotEmpty
      */
