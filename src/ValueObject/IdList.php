@@ -113,7 +113,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     public function addIdWhenNotInList(Id $id): static
     {
         if ($this->containsId($id)) {
-            return new static($this->ids);
+            return $this;
         }
 
         $ids = $this->ids;
