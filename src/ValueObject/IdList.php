@@ -26,12 +26,8 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
  */
 abstract class IdList implements \IteratorAggregate, \Countable
 {
-    /**
-     * @var array<int, T>
-     *
-     * @psalm-readonly
-     */
-    public array $ids;
+    /** @var array<int, T> */
+    public readonly array $ids;
 
     // -- Construction
 
