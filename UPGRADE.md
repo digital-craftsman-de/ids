@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From 0.3.* to 0.4.0
+
+### Upgrade to at least PHP 8.1
+
+Support for PHP 8.0 was dropped, so you have to upgrade to at least PHP 8.1.
+
 ## From 0.2.* to 0.3.0
 
 ### Removed methods `isExistingInList` and `isNotExistingInList`
