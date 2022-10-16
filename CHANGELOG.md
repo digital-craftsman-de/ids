@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.4.0
+
+- Drop support for PHP 8.0.
+- Add support for PHP 8.2.
+
+## 0.3.3
+
+- Improve template annotations
+
+## 0.3.2
+
+- Return same instance of list when `addIdWhenNotInList` doesn't mutate the list.
+
 ## 0.3.1
 
 - The `IdList` now implements the `\IteratorAggregate` instead the `\Iterator` interface to fix comparing lists in tests with equal checks.  
