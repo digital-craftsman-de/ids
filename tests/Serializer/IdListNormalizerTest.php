@@ -99,6 +99,22 @@ final class IdListNormalizerTest extends TestCase
     /**
      * @test
      *
+     * @covers ::supportsNormalization
+     */
+    public function supports_normalization_fails(): void
+    {
+        // -- Arrange
+        $userId = UserId::generateRandom();
+
+        $normalizer = new IdListNormalizer();
+
+        // -- Act & Assert
+        self::assertFalse($normalizer->supportsNormalization($userId));
+    }
+
+    /**
+     * @test
+     *
      * @covers ::supportsDenormalization
      */
     public function supports_denormalization(): void
