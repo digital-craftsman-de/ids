@@ -2,7 +2,7 @@
 
 A Symfony bundle to work with id and id list value objects in Symfony. It includes Symfony normalizers for automatic normalization and denormalization and Doctrine types to store the ids and id lists directly in the database.  
 
-As it's a central part of an application, it's tested thoroughly.
+As it's a central part of an application, it's tested thoroughly (including mutation testing).
 
 [![Latest Stable Version](http://poser.pugx.org/digital-craftsman/ids/v)](https://packagist.org/packages/digital-craftsman/ids)
 [![PHP Version Require](http://poser.pugx.org/digital-craftsman/ids/require/php)](https://packagist.org/packages/digital-craftsman/ids)

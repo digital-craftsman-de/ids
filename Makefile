@@ -119,6 +119,11 @@ php-code-validation:
 	docker-compose run --rm php-8.1 ./vendor/bin/php-cs-fixer fix
 	docker-compose run --rm php-8.1 ./vendor/bin/psalm --show-info=false --no-diff
 
+## php-mutation-testing		Run mutation testing with default PHP version (8.1).
+.PHONY: php-mutation-testing
+php-mutation-testing:
+	docker-compose run --rm php-8.1 ./vendor/bin/infection --show-mutations --only-covered --threads=8
+
 ##
 ## CI
 ## --
@@ -133,3 +138,8 @@ php-8.1-tests-ci:
 .PHONY: php-8.2-tests-ci
 php-8.2-tests-ci:
 	docker-compose run --rm php-8.2 ./vendor/bin/phpunit
+
+## php-mutation-testing-ci	Run mutation testing for CI.
+.PHONY: php-mutation-testing-ci
+php-mutation-testing-ci:
+	docker-compose run --rm php-8.1 ./vendor/bin/infection --only-covered --threads=max
