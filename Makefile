@@ -87,7 +87,7 @@ php-8.2-cli:
 
 ## verify				Run all validations and tests.
 .PHONY: verify
-verify: php-code-validation php-tests
+verify: php-code-validation php-tests php-mutation-testing
 
 ## php-tests			Run the tests for all relevant PHP versions.
 .PHONY: php-tests
