@@ -140,10 +140,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
             }
         }
 
-        // The sort value is used explicitly to convey the importance of sorting by string cast.
-        $uniqueIds = array_unique($idsNotInList, SORT_STRING);
-
-        return new static($uniqueIds);
+        return new static($idsNotInList);
     }
 
     /**
