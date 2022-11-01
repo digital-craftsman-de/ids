@@ -289,12 +289,6 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return true;
     }
 
-    /** @return T */
-    public function idAtPosition(int $position): Id
-    {
-        return $this->ids[$position];
-    }
-
     /** @return array<int, string> */
     public function idsAsStringList(): array
     {
@@ -304,6 +298,12 @@ abstract class IdList implements \IteratorAggregate, \Countable
         }
 
         return $ids;
+    }
+
+    /** @return T */
+    private function idAtPosition(int $position): Id
+    {
+        return $this->ids[$position];
     }
 
     // -- Guards
@@ -344,6 +344,14 @@ abstract class IdList implements \IteratorAggregate, \Countable
         }
     }
 
+    /** @param static $idList */
+    public function mustBeEqualTo(self $idList): void
+    {
+        if ($this->isNotEqualTo($idList)) {
+            throw new IdListsMustBeEqual();
+        }
+    }
+
     /**
      * @template TT of T
      *
@@ -377,14 +385,6 @@ abstract class IdList implements \IteratorAggregate, \Countable
             if (!$id instanceof $idClass) {
                 throw new IdClassNotHandledInList(static::class, $id::class);
             }
-        }
-    }
-
-    /** @param static $idList */
-    public function mustBeEqualTo(self $idList): void
-    {
-        if ($this->isNotEqualTo($idList)) {
-            throw new IdListsMustBeEqual();
         }
     }
 
