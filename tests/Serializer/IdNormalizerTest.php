@@ -69,7 +69,7 @@ final class IdNormalizerTest extends TestCase
      *
      * @covers ::supportsNormalization
      */
-    public function supports_normalization_fails(): void
+    public function supports_normalization_fails_with_invalid_data(): void
     {
         // -- Arrange
         $userId = 5;
