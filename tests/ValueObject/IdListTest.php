@@ -787,11 +787,12 @@ final class IdListTest extends TestCase
         $idPaul = UserId::generateRandom();
         $idTom = UserId::generateRandom();
 
+        // Generate new ids to make sure that it's enough for ids to be equal instead of same instance.
         $listWithAllIds = UserIdList::fromIds([
-            $idAnton,
-            $idMarkus,
-            $idPaul,
-            $idTom,
+            UserId::fromString((string) $idAnton),
+            UserId::fromString((string) $idMarkus),
+            UserId::fromString((string) $idPaul),
+            UserId::fromString((string) $idTom),
         ]);
 
         $partialList = UserIdList::fromIds([
