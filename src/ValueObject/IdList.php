@@ -177,7 +177,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     public function map(callable $mapFunction): array
     {
         /** @psalm-suppress ImpureFunctionCall */
-        return array_values(array_map($mapFunction, $this->ids));
+        return array_map($mapFunction, $this->ids);
     }
 
     /** @psalm-param callable(T):bool $filterFunction */
