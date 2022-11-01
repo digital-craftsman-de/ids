@@ -6,7 +6,7 @@
 
 Reduced visibility of internal methods `idAtPosition`, `mustNotContainDuplicateIds` and `mustOnlyContainIdsOfHandledClass` of `IdList` from `public` to `private`.
 
-You need to remove your usages of those methods if you're using them somewhere. Let me know if they are important to you with your use case.
+Remove your usages of those methods if you're using them somewhere.
 
 ## From 0.3.* to 0.4.0
 
