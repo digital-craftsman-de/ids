@@ -1,0 +1,23 @@
+{
+  "$schema": "vendor/infection/infection/resources/schema.json",
+  "source": {
+    "directories": [
+      "src"
+    ]
+  },
+  "mutators": {
+    "@default": true,
+    "IncrementInteger": {
+      "ignore": [
+        "DigitalCraftsman\\Ids\\Doctrine\\IdListType::convertToPHPValue"
+      ]
+    },
+    "DecrementInteger": {
+      "ignore": [
+        "DigitalCraftsman\\Ids\\Doctrine\\IdListType::convertToPHPValue"
+      ]
+    }
+  },
+  "minMsi": 100,
+  "minCoveredMsi": 100
+}

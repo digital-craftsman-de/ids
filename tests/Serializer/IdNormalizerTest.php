@@ -67,6 +67,22 @@ final class IdNormalizerTest extends TestCase
     /**
      * @test
      *
+     * @covers ::supportsNormalization
+     */
+    public function supports_normalization_fails_with_invalid_data(): void
+    {
+        // -- Arrange
+        $userId = 5;
+
+        $normalizer = new IdNormalizer();
+
+        // -- Act & Assert
+        self::assertFalse($normalizer->supportsNormalization($userId));
+    }
+
+    /**
+     * @test
+     *
      * @covers ::supportsDenormalization
      */
     public function supports_denormalization(): void

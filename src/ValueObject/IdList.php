@@ -140,10 +140,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
             }
         }
 
-        // The sort value is used explicitly to convey the importance of sorting by string cast.
-        $uniqueIds = array_unique($idsNotInList, SORT_STRING);
-
-        return new static($uniqueIds);
+        return new static($idsNotInList);
     }
 
     /**
@@ -180,7 +177,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     public function map(callable $mapFunction): array
     {
         /** @psalm-suppress ImpureFunctionCall */
-        return array_values(array_map($mapFunction, $this->ids));
+        return array_map($mapFunction, $this->ids);
     }
 
     /** @psalm-param callable(T):bool $filterFunction */
@@ -281,18 +278,15 @@ abstract class IdList implements \IteratorAggregate, \Countable
     {
         $orderedListWithIdenticalIds = $orderedList->intersect($this);
         foreach ($this->ids as $index => $id) {
-            if ($orderedListWithIdenticalIds->idAtPosition($index)->isNotEqualTo($id)) {
+            if ($orderedListWithIdenticalIds
+                ->idAtPosition($index)
+                ->isNotEqualTo($id)
+            ) {
                 return false;
             }
         }
 
         return true;
-    }
-
-    /** @return T */
-    public function idAtPosition(int $position): Id
-    {
-        return $this->ids[$position];
     }
 
     /** @return array<int, string> */
@@ -304,6 +298,12 @@ abstract class IdList implements \IteratorAggregate, \Countable
         }
 
         return $ids;
+    }
+
+    /** @return T */
+    private function idAtPosition(int $position): Id
+    {
+        return $this->ids[$position];
     }
 
     // -- Guards
@@ -344,6 +344,14 @@ abstract class IdList implements \IteratorAggregate, \Countable
         }
     }
 
+    /** @param static $idList */
+    public function mustBeEqualTo(self $idList): void
+    {
+        if ($this->isNotEqualTo($idList)) {
+            throw new IdListsMustBeEqual();
+        }
+    }
+
     /**
      * @template TT of T
      *
@@ -353,7 +361,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
      *
      * @throws DuplicateIds
      */
-    public static function mustNotContainDuplicateIds(array $ids): void
+    private static function mustNotContainDuplicateIds(array $ids): void
     {
         /** @noinspection TypeUnsafeComparisonInspection */
         if (count($ids) != count(array_unique($ids))) {
@@ -370,21 +378,13 @@ abstract class IdList implements \IteratorAggregate, \Countable
      *
      * @throws IdClassNotHandledInList
      */
-    public static function mustOnlyContainIdsOfHandledClass(array $ids): void
+    private static function mustOnlyContainIdsOfHandledClass(array $ids): void
     {
         $idClass = static::handlesIdClass();
         foreach ($ids as $id) {
             if (!$id instanceof $idClass) {
                 throw new IdClassNotHandledInList(static::class, $id::class);
             }
-        }
-    }
-
-    /** @param static $idList */
-    public function mustBeEqualTo(self $idList): void
-    {
-        if ($this->isNotEqualTo($idList)) {
-            throw new IdListsMustBeEqual();
         }
     }
 

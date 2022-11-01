@@ -2,7 +2,7 @@
 
 A Symfony bundle to work with id and id list value objects in Symfony. It includes Symfony normalizers for automatic normalization and denormalization and Doctrine types to store the ids and id lists directly in the database.  
 
-As it's a central part of an application, it's tested thoroughly.
+As it's a central part of an application, it's tested thoroughly (including mutation testing).
 
 [![Latest Stable Version](http://poser.pugx.org/digital-craftsman/ids/v)](https://packagist.org/packages/digital-craftsman/ids)
 [![PHP Version Require](http://poser.pugx.org/digital-craftsman/ids/require/php)](https://packagist.org/packages/digital-craftsman/ids)
@@ -20,7 +20,7 @@ composer require digital-craftsman/ids
 
 It's recommended that you install the [`uuid` PHP extension](https://pecl.php.net/package/uuid) for better performance of id creation and validation.  `symfony/polyfill-uuid` is used as a fallback. You can [prevent installing the polyfill](./docs/prevent-polyfill-usage.md) when you've installed the PHP extension.
 
-> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/ids:0.4.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
+> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/ids:0.5.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
 
 ## Working with ids
 

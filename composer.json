@@ -12,7 +12,8 @@
   "require-dev": {
     "vimeo/psalm": "^4.12",
     "friendsofphp/php-cs-fixer": "^3.3",
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^9.5",
+    "infection/infection": "^0.26.15"
   },
   "suggest": {
     "ext-uuid": "Improves performance of id creation and validation. symfony/polyfill-uuid is used as a fallback."
@@ -33,5 +34,10 @@
       "name": "Christian Kolb",
       "email": "info@digital-craftsman.de"
     }
-  ]
+  ],
+  "config": {
+    "allow-plugins": {
+      "infection/extension-installer": true
+    }
+  }
 }

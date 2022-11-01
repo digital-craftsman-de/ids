@@ -87,7 +87,7 @@ php-8.2-cli:
 
 ## verify				Run all validations and tests.
 .PHONY: verify
-verify: php-code-validation php-tests
+verify: php-code-validation php-tests php-mutation-testing
 
 ## php-tests			Run the tests for all relevant PHP versions.
 .PHONY: php-tests
@@ -119,6 +119,11 @@ php-code-validation:
 	docker-compose run --rm php-8.1 ./vendor/bin/php-cs-fixer fix
 	docker-compose run --rm php-8.1 ./vendor/bin/psalm --show-info=false --no-diff
 
+## php-mutation-testing		Run mutation testing with default PHP version (8.1).
+.PHONY: php-mutation-testing
+php-mutation-testing:
+	docker-compose run --rm php-8.1 ./vendor/bin/infection --show-mutations --only-covered --threads=8
+
 ##
 ## CI
 ## --
@@ -133,3 +138,8 @@ php-8.1-tests-ci:
 .PHONY: php-8.2-tests-ci
 php-8.2-tests-ci:
 	docker-compose run --rm php-8.2 ./vendor/bin/phpunit
+
+## php-mutation-testing-ci	Run mutation testing for CI.
+.PHONY: php-mutation-testing-ci
+php-mutation-testing-ci:
+	docker-compose run --rm php-8.1 ./vendor/bin/infection --only-covered --threads=max

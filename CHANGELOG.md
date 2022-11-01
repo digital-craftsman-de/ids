@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- Reduced visibility of internal methods `idAtPosition`, `mustNotContainDuplicateIds` and `mustOnlyContainIdsOfHandledClass` of `IdList` from `public` to `private`.
+
 ## 0.4.0
 
 - Drop support for PHP 8.0.
