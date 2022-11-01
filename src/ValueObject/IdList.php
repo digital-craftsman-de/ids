@@ -278,7 +278,10 @@ abstract class IdList implements \IteratorAggregate, \Countable
     {
         $orderedListWithIdenticalIds = $orderedList->intersect($this);
         foreach ($this->ids as $index => $id) {
-            if ($orderedListWithIdenticalIds->idAtPosition($index)->isNotEqualTo($id)) {
+            if ($orderedListWithIdenticalIds
+                ->idAtPosition($index)
+                ->isNotEqualTo($id)
+            ) {
                 return false;
             }
         }
