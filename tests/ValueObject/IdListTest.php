@@ -27,17 +27,38 @@ final class IdListTest extends TestCase
      * @test
      *
      * @covers ::__construct
-     *
-     * @doesNotPerformAssertions
      */
     public function id_list_construction_works(): void
     {
         // -- Arrange & Act
-        new UserIdList([
+        $idList = new UserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
+
+        // -- Assert
+        self::assertCount(3, $idList->ids);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::__construct
+     */
+    public function id_list_construction_works_with_index_that_is_not_a_list(): void
+    {
+        // -- Arrange & Act
+        $idList = new UserIdList([
+            0 => UserId::generateRandom(),
+            2 => UserId::generateRandom(),
+            33 => UserId::generateRandom(),
+        ]);
+
+        // -- Assert
+        self::assertArrayHasKey(0, $idList->ids);
+        self::assertArrayHasKey(1, $idList->ids);
+        self::assertArrayHasKey(2, $idList->ids);
     }
 
     /**
