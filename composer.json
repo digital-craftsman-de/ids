@@ -13,7 +13,8 @@
     "vimeo/psalm": "^4.12",
     "friendsofphp/php-cs-fixer": "^3.3",
     "phpunit/phpunit": "^9.5",
-    "infection/infection": "^0.26.15"
+    "infection/infection": "^0.26.15",
+    "phpstan/phpstan": "^1.9"
   },
   "suggest": {
     "ext-uuid": "Improves performance of id creation and validation. symfony/polyfill-uuid is used as a fallback."

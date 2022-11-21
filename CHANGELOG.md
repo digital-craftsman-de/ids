@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+- Added PHPStan on level 9 and fixed PHPStan issues.
+
 ## 0.5.0
 
 - Reduced visibility of internal methods `idAtPosition`, `mustNotContainDuplicateIds` and `mustOnlyContainIdsOfHandledClass` of `IdList` from `public` to `private`.

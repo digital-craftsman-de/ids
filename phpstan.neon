@@ -1,0 +1,9 @@
+parameters:
+  level: 9
+  paths:
+    - src
+    - tests
+  checkGenericClassInNonGenericObjectType: false
+  excludePaths:
+    # The @template annotations are clashing with the ones of Psalm
+    - src/ValueObject/IdList.php

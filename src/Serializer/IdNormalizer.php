@@ -11,27 +11,34 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class IdNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
+    /** @param array<string, string|int|boolean> $context */
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Id;
     }
 
-    /** @param class-string $type */
+    /**
+     * @param class-string                      $type
+     * @param array<string, string|int|boolean> $context
+     */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return is_subclass_of($type, Id::class);
     }
 
-    /** @param Id $object */
+    /**
+     * @param Id                                $object
+     * @param array<string, string|int|boolean> $context
+     */
     public function normalize($object, $format = null, array $context = []): string
     {
         return (string) $object;
     }
 
     /**
-     * @param ?string $data
-     *
-     * @psalm-param class-string<Id> $type
+     * @param ?string                           $data
+     * @param class-string<Id>                  $type
+     * @param array<string, string|int|boolean> $context
      */
     public function denormalize($data, $type, $format = null, array $context = []): ?Id
     {
@@ -39,7 +46,6 @@ final class IdNormalizer implements NormalizerInterface, DenormalizerInterface, 
             return null;
         }
 
-        /** @noinspection PhpUndefinedMethodInspection */
         return $type::fromString($data);
     }
 

@@ -83,6 +83,8 @@ abstract class IdList implements \IteratorAggregate, \Countable
      * @template TT of T
      *
      * @return class-string<TT>
+     *
+     * @phpstan-return class-string<T>
      */
     abstract public static function handlesIdClass(): string;
 
