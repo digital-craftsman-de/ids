@@ -115,7 +115,11 @@ final class IdListTest extends TestCase
         $this->expectException(IdClassNotHandledInList::class);
 
         // -- Arrange & Act
-        /** @psalm-suppress InvalidArgument */
+        /**
+         * @psalm-suppress InvalidArgument
+         *
+         * @phpstan-ignore-next-line
+         */
         new UserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),

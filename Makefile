@@ -118,6 +118,7 @@ php-8.2-tests-html-coverage:
 php-code-validation:
 	docker-compose run --rm php-8.1 ./vendor/bin/php-cs-fixer fix
 	docker-compose run --rm php-8.1 ./vendor/bin/psalm --show-info=false --no-diff
+	docker-compose run --rm php-8.1 ./vendor/bin/phpstan --xdebug
 
 ## php-mutation-testing		Run mutation testing with default PHP version (8.1).
 .PHONY: php-mutation-testing
