@@ -13,7 +13,9 @@ use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainEveryId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainSomeIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
 use PHPUnit\Framework\TestCase;
@@ -519,6 +521,117 @@ final class IdListTest extends TestCase
         $partialList->mustNotContainId($idAnton);
     }
 
+    /**
+     * @test
+     *
+     * @covers ::mustContainEveryId
+     */
+    public function id_list_must_contain_every_id(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesNotContainEveryId::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $fullList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+        ]);
+
+        // -- Act
+        $partialList->mustContainEveryId($fullList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustContainEveryId
+     *
+     * @doesNotPerformAssertions
+     */
+    public function id_list_must_contain_every_id_when_every_id_is_present(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $fullList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+        ]);
+
+        // -- Act & Assert
+        $fullList->mustContainEveryId($partialList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustContainSomeIds
+     */
+    public function id_list_must_contain_some_ids(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesNotContainSomeIds::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        $almostFullList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $idListWithDifferentId = UserIdList::fromIds([
+            clone $idPeter,
+        ]);
+
+        // -- Act
+        $almostFullList->mustContainSomeIds($idListWithDifferentId);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustContainSomeIds
+     *
+     * @doesNotPerformAssertions
+     */
+    public function id_list_must_contain_some_ids_when_one_id_is_available(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        $almostFullList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $idListWithDifferentId = UserIdList::fromIds([
+            clone $idPaul,
+            clone $idPeter,
+        ]);
+
+        // -- Act & Assert
+        $almostFullList->mustContainSomeIds($idListWithDifferentId);
+    }
+
     // -- Must be empty
 
     /**
@@ -833,6 +946,101 @@ final class IdListTest extends TestCase
         self::assertFalse($listWithAllIds->notContainsId($idMarkus));
     }
 
+    // -- Contains every id
+
+    /**
+     * @test
+     *
+     * @covers ::containsEveryId
+     */
+    public function id_list_contains_every_id_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        // Generate new ids to make sure that it's enough for ids to be equal instead of same instance.
+        $listWithAlmostAllIds = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $listWithDifferentId = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+            clone $idPeter,
+        ]);
+
+        // -- Act & Assert
+        self::assertTrue($listWithAlmostAllIds->containsEveryId($partialList));
+        self::assertFalse($partialList->containsEveryId($listWithAlmostAllIds));
+
+        self::assertFalse($listWithAlmostAllIds->containsEveryId($listWithDifferentId));
+        self::assertFalse($partialList->containsEveryId($listWithDifferentId));
+    }
+
+    // -- Contains some ids
+
+    /**
+     * @test
+     *
+     * @covers ::containsSomeIds
+     */
+    public function id_list_contains_some_ids_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        // Generate new ids to make sure that it's enough for ids to be equal instead of same instance.
+        $listWithAlmostAllIds = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $listWithDifferentId = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+            clone $idPeter,
+        ]);
+
+        $listWithOnlyDifferentIds = UserIdList::fromIds([
+            clone $idPeter,
+        ]);
+
+        // -- Act & Assert
+        self::assertTrue($listWithAlmostAllIds->containsSomeIds($partialList));
+        self::assertTrue($partialList->containsSomeIds($listWithAlmostAllIds));
+
+        self::assertTrue($listWithAlmostAllIds->containsSomeIds($listWithDifferentId));
+        self::assertTrue($partialList->containsSomeIds($listWithDifferentId));
+
+        self::assertFalse($listWithAlmostAllIds->containsSomeIds($listWithOnlyDifferentIds));
+        self::assertFalse($partialList->containsSomeIds($listWithOnlyDifferentIds));
+    }
+
     // -- Is equal and not equal
 
     /**
@@ -852,29 +1060,29 @@ final class IdListTest extends TestCase
         $idMarc = UserId::generateRandom();
 
         $originalList = UserIdList::fromIds([
-            $idAnton,
-            $idMarkus,
-            $idPaul,
-            $idTom,
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
         ]);
 
         $copyOfOriginalList = UserIdList::fromIds([
-            $idAnton,
-            $idMarkus,
-            $idPaul,
-            $idTom,
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
         ]);
 
         $partialList = UserIdList::fromIds([
-            $idAnton,
-            $idPaul,
+            clone $idAnton,
+            clone $idPaul,
         ]);
 
         $listWithOneExchanged = UserIdList::fromIds([
-            $idAnton,
-            $idMarkus,
-            $idPaul,
-            $idMarc,
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idMarc,
         ]);
 
         // -- Act & Assert
