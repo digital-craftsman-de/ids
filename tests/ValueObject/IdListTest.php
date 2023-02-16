@@ -833,6 +833,101 @@ final class IdListTest extends TestCase
         self::assertFalse($listWithAllIds->notContainsId($idMarkus));
     }
 
+    // -- Contains every id
+
+    /**
+     * @test
+     *
+     * @covers ::containsEveryId
+     */
+    public function id_list_contains_every_id_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        // Generate new ids to make sure that it's enough for ids to be equal instead of same instance.
+        $listWithAlmostAllIds = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $listWithDifferentId = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+            clone $idPeter,
+        ]);
+
+        // -- Act & Assert
+        self::assertTrue($listWithAlmostAllIds->containsEveryId($partialList));
+        self::assertFalse($partialList->containsEveryId($listWithAlmostAllIds));
+
+        self::assertFalse($listWithAlmostAllIds->containsEveryId($listWithDifferentId));
+        self::assertFalse($partialList->containsEveryId($listWithDifferentId));
+    }
+
+    // -- Contains some ids
+
+    /**
+     * @test
+     *
+     * @covers ::containsSomeIds
+     */
+    public function id_list_contains_some_ids_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        // Generate new ids to make sure that it's enough for ids to be equal instead of same instance.
+        $listWithAlmostAllIds = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $listWithDifferentId = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+            clone $idPeter,
+        ]);
+
+        $listWithOnlyDifferentIds = UserIdList::fromIds([
+            clone $idPeter,
+        ]);
+
+        // -- Act & Assert
+        self::assertTrue($listWithAlmostAllIds->containsSomeIds($partialList));
+        self::assertTrue($partialList->containsSomeIds($listWithAlmostAllIds));
+
+        self::assertTrue($listWithAlmostAllIds->containsSomeIds($listWithDifferentId));
+        self::assertTrue($partialList->containsSomeIds($listWithDifferentId));
+
+        self::assertFalse($listWithAlmostAllIds->containsSomeIds($listWithOnlyDifferentIds));
+        self::assertFalse($partialList->containsSomeIds($listWithOnlyDifferentIds));
+    }
+
     // -- Is equal and not equal
 
     /**
@@ -852,29 +947,29 @@ final class IdListTest extends TestCase
         $idMarc = UserId::generateRandom();
 
         $originalList = UserIdList::fromIds([
-            $idAnton,
-            $idMarkus,
-            $idPaul,
-            $idTom,
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
         ]);
 
         $copyOfOriginalList = UserIdList::fromIds([
-            $idAnton,
-            $idMarkus,
-            $idPaul,
-            $idTom,
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
         ]);
 
         $partialList = UserIdList::fromIds([
-            $idAnton,
-            $idPaul,
+            clone $idAnton,
+            clone $idPaul,
         ]);
 
         $listWithOneExchanged = UserIdList::fromIds([
-            $idAnton,
-            $idMarkus,
-            $idPaul,
-            $idMarc,
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idMarc,
         ]);
 
         // -- Act & Assert

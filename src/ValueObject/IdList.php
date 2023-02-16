@@ -243,6 +243,28 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return !$this->containsId($id);
     }
 
+    public function containsEveryId(self $idList): bool
+    {
+        foreach ($idList as $id) {
+            if ($this->notContainsId($id)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function containsSomeIds(self $idList): bool
+    {
+        foreach ($idList as $id) {
+            if ($this->containsId($id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /** @param static $idList */
     public function isEqualTo(self $idList): bool
     {
