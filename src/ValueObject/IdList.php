@@ -8,7 +8,9 @@ use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainEveryId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainSomeIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
 
@@ -353,6 +355,22 @@ abstract class IdList implements \IteratorAggregate, \Countable
     {
         if ($this->containsId($id)) {
             throw new IdListDoesContainId($id);
+        }
+    }
+
+    /** @throws IdListDoesNotContainEveryId */
+    public function mustContainEveryId(self $idList): void
+    {
+        if (!$this->containsEveryId($idList)) {
+            throw new IdListDoesNotContainEveryId();
+        }
+    }
+
+    /** @throws IdListDoesNotContainSomeIds */
+    public function mustContainSomeIds(self $idList): void
+    {
+        if (!$this->containsSomeIds($idList)) {
+            throw new IdListDoesNotContainSomeIds();
         }
     }
 
