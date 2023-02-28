@@ -1,6 +1,6 @@
 # Upgrade guide
 
-## From 0.5.0 to 0.7.0
+## From 0.6.* to 0.7.0
 
 The `diff` method of `IdList` now behaves like `array_diff`.
 

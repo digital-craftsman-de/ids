@@ -3,8 +3,15 @@
 ## 0.7.0
 
 - Changed the way `IdList`'s `diff` method behaves to match `array_diff`'s behavior.
-  - Previously it returned an `IdList` containing all elements that were present in the `IdList` itself but not in the given `IdList` (method parameter) aswell as all elements that were in the given `IdList` (method parameter) but not in the `IdList` itself.
+  - Previously it returned an `IdList` containing all elements that were present in the `IdList` itself but not in the given `IdList` (method parameter) as well as all elements that were in the given `IdList` (method parameter) but not in the `IdList` itself.
   - Now it returns an `IdList` containing only the elements that are present in the `IdList` itself but not in the given `IdList` (method parameter).
+
+## 0.6.0
+
+- Added `containsEveryId(self $idList): bool` to `IdList`.
+- Added `containsSomeIds(self $idList): bool` to `IdList`.
+- Added `mustContainEveryId(self $idList): void` to `IdList`.
+- Added `mustContainSomeIds(self $idList): void` to `IdList`.
 
 ## 0.5.1
 
