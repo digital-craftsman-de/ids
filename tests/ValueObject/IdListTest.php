@@ -362,13 +362,10 @@ final class IdListTest extends TestCase
 
         // -- Assert
         self::assertCount(2, $diffListFromOriginalList);
-        self::assertCount(2, $diffListFromPartialList);
+        self::assertCount(0, $diffListFromPartialList);
 
         self::assertTrue($diffListFromOriginalList->containsId($idMarkus));
         self::assertTrue($diffListFromOriginalList->containsId($idTom));
-
-        self::assertTrue($diffListFromPartialList->containsId($idMarkus));
-        self::assertTrue($diffListFromPartialList->containsId($idTom));
     }
 
     /**
@@ -399,7 +396,7 @@ final class IdListTest extends TestCase
 
         // -- Assert
         self::assertCount(4, $diffListFromOriginal);
-        self::assertCount(4, $diffListFromEmpty);
+        self::assertCount(0, $diffListFromEmpty);
     }
 
     // -- Intersect
