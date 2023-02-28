@@ -132,17 +132,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /** @param static $idList */
     public function diff(self $idList): static
     {
-        $idsNotInList = [];
-        foreach ($this->ids as $id) {
-            if ($idList->notContainsId($id)) {
-                $idsNotInList[] = $id;
-            }
-        }
-        foreach ($idList as $id) {
-            if ($this->notContainsId($id)) {
-                $idsNotInList[] = $id;
-            }
-        }
+        $idsNotInList = array_diff($this->ids, $idList->ids);
 
         return new static($idsNotInList);
     }
