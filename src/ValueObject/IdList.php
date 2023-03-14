@@ -127,7 +127,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     {
         $existingIds = $this->ids;
         // TODO: Check if the element exists. Wasn't there before
-        unset($existingIds[(string) $id]);
+        unset($existingIds[$id->value]);
 
         return new static($existingIds);
     }
@@ -229,13 +229,13 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /** @param T $id */
     public function containsId(Id $id): bool
     {
-        return array_key_exists((string) $id, $this->ids);
+        return array_key_exists($id->value, $this->ids);
     }
 
     /** @param T $id */
     public function notContainsId(Id $id): bool
     {
-        return !array_key_exists((string) $id, $this->ids);
+        return !array_key_exists($id->value, $this->ids);
     }
 
     public function containsEveryId(self $idList): bool
