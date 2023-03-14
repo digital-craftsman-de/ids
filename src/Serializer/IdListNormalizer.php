@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\Serializer;
 
 use DigitalCraftsman\Ids\ValueObject\IdList;
+use DigitalCraftsman\Ids\ValueObject\OrderedIdList;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -12,12 +13,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class IdListNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
-     * @param IdList|object                     $data
+     * @param IdList|OrderedIdList|object       $data
      * @param array<string, string|int|boolean> $context
      */
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return $data instanceof IdList;
+        return $data instanceof IdList
+            || $data instanceof OrderedIdList;
     }
 
     /**
@@ -26,12 +28,17 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
      */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
+        $parentClass = get_parent_class($type);
+
         return class_exists($type)
-            && get_parent_class($type) === IdList::class;
+            && (
+                $parentClass === IdList::class
+                || $parentClass === OrderedIdList::class
+            );
     }
 
     /**
-     * @param IdList                            $object
+     * @param IdList|OrderedIdList              $object
      * @param array<string, string|int|boolean> $context
      *
      * @return array<int, string>
@@ -42,11 +49,11 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
     }
 
     /**
-     * @param ?array<int, string>               $data
-     * @param class-string<IdList>              $type
-     * @param array<string, string|int|boolean> $context
+     * @param ?array<int, string>                $data
+     * @param class-string<IdList|OrderedIdList> $type
+     * @param array<string, string|int|boolean>  $context
      */
-    public function denormalize($data, $type, $format = null, array $context = []): ?IdList
+    public function denormalize($data, $type, $format = null, array $context = []): IdList|OrderedIdList|null
     {
         if ($data === null) {
             return null;

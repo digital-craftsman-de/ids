@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Serializer;
 
+use DigitalCraftsman\Ids\Test\ValueObject\OrderedUserIdList;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use PHPUnit\Framework\TestCase;
@@ -59,10 +60,26 @@ final class IdListNormalizerTest extends TestCase
      *
      * @covers ::supportsNormalization
      */
-    public function supports_normalization(): void
+    public function supports_normalization_for_list(): void
     {
         // -- Arrange
         $userIdList = new UserIdList([]);
+
+        $normalizer = new IdListNormalizer();
+
+        // -- Act & Assert
+        self::assertTrue($normalizer->supportsNormalization($userIdList));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::supportsNormalization
+     */
+    public function supports_normalization_for_ordered_list(): void
+    {
+        // -- Arrange
+        $userIdList = new OrderedUserIdList([]);
 
         $normalizer = new IdListNormalizer();
 
@@ -91,7 +108,7 @@ final class IdListNormalizerTest extends TestCase
      *
      * @covers ::supportsDenormalization
      */
-    public function supports_denormalization(): void
+    public function supports_denormalization_for_id_list(): void
     {
         // -- Arrange
         $idListData = [
@@ -104,6 +121,26 @@ final class IdListNormalizerTest extends TestCase
 
         // -- Act & Assert
         self::assertTrue($normalizer->supportsDenormalization($idListData, UserIdList::class));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::supportsDenormalization
+     */
+    public function supports_denormalization_for_ordered_id_list(): void
+    {
+        // -- Arrange
+        $idListData = [
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+        ];
+
+        $normalizer = new IdListNormalizer();
+
+        // -- Act & Assert
+        self::assertTrue($normalizer->supportsDenormalization($idListData, OrderedUserIdList::class));
     }
 
     /**
