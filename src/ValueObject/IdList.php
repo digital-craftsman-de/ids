@@ -66,19 +66,19 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /**
      * Ids that are available in more than one list, are only added once.
      *
-     * @param array<array-key, static> $idLists
+     * @param array<static> $idLists
+     *
+     * @psalm-param array<array-key, static> $idLists
      */
     final public static function fromIdLists(array $idLists): static
     {
-        // TODO: Improve merging
+        // No unique check necessary, as duplicate ids will be overwritten anyway
         $ids = [];
         foreach ($idLists as $idList) {
-            foreach ($idList as $id) {
-                $ids[] = $id;
+            foreach ($idList->ids as $key => $id) {
+                $ids[$key] = $id;
             }
         }
-
-        // No unique check necessary, as duplicate ids will be overwritten anyway
 
         return new static($ids);
     }
@@ -125,11 +125,14 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /** @param T $id */
     public function removeId(Id $id): static
     {
-        $existingIds = $this->ids;
-        // TODO: Check if the element exists. Wasn't there before
-        unset($existingIds[$id->value]);
+        if (!$this->containsId($id)) {
+            throw new IdListDoesContainId($id);
+        }
 
-        return new static($existingIds);
+        $idsWithoutIdToRemove = $this->ids;
+        unset($idsWithoutIdToRemove[$id->value]);
+
+        return new static($idsWithoutIdToRemove);
     }
 
     /** @param static $idList */
@@ -148,10 +151,9 @@ abstract class IdList implements \IteratorAggregate, \Countable
      */
     public function intersect(self $idList): static
     {
-        // TODO: Improve with key access
         $idsInList = [];
         foreach ($this->ids as $id) {
-            if ($idList->containsId($id)) {
+            if (array_key_exists($id->value, $idList->ids)) {
                 $idsInList[] = $id;
             }
         }
