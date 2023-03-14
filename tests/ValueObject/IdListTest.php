@@ -45,6 +45,25 @@ final class IdListTest extends TestCase
     /**
      * @test
      *
+     * @covers ::fromIds
+     */
+    public function id_list_from_ids_construction_works(): void
+    {
+        // -- Arrange & Act
+        $ids = [
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ];
+        $idList = UserIdList::fromIds($ids);
+
+        // -- Assert
+        self::assertCount(3, $idList->ids);
+    }
+
+    /**
+     * @test
+     *
      * @covers ::__construct
      */
     public function id_list_construction_works_with_index_that_is_not_a_list(): void
