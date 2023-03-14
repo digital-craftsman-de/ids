@@ -14,7 +14,7 @@ abstract class Id implements \Stringable
     // Construction
 
     final public function __construct(
-        protected readonly string $value,
+        public readonly string $value,
     ) {
         if (!uuid_is_valid($value)) {
             throw new InvalidId($value);

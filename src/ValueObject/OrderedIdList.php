@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
@@ -25,33 +26,29 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
  *
  * @psalm-suppress UnsafeGenericInstantiation
  */
-abstract class IdList implements \IteratorAggregate, \Countable
+abstract class OrderedIdList implements \IteratorAggregate, \Countable
 {
-    /** @var array<string, T> */
+    /** @var array<int, T> */
     public readonly array $ids;
 
     // -- Construction
 
-    /** @param array<array-key, T> $ids */
+    /** @param array<int, T> $ids */
     final public function __construct(
         array $ids,
     ) {
+        self::mustNotContainDuplicateIds($ids);
         self::mustOnlyContainIdsOfHandledClass($ids);
 
-        $idsWithKeys = [];
-        foreach ($ids as $id) {
-            $idsWithKeys[$id->value] = $id;
-        }
-
-        $this->ids = $idsWithKeys;
+        $this->ids = array_values($ids);
     }
 
     /**
      * @template TT of T
      *
-     * @param array<array-key, Id> $ids
+     * @param array<int, Id> $ids
      *
-     * @psalm-param array<array-key, TT> $ids
+     * @psalm-param array<int, TT> $ids
      */
     final public static function fromIds(array $ids): static
     {
@@ -66,11 +63,10 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /**
      * Ids that are available in more than one list, are only added once.
      *
-     * @param array<array-key, static> $idLists
+     * @param array<int, static> $idLists
      */
     final public static function fromIdLists(array $idLists): static
     {
-        // TODO: Improve merging
         $ids = [];
         foreach ($idLists as $idList) {
             foreach ($idList as $id) {
@@ -78,9 +74,9 @@ abstract class IdList implements \IteratorAggregate, \Countable
             }
         }
 
-        // No unique check necessary, as duplicate ids will be overwritten anyway
+        $uniqueIds = array_unique($ids);
 
-        return new static($ids);
+        return new static($uniqueIds);
     }
 
     // -- Configuration
@@ -125,11 +121,12 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /** @param T $id */
     public function removeId(Id $id): static
     {
-        $existingIds = $this->ids;
-        // TODO: Check if the element exists. Wasn't there before
-        unset($existingIds[(string) $id]);
+        $ids = array_filter(
+            $this->ids,
+            static fn (Id $currentId) => $currentId->isNotEqualTo($id),
+        );
 
-        return new static($existingIds);
+        return new static($ids);
     }
 
     /** @param static $idList */
@@ -148,7 +145,6 @@ abstract class IdList implements \IteratorAggregate, \Countable
      */
     public function intersect(self $idList): static
     {
-        // TODO: Improve with key access
         $idsInList = [];
         foreach ($this->ids as $id) {
             if ($idList->containsId($id)) {
@@ -229,7 +225,8 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /** @param T $id */
     public function containsId(Id $id): bool
     {
-        return array_key_exists((string) $id, $this->ids);
+        // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
+        return in_array($id, $this->ids, false);
     }
 
     /** @param T $id */
@@ -292,10 +289,37 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return $this->count() > 0;
     }
 
+    /** @param static $orderedList */
+    public function isInSameOrder(self $orderedList): bool
+    {
+        $orderedListWithIdenticalIds = $orderedList->intersect($this);
+        foreach ($this->ids as $index => $id) {
+            if ($orderedListWithIdenticalIds
+                ->idAtPosition($index)
+                ->isNotEqualTo($id)
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /** @return array<int, string> */
     public function idsAsStringList(): array
     {
-        return array_keys($this->ids);
+        $ids = [];
+        foreach ($this->ids as $id) {
+            $ids[] = (string) $id;
+        }
+
+        return $ids;
+    }
+
+    /** @return T */
+    private function idAtPosition(int $position): Id
+    {
+        return $this->ids[$position];
     }
 
     // -- Guards
@@ -357,6 +381,23 @@ abstract class IdList implements \IteratorAggregate, \Countable
     {
         if ($this->isNotEqualTo($idList)) {
             throw new IdListsMustBeEqual();
+        }
+    }
+
+    /**
+     * @template TT of T
+     *
+     * @param array<int, Id> $ids
+     *
+     * @psalm-param array<int, TT> $ids
+     *
+     * @throws DuplicateIds
+     */
+    private static function mustNotContainDuplicateIds(array $ids): void
+    {
+        /** @noinspection TypeUnsafeComparisonInspection */
+        if (count($ids) != count(array_unique($ids))) {
+            throw new DuplicateIds();
         }
     }
 
