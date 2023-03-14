@@ -45,25 +45,6 @@ final class IdListTest extends TestCase
     /**
      * @test
      *
-     * @covers ::fromIds
-     */
-    public function id_list_from_ids_construction_works(): void
-    {
-        // -- Arrange & Act
-        $ids = [
-            UserId::generateRandom(),
-            UserId::generateRandom(),
-            UserId::generateRandom(),
-        ];
-        $idList = UserIdList::fromIds($ids);
-
-        // -- Assert
-        self::assertCount(3, $idList->ids);
-    }
-
-    /**
-     * @test
-     *
      * @covers ::__construct
      */
     public function id_list_construction_works_with_index_that_is_not_a_list(): void
@@ -127,17 +108,18 @@ final class IdListTest extends TestCase
      * @test
      *
      * @covers ::fromIds
-     *
-     * @doesNotPerformAssertions
      */
     public function id_list_construction_from_ids_works(): void
     {
         // -- Arrange & Act
-        UserIdList::fromIds([
+        $idList = UserIdList::fromIds([
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
+
+        // -- Assert
+        self::assertCount(3, $idList->ids);
     }
 
     /**
@@ -320,6 +302,28 @@ final class IdListTest extends TestCase
         self::assertCount(2, $removedList);
 
         self::assertTrue($removedList->notContainsId($idToRemove));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::removeId
+     */
+    public function remove_id_fails_when_id_is_not_in_list(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesContainId::class);
+
+        // -- Arrange
+        $idToRemove = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act
+        $removedList = $idList->removeId($idToRemove);
     }
 
     // -- Diff

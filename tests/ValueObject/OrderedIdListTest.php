@@ -134,17 +134,18 @@ final class OrderedIdListTest extends TestCase
      * @test
      *
      * @covers ::fromIds
-     *
-     * @doesNotPerformAssertions
      */
     public function id_list_construction_from_ids_works(): void
     {
         // -- Arrange & Act
-        OrderedUserIdList::fromIds([
+        $idList = OrderedUserIdList::fromIds([
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
+
+        // -- Assert
+        self::assertCount(3, $idList->ids);
     }
 
     /**
