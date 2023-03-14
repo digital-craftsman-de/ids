@@ -235,7 +235,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /** @param T $id */
     public function notContainsId(Id $id): bool
     {
-        return !$this->containsId($id);
+        return !array_key_exists((string) $id, $this->ids);
     }
 
     public function containsEveryId(self $idList): bool
