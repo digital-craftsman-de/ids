@@ -16,7 +16,6 @@ final class IdListNormalizerTest extends TestCase
      *
      * @covers ::normalize
      * @covers ::denormalize
-     * @covers ::isValid
      */
     public function id_list_normalization_and_denormalization_works(): void
     {
