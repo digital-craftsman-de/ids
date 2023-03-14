@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Serializer;
 
-use DigitalCraftsman\Ids\ValueObject\Id;
 use DigitalCraftsman\Ids\ValueObject\IdList;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -54,40 +52,19 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
             return null;
         }
 
-        if (!$this->isValid($data)) {
-            throw new UnexpectedValueException('Expected a valid list.');
-        }
-
         $idClass = $type::handlesIdClass();
 
-        /** @var array<int, Id> $ids */
-        $ids = array_map(
-            static fn (string $id) => new $idClass($id),
-            $data,
-        );
+        $ids = [];
+        foreach ($data as $string) {
+            $ids[] = new $idClass($string);
+        }
 
-        return $type::fromIds($ids);
+        return new $type($ids);
     }
 
     /** @codeCoverageIgnore */
     public function hasCacheableSupportsMethod(): bool
     {
-        return true;
-    }
-
-    /**
-     * Uuid::isValid($string) is not in here on purpose as the Id object itself calls that method on construction.
-     *
-     * @param array<int, string> $data
-     */
-    private function isValid(array $data): bool
-    {
-        foreach ($data as $string) {
-            if (!is_string($string)) {
-                return false;
-            }
-        }
-
         return true;
     }
 }

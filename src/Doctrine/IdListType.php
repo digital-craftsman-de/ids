@@ -55,7 +55,7 @@ abstract class IdListType extends Type
         }
 
         /** @noinspection PhpUndefinedMethodInspection */
-        return $idListClass::fromIds($ids);
+        return new $idListClass($ids);
     }
 
     /** @codeCoverageIgnore */
