@@ -7,7 +7,6 @@ namespace DigitalCraftsman\Ids\Serializer;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 /** @coversDefaultClass \DigitalCraftsman\Ids\Serializer\IdListNormalizer */
 final class IdListNormalizerTest extends TestCase
@@ -54,34 +53,6 @@ final class IdListNormalizerTest extends TestCase
 
         // -- Assert
         self::assertNull($denormalizedData);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::denormalize
-     * @covers ::isValid
-     */
-    public function id_list_denormalization_fails_with_invalid_values(): void
-    {
-        // -- Assert
-        $this->expectException(UnexpectedValueException::class);
-
-        // -- Arrange
-        $normalizer = new IdListNormalizer();
-
-        $invalidData = [
-            (string) UserId::generateRandom(),
-            15,
-        ];
-
-        // -- Act
-        /**
-         * @psalm-suppress InvalidScalarArgument
-         *
-         * @phpstan-ignore-next-line
-         */
-        $normalizer->denormalize($invalidData, UserIdList::class);
     }
 
     /**

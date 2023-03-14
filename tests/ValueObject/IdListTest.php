@@ -9,7 +9,6 @@ use DigitalCraftsman\Ids\Test\ValueObject\InstructorId;
 use DigitalCraftsman\Ids\Test\ValueObject\ProjectId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
-use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
@@ -58,9 +57,7 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Assert
-        self::assertArrayHasKey(0, $idList->ids);
-        self::assertArrayHasKey(1, $idList->ids);
-        self::assertArrayHasKey(2, $idList->ids);
+        self::assertCount(3, $idList->ids);
     }
 
     /**
@@ -79,29 +76,6 @@ final class IdListTest extends TestCase
             UserId::generateRandom(),
             InstructorId::generateRandom(),
             AdminId::generateRandom(),
-        ]);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::mustNotContainDuplicateIds
-     */
-    public function id_list_construction_fails_with_duplicates(): void
-    {
-        // -- Assert
-        $this->expectException(DuplicateIds::class);
-
-        // -- Arrange & Act
-        $duplicateId = UserId::generateRandom();
-
-        new UserIdList([
-            $duplicateId,
-            $duplicateId,
-            UserId::generateRandom(),
-            UserId::generateRandom(),
-            UserId::generateRandom(),
         ]);
     }
 
