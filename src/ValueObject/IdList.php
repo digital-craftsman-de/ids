@@ -175,7 +175,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     public function map(callable $mapFunction): array
     {
         /** @psalm-suppress ImpureFunctionCall */
-        return array_map($mapFunction, $this->ids);
+        return array_map($mapFunction, array_values($this->ids));
     }
 
     /** @psalm-param callable(T):bool $filterFunction */
@@ -384,7 +384,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /** @return \Iterator<int, T> */
     public function getIterator(): \Iterator
     {
-        return new \ArrayIterator($this->ids);
+        return new \ArrayIterator(array_values($this->ids));
     }
 
     // -- Countable
