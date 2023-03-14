@@ -7,3 +7,4 @@ parameters:
   excludePaths:
     # The @template annotations are clashing with the ones of Psalm
     - src/ValueObject/IdList.php
+    - src/ValueObject/OrderedIdList.php
