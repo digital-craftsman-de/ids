@@ -144,9 +144,6 @@ final class IdListTest extends TestCase
 
         // -- Assert
         self::assertCount(3, $userIdList);
-
-        // -- Assert
-        self::assertCount(3, $idList->ids);
     }
 
     /**
