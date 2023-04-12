@@ -468,6 +468,105 @@ final class IdListTest extends TestCase
     /**
      * @test
      *
+     * @covers ::removeIds
+     */
+    public function remove_ids_works(): void
+    {
+        // -- Arrange
+        $idToRemove1 = UserId::generateRandom();
+        $idToRemove2 = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $idToRemove1,
+            $idToRemove2,
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idsToRemove = [
+            $idToRemove1,
+            $idToRemove2,
+        ];
+
+        // -- Act
+        $removedList = $idList->removeIds($idsToRemove);
+
+        // -- Assert
+        self::assertCount(4, $idList);
+        self::assertCount(2, $removedList);
+
+        self::assertTrue($removedList->notContainsId($idToRemove1));
+        self::assertTrue($removedList->notContainsId($idToRemove2));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::removeIds
+     */
+    public function remove_ids_fails_when_id_is_not_in_list(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesNotContainId::class);
+
+        // -- Arrange
+        $idToRemove1 = UserId::generateRandom();
+        $idToRemove2 = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $idToRemove1,
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idsToRemove = [
+            $idToRemove1,
+            $idToRemove2,
+        ];
+
+        // -- Act
+        $idList->removeIds($idsToRemove);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::removeIdsWhenInList
+     */
+    public function remove_ids_when_in_list_works(): void
+    {
+        // -- Arrange
+        $idToRemove1 = UserId::generateRandom();
+        $idToRemove2 = UserId::generateRandom();
+        $idToRemove3 = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $idToRemove1,
+            $idToRemove2,
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idsToRemove = [
+            $idToRemove1,
+            $idToRemove2,
+            $idToRemove3,
+        ];
+
+        // -- Act
+        $removedList = $idList->removeIdsWhenInList($idsToRemove);
+
+        // -- Assert
+        self::assertCount(4, $idList);
+        self::assertCount(2, $removedList);
+
+        self::assertTrue($removedList->notContainsId($idToRemove1));
+        self::assertTrue($removedList->notContainsId($idToRemove2));
+    }
+
+    /**
+     * @test
+     *
      * @covers ::removeIdWhenInList
      */
     public function remove_id_when_in_list_works(): void

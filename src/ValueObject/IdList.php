@@ -194,6 +194,33 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
+    /**
+     * @template TT of T
+     *
+     * @param array<int, Id> $ids
+     *
+     * @psalm-param array<int, TT> $ids
+     */
+    public function removeIds(array $ids): static
+    {
+        foreach ($ids as $id) {
+            // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
+            if (!in_array($id, $this->ids, false)) {
+                throw new IdListDoesNotContainId($id);
+            }
+        }
+
+        $remainingIds = [];
+        foreach ($this->ids as $currentId) {
+            // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
+            if (!in_array($currentId, $ids, false)) {
+                $remainingIds[] = $currentId;
+            }
+        }
+
+        return new static($remainingIds);
+    }
+
     /** @param T $id */
     public function removeIdWhenInList(Id $id): static
     {
@@ -205,6 +232,26 @@ abstract class IdList implements \IteratorAggregate, \Countable
         }
 
         return new static($ids);
+    }
+
+    /**
+     * @template TT of T
+     *
+     * @param array<int, Id> $ids
+     *
+     * @psalm-param array<int, TT> $ids
+     */
+    public function removeIdsWhenInList(array $ids): static
+    {
+        $remainingIds = [];
+        foreach ($this->ids as $currentId) {
+            // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
+            if (!in_array($currentId, $ids, false)) {
+                $remainingIds[] = $currentId;
+            }
+        }
+
+        return new static($remainingIds);
     }
 
     /** @param static $idList */
