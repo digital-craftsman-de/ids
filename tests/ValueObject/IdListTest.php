@@ -11,7 +11,9 @@ use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainEveryId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainNoneIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainEveryId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainSomeIds;
@@ -300,6 +302,95 @@ final class IdListTest extends TestCase
         self::assertTrue($addedList->containsId($newId));
     }
 
+    // -- Add ids
+
+    /**
+     * @test
+     *
+     * @covers ::addIds
+     */
+    public function add_ids_works(): void
+    {
+        // -- Arrange
+        $idList = new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $newIds = new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act
+        $addedList = $idList->addIds($newIds);
+
+        // -- Assert
+        self::assertCount(2, $idList);
+        self::assertCount(4, $addedList);
+
+        self::assertTrue($addedList->containsEveryId($newIds));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::addIds
+     */
+    public function add_ids_fails_with_duplicate_id(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesContainNoneIds::class);
+
+        // -- Arrange
+        $existingUserId = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $existingUserId,
+            UserId::generateRandom(),
+        ]);
+
+        $newIds = new UserIdList([
+            $existingUserId,
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act
+        $idList->addIds($newIds);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::addIdsWhenNotInList
+     */
+    public function add_ids_when_not_in_list_works(): void
+    {
+        // -- Arrange
+        $existingId = UserId::generateRandom();
+        $idList = new UserIdList([
+            $existingId,
+            UserId::generateRandom(),
+        ]);
+
+        $newId = UserId::generateRandom();
+
+        $newIds = new UserIdList([
+            $existingId,
+            $newId,
+        ]);
+
+        // -- Act
+        $addedList = $idList->addIdsWhenNotInList($newIds);
+
+        // -- Assert
+        self::assertCount(2, $idList);
+        self::assertCount(3, $addedList);
+
+        self::assertTrue($addedList->containsId($existingId));
+        self::assertTrue($addedList->containsId($newId));
+    }
+
     // -- Remove id
 
     /**
@@ -336,7 +427,7 @@ final class IdListTest extends TestCase
     public function remove_id_fails_when_id_is_not_in_list(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesContainId::class);
+        $this->expectException(IdListDoesNotContainId::class);
 
         // -- Arrange
         $idToRemove = UserId::generateRandom();
@@ -347,7 +438,135 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Act
-        $removedList = $idList->removeId($idToRemove);
+        $idList->removeId($idToRemove);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::removeIds
+     */
+    public function remove_ids_works(): void
+    {
+        // -- Arrange
+        $idToRemove1 = UserId::generateRandom();
+        $idToRemove2 = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            UserId::fromString((string) $idToRemove1),
+            UserId::fromString((string) $idToRemove2),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idsToRemove = new UserIdList([
+            $idToRemove1,
+            $idToRemove2,
+        ]);
+
+        // -- Act
+        $removedList = $idList->removeIds($idsToRemove);
+
+        // -- Assert
+        self::assertCount(4, $idList);
+        self::assertCount(2, $removedList);
+
+        self::assertTrue($removedList->notContainsId($idToRemove1));
+        self::assertTrue($removedList->notContainsId($idToRemove2));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::removeIds
+     */
+    public function remove_ids_fails_when_id_is_not_in_list(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesNotContainEveryId::class);
+
+        // -- Arrange
+        $idToRemove1 = UserId::generateRandom();
+        $idToRemove2 = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $idToRemove1,
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idsToRemove = new UserIdList([
+            $idToRemove1,
+            $idToRemove2,
+        ]);
+
+        // -- Act
+        $idList->removeIds($idsToRemove);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::removeIdsWhenInList
+     */
+    public function remove_ids_when_in_list_works(): void
+    {
+        // -- Arrange
+        $idToRemove1 = UserId::generateRandom();
+        $idToRemove2 = UserId::generateRandom();
+        $idToRemove3 = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            UserId::fromString((string) $idToRemove1),
+            UserId::fromString((string) $idToRemove2),
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idsToRemove = new UserIdList([
+            $idToRemove1,
+            $idToRemove2,
+            $idToRemove3,
+        ]);
+
+        // -- Act
+        $removedList = $idList->removeIdsWhenInList($idsToRemove);
+
+        // -- Assert
+        self::assertCount(4, $idList);
+        self::assertCount(2, $removedList);
+
+        self::assertTrue($removedList->notContainsId($idToRemove1));
+        self::assertTrue($removedList->notContainsId($idToRemove2));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::removeIdWhenInList
+     */
+    public function remove_id_when_in_list_works(): void
+    {
+        // -- Arrange
+        $idToRemove = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $idToRemove,
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idNotInList = UserId::generateRandom();
+
+        // -- Act
+        $removedList = $idList->removeIdWhenInList($idToRemove);
+        $removedList = $removedList->removeIdWhenInList($idNotInList);
+
+        // -- Assert
+        self::assertCount(3, $idList);
+        self::assertCount(2, $removedList);
+
+        self::assertTrue($removedList->notContainsId($idToRemove));
     }
 
     // -- Diff
@@ -595,6 +814,59 @@ final class IdListTest extends TestCase
     /**
      * @test
      *
+     * @covers ::mustNotContainEveryId
+     */
+    public function id_list_must_not_contain_every_id(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesContainEveryId::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $fullList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+        ]);
+
+        // -- Act
+        $fullList->mustNotContainEveryId($partialList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotContainEveryId
+     *
+     * @doesNotPerformAssertions
+     */
+    public function id_list_must_not_contain_every_id_when_every_id_is_present(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $fullList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+        ]);
+
+        // -- Act & Assert
+        $partialList->mustNotContainEveryId($fullList);
+    }
+
+    /**
+     * @test
+     *
      * @covers ::mustContainSomeIds
      */
     public function id_list_must_contain_some_ids(): void
@@ -648,6 +920,64 @@ final class IdListTest extends TestCase
 
         // -- Act & Assert
         $almostFullList->mustContainSomeIds($idListWithDifferentId);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustContainNoneIds
+     */
+    public function id_list_must_contain_none_ids(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesContainNoneIds::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        $almostFullList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $idListWithPartialMatchingIds = UserIdList::fromIds([
+            clone $idPeter,
+            clone $idPaul,
+        ]);
+
+        // -- Act
+        $idListWithPartialMatchingIds->mustContainNoneIds($almostFullList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustContainNoneIds
+     *
+     * @doesNotPerformAssertions
+     */
+    public function id_list_must_contain_none_ids_when_no_id_is_available(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        $almostFullList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $idListWithDifferentId = UserIdList::fromIds([
+            clone $idPeter,
+        ]);
+
+        // -- Act & Assert
+        $almostFullList->mustContainNoneIds($idListWithDifferentId);
     }
 
     // -- Must be empty
@@ -1008,6 +1338,48 @@ final class IdListTest extends TestCase
         self::assertFalse($partialList->containsEveryId($listWithDifferentId));
     }
 
+    /**
+     * @test
+     *
+     * @covers ::notContainsEveryId
+     */
+    public function id_list_not_contains_every_id_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        // Generate new ids to make sure that it's enough for ids to be equal instead of same instance.
+        $listWithAlmostAllIds = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $listWithDifferentId = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+            clone $idPeter,
+        ]);
+
+        // -- Act & Assert
+        self::assertFalse($listWithAlmostAllIds->notContainsEveryId($partialList));
+        self::assertTrue($partialList->notContainsEveryId($listWithAlmostAllIds));
+
+        self::assertTrue($listWithAlmostAllIds->notContainsEveryId($listWithDifferentId));
+        self::assertTrue($partialList->notContainsEveryId($listWithDifferentId));
+    }
+
     // -- Contains some ids
 
     /**
@@ -1057,6 +1429,55 @@ final class IdListTest extends TestCase
 
         self::assertFalse($listWithAlmostAllIds->containsSomeIds($listWithOnlyDifferentIds));
         self::assertFalse($partialList->containsSomeIds($listWithOnlyDifferentIds));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::containsNoneIds
+     */
+    public function id_list_contains_none_ids_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        // Generate new ids to make sure that it's enough for ids to be equal instead of same instance.
+        $listWithAlmostAllIds = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idMarkus,
+            clone $idPaul,
+            clone $idTom,
+        ]);
+
+        $partialList = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $listWithDifferentId = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+            clone $idPeter,
+        ]);
+
+        $listWithOnlyDifferentIds = UserIdList::fromIds([
+            clone $idPeter,
+        ]);
+
+        // -- Act & Assert
+        self::assertFalse($listWithAlmostAllIds->containsNoneIds($partialList));
+        self::assertFalse($partialList->containsNoneIds($listWithAlmostAllIds));
+
+        self::assertFalse($listWithAlmostAllIds->containsNoneIds($listWithDifferentId));
+        self::assertFalse($partialList->containsNoneIds($listWithDifferentId));
+
+        self::assertTrue($listWithAlmostAllIds->containsNoneIds($listWithOnlyDifferentIds));
+        self::assertTrue($partialList->containsNoneIds($listWithOnlyDifferentIds));
     }
 
     // -- Is equal and not equal
