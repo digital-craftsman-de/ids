@@ -148,7 +148,27 @@ final class IdListNormalizerTest extends TestCase
      *
      * @covers ::supportsDenormalization
      */
-    public function supports_denormalization_fails_with_wrong_type(): void
+    public function supports_denormalization_with_array_of_ids(): void
+    {
+        // -- Arrange
+        $idListData = [
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+        ];
+
+        $normalizer = new IdListNormalizer();
+
+        // -- Act & Assert
+        self::assertFalse($normalizer->supportsDenormalization($idListData, sprintf('%s[]', UserId::class)));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::supportsDenormalization
+     */
+    public function supports_denormalization_with_wrong_type(): void
     {
         // -- Arrange
         $idListData = [
