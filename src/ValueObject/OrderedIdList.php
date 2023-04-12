@@ -7,7 +7,9 @@ namespace DigitalCraftsman\Ids\ValueObject;
 use DigitalCraftsman\Ids\ValueObject\Exception\DuplicateIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainEveryId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainNoneIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainEveryId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainSomeIds;
@@ -118,6 +120,19 @@ abstract class OrderedIdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
+    /** @param static $idList */
+    public function addIds(self $idList): static
+    {
+        $this->mustContainNoneIds($idList);
+
+        $newIds = $this->ids;
+        foreach ($idList as $id) {
+            $newIds[] = $id;
+        }
+
+        return new static($newIds);
+    }
+
     /** @param T $id */
     public function addIdWhenNotInList(Id $id): static
     {
@@ -131,13 +146,77 @@ abstract class OrderedIdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
+    /** @param static $idList */
+    public function addIdsWhenNotInList(self $idList): static
+    {
+        $newIds = $this->ids;
+        foreach ($idList as $id) {
+            if ($this->notContainsId($id)) {
+                $newIds[] = $id;
+            }
+        }
+
+        return new static($newIds);
+    }
+
     /** @param T $id */
     public function removeId(Id $id): static
     {
-        $ids = array_filter(
-            $this->ids,
-            static fn (Id $currentId) => $currentId->isNotEqualTo($id),
-        );
+        $wasIdFound = false;
+
+        $ids = [];
+        foreach ($this->ids as $currentId) {
+            if ($currentId->isNotEqualTo($id)) {
+                $ids[] = $currentId;
+            } else {
+                $wasIdFound = true;
+            }
+        }
+
+        if (!$wasIdFound) {
+            throw new IdListDoesNotContainId($id);
+        }
+
+        return new static($ids);
+    }
+
+    /** @param static $idList */
+    public function removeIds(self $idList): static
+    {
+        $this->mustContainEveryId($idList);
+
+        $ids = [];
+        foreach ($this->ids as $id) {
+            if ($idList->notContainsId($id)) {
+                $ids[] = $id;
+            }
+        }
+
+        return new static($ids);
+    }
+
+    /** @param T $id */
+    public function removeIdWhenInList(Id $id): static
+    {
+        $ids = [];
+        foreach ($this->ids as $currentId) {
+            if ($currentId->isNotEqualTo($id)) {
+                $ids[] = $currentId;
+            }
+        }
+
+        return new static($ids);
+    }
+
+    /** @param static $idList */
+    public function removeIdsWhenInList(self $idList): static
+    {
+        $ids = [];
+        foreach ($this->ids as $id) {
+            if ($idList->notContainsId($id)) {
+                $ids[] = $id;
+            }
+        }
 
         return new static($ids);
     }
@@ -259,6 +338,18 @@ abstract class OrderedIdList implements \IteratorAggregate, \Countable
         return true;
     }
 
+    public function notContainsEveryId(self $idList): bool
+    {
+        foreach ($idList as $id) {
+            if ($this->notContainsId($id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /** Opposite function is not called notContainsSomeIds, but containsNoneIds */
     public function containsSomeIds(self $idList): bool
     {
         foreach ($idList as $id) {
@@ -268,6 +359,17 @@ abstract class OrderedIdList implements \IteratorAggregate, \Countable
         }
 
         return false;
+    }
+
+    public function containsNoneIds(self $idList): bool
+    {
+        foreach ($idList as $id) {
+            if ($this->containsId($id)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /** @param static $idList */
@@ -369,11 +471,27 @@ abstract class OrderedIdList implements \IteratorAggregate, \Countable
         }
     }
 
+    /** @throws IdListDoesContainEveryId */
+    public function mustNotContainEveryId(self $idList): void
+    {
+        if (!$this->notContainsEveryId($idList)) {
+            throw new IdListDoesContainEveryId();
+        }
+    }
+
     /** @throws IdListDoesNotContainSomeIds */
     public function mustContainSomeIds(self $idList): void
     {
         if (!$this->containsSomeIds($idList)) {
             throw new IdListDoesNotContainSomeIds();
+        }
+    }
+
+    /** @throws IdListDoesContainNoneIds */
+    public function mustContainNoneIds(self $idList): void
+    {
+        if (!$this->containsNoneIds($idList)) {
+            throw new IdListDoesContainNoneIds();
         }
     }
 
