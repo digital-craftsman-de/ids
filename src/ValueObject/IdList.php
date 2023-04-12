@@ -395,7 +395,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return $this->count() > 0;
     }
 
-    /** @return array<int, string> */
+    /** @return list<string> */
     public function idsAsStringList(): array
     {
         return array_keys($this->ids);
