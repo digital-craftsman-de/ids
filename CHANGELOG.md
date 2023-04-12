@@ -8,6 +8,10 @@
 - Added new method `addIdsWhenNotInList(self $idList): static` to `IdList`.
 - Added new method `removeIds(self $idList): static` to `IdList`.
 - Added new method `removeIdsWhenInList(self $idList): static` to `IdList`.
+- Added new method `notContainsEveryId(self $idList): bool` to `IdList`.
+- Added new method `containsNoneIds(self $idList): bool` to `IdList`.
+- Added new method `mustNotContainEveryId(self $idList): void` to `IdList`.
+- Added new method `mustContainNoneIds(self $idList): void` to `IdList`.
 - Added new named constructor `fromIdStrings` to `IdList`.
 
 ## 0.7.0
