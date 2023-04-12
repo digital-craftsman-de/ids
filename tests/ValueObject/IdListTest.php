@@ -477,8 +477,8 @@ final class IdListTest extends TestCase
         $idToRemove2 = UserId::generateRandom();
 
         $idList = new UserIdList([
-            $idToRemove1,
-            $idToRemove2,
+            UserId::fromString((string) $idToRemove1),
+            UserId::fromString((string) $idToRemove2),
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
@@ -541,8 +541,8 @@ final class IdListTest extends TestCase
         $idToRemove3 = UserId::generateRandom();
 
         $idList = new UserIdList([
-            $idToRemove1,
-            $idToRemove2,
+            UserId::fromString((string) $idToRemove1),
+            UserId::fromString((string) $idToRemove2),
             UserId::generateRandom(),
             UserId::generateRandom(),
         ]);
