@@ -28,13 +28,14 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
      */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
+        if (!class_exists($type)) {
+            return false;
+        }
+
         $parentClass = get_parent_class($type);
 
-        return class_exists($type)
-            && (
-                $parentClass === IdList::class
-                || $parentClass === OrderedIdList::class
-            );
+        return $parentClass === IdList::class
+            || $parentClass === OrderedIdList::class;
     }
 
     /**
