@@ -2,11 +2,13 @@
 
 ## 0.8.0
 
+- **[Breaking change](./UPGRADE.md#updated-behaviour-of-idlistremoveid)**: Updated method `removeId` from `IdList` to throw an exception when the id is not in the list. This is the same behaviour as the `addId` method has.
+- Added new method `removeIdWhenInList` to `IdList`.
 - Added new `fromIdStrings` named constructor to `IdList`.
 
 ## 0.7.0
 
-- Changed the way `IdList`'s `diff` method behaves to match `array_diff`'s behavior.
+- **[Breaking change](./UPGRADE.md#updated-behaviour-of-idlistdiff)**: Changed the way `IdList`'s `diff` method behaves to match `array_diff`'s behavior.
   - Previously it returned an `IdList` containing all elements that were present in the `IdList` itself but not in the given `IdList` (method parameter) as well as all elements that were in the given `IdList` (method parameter) but not in the `IdList` itself.
   - Now it returns an `IdList` containing only the elements that are present in the `IdList` itself but not in the given `IdList` (method parameter).
 

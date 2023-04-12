@@ -2,11 +2,13 @@
 
 ## From 0.7.* to 0.8.0
 
-No breaking changes, only added features.
+### Updated behaviour of `IdList::removeId`
+
+The `removeId` method of `IdList` now behaves like the `addId` method in that it throws an exception (`IdListDoesNotContainId`) when the id that has to be removed, doesn't exist in the list. Use the new `removeIdWhenInList` method if you want to remove an id without caring whether it's in the list or not.
 
 ## From 0.6.* to 0.7.0
 
-### Updated diff behaviour
+### Updated behaviour of `IdList::diff`
 
 The `diff` method of `IdList` now behaves like `array_diff`.
 
