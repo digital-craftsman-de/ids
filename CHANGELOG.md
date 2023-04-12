@@ -4,7 +4,11 @@
 
 - **[Breaking change](./UPGRADE.md#updated-behaviour-of-idlistremoveid)**: Updated method `removeId` from `IdList` to throw an exception when the id is not in the list. This is the same behaviour as the `addId` method has.
 - Added new method `removeIdWhenInList` to `IdList`.
-- Added new `fromIdStrings` named constructor to `IdList`.
+- Added new method `addIds` to `IdList`.
+- Added new method `addIdsWhenNotInList` to `IdList`.
+- Added new method `removeIds` to `IdList`.
+- Added new method `removeIdsWhenInList` to `IdList`.
+- Added new named constructor `fromIdStrings` to `IdList`.
 
 ## 0.7.0
 
