@@ -326,6 +326,95 @@ final class IdListTest extends TestCase
         self::assertTrue($addedList->containsId($newId));
     }
 
+    // -- Add ids
+
+    /**
+     * @test
+     *
+     * @covers ::addIds
+     */
+    public function add_ids_works(): void
+    {
+        // -- Arrange
+        $idList = new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $newIds = [
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ];
+
+        // -- Act
+        $addedList = $idList->addIds($newIds);
+
+        // -- Assert
+        self::assertCount(2, $idList);
+        self::assertCount(4, $addedList);
+
+        self::assertTrue($addedList->containsEveryId(new UserIdList($newIds)));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::addIds
+     */
+    public function add_ids_fails_with_duplicate_id(): void
+    {
+        // -- Assert
+        $this->expectException(IdAlreadyInList::class);
+
+        // -- Arrange
+        $existingUserId = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $existingUserId,
+            UserId::generateRandom(),
+        ]);
+
+        $newIds = [
+            $existingUserId,
+            UserId::generateRandom(),
+        ];
+
+        // -- Act
+        $idList->addIds($newIds);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::addIdsWhenNotInList
+     */
+    public function add_ids_when_not_in_list_works(): void
+    {
+        // -- Arrange
+        $existingId = UserId::generateRandom();
+        $idList = new UserIdList([
+            $existingId,
+            UserId::generateRandom(),
+        ]);
+
+        $newId = UserId::generateRandom();
+
+        $newIds = [
+            $existingId,
+            $newId,
+        ];
+
+        // -- Act
+        $addedList = $idList->addIdsWhenNotInList($newIds);
+
+        // -- Assert
+        self::assertCount(2, $idList);
+        self::assertCount(3, $addedList);
+
+        self::assertTrue($addedList->containsId($existingId));
+        self::assertTrue($addedList->containsId($newId));
+    }
+
     // -- Remove id
 
     /**

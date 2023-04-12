@@ -118,6 +118,29 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
+    /**
+     * @template TT of T
+     *
+     * @param array<int, Id> $ids
+     *
+     * @psalm-param array<int, TT> $ids
+     */
+    public function addIds(array $ids): static
+    {
+        foreach ($ids as $id) {
+            if ($this->containsId($id)) {
+                throw new IdAlreadyInList($id);
+            }
+        }
+
+        $newIds = $this->ids;
+        foreach ($ids as $id) {
+            $newIds[] = $id;
+        }
+
+        return new static($newIds);
+    }
+
     /** @param T $id */
     public function addIdWhenNotInList(Id $id): static
     {
@@ -129,6 +152,25 @@ abstract class IdList implements \IteratorAggregate, \Countable
         $ids[] = $id;
 
         return new static($ids);
+    }
+
+    /**
+     * @template TT of T
+     *
+     * @param array<int, Id> $ids
+     *
+     * @psalm-param array<int, TT> $ids
+     */
+    public function addIdsWhenNotInList(array $ids): static
+    {
+        $newIds = $this->ids;
+        foreach ($ids as $id) {
+            if ($this->notContainsId($id)) {
+                $newIds[] = $id;
+            }
+        }
+
+        return new static($newIds);
     }
 
     /** @param T $id */
