@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+
+- Added new `fromIdStrings` named constructor to `IdList`.
+
 ## 0.7.0
 
 - Changed the way `IdList`'s `diff` method behaves to match `array_diff`'s behavior.
