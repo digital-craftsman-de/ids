@@ -465,6 +465,35 @@ final class IdListTest extends TestCase
         $idList->removeId($idToRemove);
     }
 
+    /**
+     * @test
+     *
+     * @covers ::removeIdWhenInList
+     */
+    public function remove_id_when_in_list_works(): void
+    {
+        // -- Arrange
+        $idToRemove = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $idToRemove,
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        $idNotInList = UserId::generateRandom();
+
+        // -- Act
+        $removedList = $idList->removeIdWhenInList($idToRemove);
+        $removedList = $removedList->removeIdWhenInList($idNotInList);
+
+        // -- Assert
+        self::assertCount(3, $idList);
+        self::assertCount(2, $removedList);
+
+        self::assertTrue($removedList->notContainsId($idToRemove));
+    }
+
     // -- Diff
 
     /**

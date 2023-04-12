@@ -194,6 +194,19 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
+    /** @param T $id */
+    public function removeIdWhenInList(Id $id): static
+    {
+        $ids = [];
+        foreach ($this->ids as $currentId) {
+            if ($currentId->isNotEqualTo($id)) {
+                $ids[] = $currentId;
+            }
+        }
+
+        return new static($ids);
+    }
+
     /** @param static $idList */
     public function diff(self $idList): static
     {
