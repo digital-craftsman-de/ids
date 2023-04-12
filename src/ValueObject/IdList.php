@@ -118,23 +118,18 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
-    /**
-     * @template TT of T
-     *
-     * @param array<int, Id> $ids
-     *
-     * @psalm-param array<int, TT> $ids
-     */
-    public function addIds(array $ids): static
+    /** @param static $idList */
+    public function addIds(self $idList): static
     {
-        foreach ($ids as $id) {
+        // TODO: Use must contain none ids
+        foreach ($idList as $id) {
             if ($this->containsId($id)) {
                 throw new IdAlreadyInList($id);
             }
         }
 
         $newIds = $this->ids;
-        foreach ($ids as $id) {
+        foreach ($idList as $id) {
             $newIds[] = $id;
         }
 
@@ -154,17 +149,11 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
-    /**
-     * @template TT of T
-     *
-     * @param array<int, Id> $ids
-     *
-     * @psalm-param array<int, TT> $ids
-     */
-    public function addIdsWhenNotInList(array $ids): static
+    /** @param static $idList */
+    public function addIdsWhenNotInList(self $idList): static
     {
         $newIds = $this->ids;
-        foreach ($ids as $id) {
+        foreach ($idList as $id) {
             if ($this->notContainsId($id)) {
                 $newIds[] = $id;
             }
@@ -194,31 +183,21 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
-    /**
-     * @template TT of T
-     *
-     * @param array<int, Id> $ids
-     *
-     * @psalm-param array<int, TT> $ids
-     */
-    public function removeIds(array $ids): static
+    /** @param static $idList */
+    public function removeIds(self $idList): static
     {
-        foreach ($ids as $id) {
-            // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
-            if (!in_array($id, $this->ids, false)) {
-                throw new IdListDoesNotContainId($id);
+        foreach ($idList as $id) {
+            $this->mustContainId($id);
+        }
+
+        $ids = [];
+        foreach ($this->ids as $id) {
+            if ($idList->notContainsId($id)) {
+                $ids[] = $id;
             }
         }
 
-        $remainingIds = [];
-        foreach ($this->ids as $currentId) {
-            // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
-            if (!in_array($currentId, $ids, false)) {
-                $remainingIds[] = $currentId;
-            }
-        }
-
-        return new static($remainingIds);
+        return new static($ids);
     }
 
     /** @param T $id */
@@ -234,24 +213,17 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
-    /**
-     * @template TT of T
-     *
-     * @param array<int, Id> $ids
-     *
-     * @psalm-param array<int, TT> $ids
-     */
-    public function removeIdsWhenInList(array $ids): static
+    /** @param static $idList */
+    public function removeIdsWhenInList(self $idList): static
     {
-        $remainingIds = [];
-        foreach ($this->ids as $currentId) {
-            // The strict value is used explicitly to convey the importance of not validating strictly. It has to use a string cast.
-            if (!in_array($currentId, $ids, false)) {
-                $remainingIds[] = $currentId;
+        $ids = [];
+        foreach ($this->ids as $id) {
+            if ($idList->notContainsId($id)) {
+                $ids[] = $id;
             }
         }
 
-        return new static($remainingIds);
+        return new static($ids);
     }
 
     /** @param static $idList */

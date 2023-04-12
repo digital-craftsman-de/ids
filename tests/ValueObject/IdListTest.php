@@ -341,10 +341,10 @@ final class IdListTest extends TestCase
             UserId::generateRandom(),
         ]);
 
-        $newIds = [
+        $newIds = new UserIdList([
             UserId::generateRandom(),
             UserId::generateRandom(),
-        ];
+        ]);
 
         // -- Act
         $addedList = $idList->addIds($newIds);
@@ -353,7 +353,7 @@ final class IdListTest extends TestCase
         self::assertCount(2, $idList);
         self::assertCount(4, $addedList);
 
-        self::assertTrue($addedList->containsEveryId(new UserIdList($newIds)));
+        self::assertTrue($addedList->containsEveryId($newIds));
     }
 
     /**
@@ -374,10 +374,10 @@ final class IdListTest extends TestCase
             UserId::generateRandom(),
         ]);
 
-        $newIds = [
+        $newIds = new UserIdList([
             $existingUserId,
             UserId::generateRandom(),
-        ];
+        ]);
 
         // -- Act
         $idList->addIds($newIds);
@@ -399,10 +399,10 @@ final class IdListTest extends TestCase
 
         $newId = UserId::generateRandom();
 
-        $newIds = [
+        $newIds = new UserIdList([
             $existingId,
             $newId,
-        ];
+        ]);
 
         // -- Act
         $addedList = $idList->addIdsWhenNotInList($newIds);
@@ -483,10 +483,10 @@ final class IdListTest extends TestCase
             UserId::generateRandom(),
         ]);
 
-        $idsToRemove = [
+        $idsToRemove = new UserIdList([
             $idToRemove1,
             $idToRemove2,
-        ];
+        ]);
 
         // -- Act
         $removedList = $idList->removeIds($idsToRemove);
@@ -519,10 +519,10 @@ final class IdListTest extends TestCase
             UserId::generateRandom(),
         ]);
 
-        $idsToRemove = [
+        $idsToRemove = new UserIdList([
             $idToRemove1,
             $idToRemove2,
-        ];
+        ]);
 
         // -- Act
         $idList->removeIds($idsToRemove);
@@ -547,11 +547,11 @@ final class IdListTest extends TestCase
             UserId::generateRandom(),
         ]);
 
-        $idsToRemove = [
+        $idsToRemove = new UserIdList([
             $idToRemove1,
             $idToRemove2,
             $idToRemove3,
-        ];
+        ]);
 
         // -- Act
         $removedList = $idList->removeIdsWhenInList($idsToRemove);
