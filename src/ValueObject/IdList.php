@@ -58,6 +58,19 @@ abstract class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
+    /** @param array<int, string> $idStrings */
+    final public static function fromIdStrings(array $idStrings): static
+    {
+        $idClass = static::handlesIdClass();
+
+        $ids = [];
+        foreach ($idStrings as $idString) {
+            $ids[] = new $idClass($idString);
+        }
+
+        return new static($ids);
+    }
+
     final public static function emptyList(): static
     {
         return new static([]);

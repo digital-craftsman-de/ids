@@ -111,12 +111,39 @@ final class IdListTest extends TestCase
      */
     public function id_list_construction_from_ids_works(): void
     {
-        // -- Arrange & Act
-        $idList = UserIdList::fromIds([
+        // -- Arrange
+        $ids = [
             UserId::generateRandom(),
             UserId::generateRandom(),
             UserId::generateRandom(),
-        ]);
+        ];
+
+        // -- Act
+        $userIdList = UserIdList::fromIds($ids);
+
+        // -- Assert
+        self::assertCount(3, $userIdList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::fromIdStrings
+     */
+    public function id_list_construction_from_id_strings_works(): void
+    {
+        // -- Arrange
+        $idStrings = [
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+        ];
+
+        // -- Act
+        $userIdList = UserIdList::fromIdStrings($idStrings);
+
+        // -- Assert
+        self::assertCount(3, $userIdList);
 
         // -- Assert
         self::assertCount(3, $idList->ids);
