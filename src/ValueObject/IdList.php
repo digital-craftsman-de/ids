@@ -176,10 +176,20 @@ abstract class IdList implements \IteratorAggregate, \Countable
     /** @param T $id */
     public function removeId(Id $id): static
     {
-        $ids = array_filter(
-            $this->ids,
-            static fn (Id $currentId) => $currentId->isNotEqualTo($id),
-        );
+        $wasIdFound = false;
+
+        $ids = [];
+        foreach ($this->ids as $currentId) {
+            if ($currentId->isNotEqualTo($id)) {
+                $ids[] = $currentId;
+            } else {
+                $wasIdFound = true;
+            }
+        }
+
+        if (!$wasIdFound) {
+            throw new IdListDoesNotContainId($id);
+        }
 
         return new static($ids);
     }

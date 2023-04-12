@@ -443,6 +443,28 @@ final class IdListTest extends TestCase
         self::assertTrue($removedList->notContainsId($idToRemove));
     }
 
+    /**
+     * @test
+     *
+     * @covers ::removeId
+     */
+    public function remove_id_fails_when_id_is_not_in_list(): void
+    {
+        // -- Assert
+        $this->expectException(IdListDoesNotContainId::class);
+
+        // -- Arrange
+        $idToRemove = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            UserId::generateRandom(),
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act
+        $idList->removeId($idToRemove);
+    }
+
     // -- Diff
 
     /**
