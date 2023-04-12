@@ -23,7 +23,7 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
     }
 
     /**
-     * @param class-string                      $type
+     * @param string                            $type
      * @param array<string, string|int|boolean> $context
      */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
