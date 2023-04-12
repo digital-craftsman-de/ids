@@ -131,7 +131,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
 
         $newIds = $this->ids;
         foreach ($idList as $id) {
-            $newIds[] = $id;
+            $newIds[$id->value] = $id;
         }
 
         return new static($newIds);
@@ -145,7 +145,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         }
 
         $ids = $this->ids;
-        $ids[] = $id;
+        $ids[$id->value] = $id;
 
         return new static($ids);
     }
@@ -156,7 +156,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         $newIds = $this->ids;
         foreach ($idList as $id) {
             if ($this->notContainsId($id)) {
-                $newIds[] = $id;
+                $newIds[$id->value] = $id;
             }
         }
 
@@ -179,14 +179,12 @@ abstract class IdList implements \IteratorAggregate, \Countable
     {
         $this->mustContainEveryId($idList);
 
-        $ids = [];
-        foreach ($this->ids as $id) {
-            if ($idList->notContainsId($id)) {
-                $ids[] = $id;
-            }
+        $idsWithoutIdsToRemove = $this->ids;
+        foreach ($idList as $id) {
+            unset($idsWithoutIdsToRemove[$id->value]);
         }
 
-        return new static($ids);
+        return new static($idsWithoutIdsToRemove);
     }
 
     /** @param T $id */
