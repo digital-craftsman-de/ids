@@ -6,6 +6,7 @@ namespace DigitalCraftsman\Ids\Doctrine;
 
 use DigitalCraftsman\Ids\ValueObject\Id;
 use DigitalCraftsman\Ids\ValueObject\IdList;
+use DigitalCraftsman\Ids\ValueObject\OrderedIdList;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
@@ -13,7 +14,7 @@ abstract class IdListType extends Type
 {
     abstract protected function getTypeName(): string;
 
-    /** @psalm-return class-string<IdList> */
+    /** @psalm-return class-string<IdList|OrderedIdList> */
     abstract protected function getIdListClass(): string;
 
     /** @psalm-return class-string<Id> */
@@ -25,7 +26,7 @@ abstract class IdListType extends Type
         return $platform->getJsonTypeDeclarationSQL($column);
     }
 
-    /** @param ?IdList $value */
+    /** @param IdList|OrderedIdList|null $value */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -55,7 +56,7 @@ abstract class IdListType extends Type
         }
 
         /** @noinspection PhpUndefinedMethodInspection */
-        return $idListClass::fromIds($ids);
+        return new $idListClass($ids);
     }
 
     /** @codeCoverageIgnore */

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Serializer;
 
-use DigitalCraftsman\Ids\ValueObject\Id;
 use DigitalCraftsman\Ids\ValueObject\IdList;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use DigitalCraftsman\Ids\ValueObject\OrderedIdList;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,26 +13,33 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class IdListNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
-     * @param IdList|object                     $data
+     * @param IdList|OrderedIdList|object       $data
      * @param array<string, string|int|boolean> $context
      */
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return $data instanceof IdList;
+        return $data instanceof IdList
+            || $data instanceof OrderedIdList;
     }
 
     /**
-     * @param class-string                      $type
+     * @param string                            $type
      * @param array<string, string|int|boolean> $context
      */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
-        return class_exists($type)
-            && get_parent_class($type) === IdList::class;
+        if (!class_exists($type)) {
+            return false;
+        }
+
+        $parentClass = get_parent_class($type);
+
+        return $parentClass === IdList::class
+            || $parentClass === OrderedIdList::class;
     }
 
     /**
-     * @param IdList                            $object
+     * @param IdList|OrderedIdList              $object
      * @param array<string, string|int|boolean> $context
      *
      * @return array<int, string>
@@ -44,50 +50,29 @@ final class IdListNormalizer implements NormalizerInterface, DenormalizerInterfa
     }
 
     /**
-     * @param ?array<int, string>               $data
-     * @param class-string<IdList>              $type
-     * @param array<string, string|int|boolean> $context
+     * @param ?array<int, string>                $data
+     * @param class-string<IdList|OrderedIdList> $type
+     * @param array<string, string|int|boolean>  $context
      */
-    public function denormalize($data, $type, $format = null, array $context = []): ?IdList
+    public function denormalize($data, $type, $format = null, array $context = []): IdList|OrderedIdList|null
     {
         if ($data === null) {
             return null;
         }
 
-        if (!$this->isValid($data)) {
-            throw new UnexpectedValueException('Expected a valid list.');
-        }
-
         $idClass = $type::handlesIdClass();
 
-        /** @var array<int, Id> $ids */
-        $ids = array_map(
-            static fn (string $id) => new $idClass($id),
-            $data,
-        );
+        $ids = [];
+        foreach ($data as $string) {
+            $ids[] = new $idClass($string);
+        }
 
-        return $type::fromIds($ids);
+        return new $type($ids);
     }
 
     /** @codeCoverageIgnore */
     public function hasCacheableSupportsMethod(): bool
     {
-        return true;
-    }
-
-    /**
-     * Uuid::isValid($string) is not in here on purpose as the Id object itself calls that method on construction.
-     *
-     * @param array<int, string> $data
-     */
-    private function isValid(array $data): bool
-    {
-        foreach ($data as $string) {
-            if (!is_string($string)) {
-                return false;
-            }
-        }
-
         return true;
     }
 }

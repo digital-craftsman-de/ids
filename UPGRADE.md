@@ -6,6 +6,12 @@
 
 The `removeId` method of `IdList` now behaves like the `addId` method in that it throws an exception (`IdListDoesNotContainId`) when the id that has to be removed, doesn't exist in the list. Use the new `removeIdWhenInList` method if you want to remove an id without caring whether it's in the list or not.
 
+### Internal ids of `IdList` now use the string representation of an id as key instead of the index
+
+This greatly improves performance of large lists. If you still need them with an index, or ordered, you can use the new `OrderedIdList` for your id list classes. Those lists won't benefit from the performance improvement though.
+
+The method `isInSameOrder` was removed from `IdList` but is still available on the `OrderedIdList`.
+
 ## From 0.6.* to 0.7.0
 
 ### Updated behaviour of `IdList::diff`

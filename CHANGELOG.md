@@ -3,6 +3,7 @@
 ## 0.8.0
 
 - **[Breaking change](./UPGRADE.md#updated-behaviour-of-idlistremoveid)**: Updated method `removeId` from `IdList` to throw an exception when the id is not in the list. This is the same behaviour as the `addId` method has.
+- **[Breaking change](./UPGRADE.md#internal-ids-of-idlist-now-use-the-string-representation-of-an-id-as-key-instead-of-the-index)**: Performance improvements for larger lists. Internal ids of `IdList` now use the string representation of an id as key instead of the index.
 - Added new method `removeIdWhenInList(Id $id): static` to `IdList`.
 - Added new method `addIds(self $idList): static` to `IdList`.
 - Added new method `addIdsWhenNotInList(self $idList): static` to `IdList`.

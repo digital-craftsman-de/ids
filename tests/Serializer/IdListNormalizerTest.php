@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Serializer;
 
+use DigitalCraftsman\Ids\Test\ValueObject\OrderedUserIdList;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 
 /** @coversDefaultClass \DigitalCraftsman\Ids\Serializer\IdListNormalizer */
 final class IdListNormalizerTest extends TestCase
@@ -17,7 +17,6 @@ final class IdListNormalizerTest extends TestCase
      *
      * @covers ::normalize
      * @covers ::denormalize
-     * @covers ::isValid
      */
     public function id_list_normalization_and_denormalization_works(): void
     {
@@ -59,29 +58,17 @@ final class IdListNormalizerTest extends TestCase
     /**
      * @test
      *
-     * @covers ::denormalize
-     * @covers ::isValid
+     * @covers ::supportsNormalization
      */
-    public function id_list_denormalization_fails_with_invalid_values(): void
+    public function supports_normalization_for_list(): void
     {
-        // -- Assert
-        $this->expectException(UnexpectedValueException::class);
-
         // -- Arrange
+        $userIdList = new UserIdList([]);
+
         $normalizer = new IdListNormalizer();
 
-        $invalidData = [
-            (string) UserId::generateRandom(),
-            15,
-        ];
-
-        // -- Act
-        /**
-         * @psalm-suppress InvalidScalarArgument
-         *
-         * @phpstan-ignore-next-line
-         */
-        $normalizer->denormalize($invalidData, UserIdList::class);
+        // -- Act & Assert
+        self::assertTrue($normalizer->supportsNormalization($userIdList));
     }
 
     /**
@@ -89,10 +76,10 @@ final class IdListNormalizerTest extends TestCase
      *
      * @covers ::supportsNormalization
      */
-    public function supports_normalization(): void
+    public function supports_normalization_for_ordered_list(): void
     {
         // -- Arrange
-        $userIdList = new UserIdList([]);
+        $userIdList = new OrderedUserIdList([]);
 
         $normalizer = new IdListNormalizer();
 
@@ -121,7 +108,7 @@ final class IdListNormalizerTest extends TestCase
      *
      * @covers ::supportsDenormalization
      */
-    public function supports_denormalization(): void
+    public function supports_denormalization_for_id_list(): void
     {
         // -- Arrange
         $idListData = [
@@ -141,7 +128,47 @@ final class IdListNormalizerTest extends TestCase
      *
      * @covers ::supportsDenormalization
      */
-    public function supports_denormalization_fails_with_wrong_type(): void
+    public function supports_denormalization_for_ordered_id_list(): void
+    {
+        // -- Arrange
+        $idListData = [
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+        ];
+
+        $normalizer = new IdListNormalizer();
+
+        // -- Act & Assert
+        self::assertTrue($normalizer->supportsDenormalization($idListData, OrderedUserIdList::class));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::supportsDenormalization
+     */
+    public function supports_denormalization_with_array_of_ids(): void
+    {
+        // -- Arrange
+        $idListData = [
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+            (string) UserId::generateRandom(),
+        ];
+
+        $normalizer = new IdListNormalizer();
+
+        // -- Act & Assert
+        self::assertFalse($normalizer->supportsDenormalization($idListData, sprintf('%s[]', UserId::class)));
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::supportsDenormalization
+     */
+    public function supports_denormalization_with_wrong_type(): void
     {
         // -- Arrange
         $idListData = [
