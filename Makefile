@@ -54,7 +54,7 @@ reset: .reset
 
 ## install			Install PHP dependencies with the default PHP version (8.1).
 .PHONY: .install
-install: install-8.1
+install: install-8.2
 
 ## install-8.2			Install PHP dependencies with PHP 8.2.
 .PHONY: install-8.2
