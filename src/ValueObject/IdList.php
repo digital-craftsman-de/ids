@@ -459,11 +459,7 @@ abstract class IdList implements \IteratorAggregate, \Countable
         }
     }
 
-    /**
-     * @param T $id
-     *
-     * @throws IdListIsNotEmpty
-     */
+    /** @throws IdListIsNotEmpty */
     public function mustBeEmpty(): void
     {
         if ($this->isNotEmpty()) {

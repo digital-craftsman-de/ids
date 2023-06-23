@@ -1,4 +1,4 @@
-FROM php:8.1-fpm-alpine3.15
+FROM php:8.3.0alpha1-fpm-alpine3.18
 
 RUN apk add --update \
     autoconf \
@@ -9,7 +9,8 @@ RUN apk add --update \
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+# XDebug is not yet compatible with PHP 8.3
+#RUN pecl install xdebug-3.3.0 && docker-php-ext-enable xdebug
 
 RUN chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions uuid
