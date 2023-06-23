@@ -8,13 +8,12 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
 
-/** @psalm-immutable */
-abstract class Id implements \Stringable
+abstract readonly class Id implements \Stringable
 {
     // Construction
 
     final public function __construct(
-        public readonly string $value,
+        public string $value,
     ) {
         if (!uuid_is_valid($value)) {
             throw new InvalidId($value);

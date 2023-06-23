@@ -27,10 +27,10 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
  *
  * @psalm-suppress UnsafeGenericInstantiation
  */
-abstract class IdList implements \IteratorAggregate, \Countable
+abstract readonly class IdList implements \IteratorAggregate, \Countable
 {
     /** @var array<string, T> */
-    public readonly array $ids;
+    public array $ids;
 
     // -- Construction
 

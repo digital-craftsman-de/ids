@@ -6,7 +6,6 @@ namespace DigitalCraftsman\Ids\Test\ValueObject;
 
 use DigitalCraftsman\Ids\ValueObject\Id;
 
-/** @psalm-immutable */
-class UserId extends Id
+readonly class UserId extends Id
 {
 }

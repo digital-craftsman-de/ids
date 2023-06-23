@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class IdListNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
+final readonly class IdListNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
 {
     /**
      * @param IdList|OrderedIdList|object       $data

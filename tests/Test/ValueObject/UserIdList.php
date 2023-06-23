@@ -7,7 +7,7 @@ namespace DigitalCraftsman\Ids\Test\ValueObject;
 use DigitalCraftsman\Ids\ValueObject\IdList;
 
 /** @extends IdList<UserId> */
-final class UserIdList extends IdList
+final readonly class UserIdList extends IdList
 {
     public static function handlesIdClass(): string
     {
