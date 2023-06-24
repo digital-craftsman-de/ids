@@ -10,6 +10,44 @@ Support for PHP 8.1 was dropped, so you have to upgrade to at least PHP 8.2.
 
 The `Id` and `IdList` classes are now `readonly`. This means you need to add the `readonly` keyword to your classes that extend from them. You can remove `@psalm-immutable` annotations from your classes.
 
+Before:
+
+```php
+/** @psalm-immutable **/
+final class UserId extends Id
+{
+}
+
+/**
+ * @psalm-immutable 
+ * @extends IdList<UserId> 
+ */
+final class UserIdList extends IdList
+{
+    public static function handlesIdClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
+After:
+
+```php
+final readonly class UserId extends Id
+{
+}
+
+/** @extends IdList<UserId> */
+final readonly class UserIdList extends IdList
+{
+    public static function handlesIdClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
 ## From 0.7.* to 0.8.0
 
 ### Updated behaviour of `IdList::removeId`
