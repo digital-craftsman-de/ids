@@ -133,12 +133,12 @@ php-mutation-testing:
 ## php-8.2-tests-ci		Run the tests for PHP 8.2 for CI.
 .PHONY: php-8.2-tests-ci
 php-8.2-tests-ci:
-	docker-compose run --rm php-8.2 ./vendor/bin/phpunit
+	docker-compose run --rm php-8.2 ./vendor/bin/phpunit --coverage-clover ./coverage.xml
 
 ## php-8.3-tests-ci		Run the tests for PHP 8.3 for CI.
 .PHONY: php-8.3-tests-ci
 php-8.3-tests-ci:
-	docker-compose run --rm php-8.3 ./vendor/bin/phpunit --coverage-clover ./coverage.xml
+	docker-compose run --rm php-8.3 ./vendor/bin/phpunit
 
 ## php-mutation-testing-ci	Run mutation testing for CI.
 .PHONY: php-mutation-testing-ci
