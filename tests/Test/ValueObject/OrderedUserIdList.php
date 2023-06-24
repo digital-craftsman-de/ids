@@ -7,7 +7,7 @@ namespace DigitalCraftsman\Ids\Test\ValueObject;
 use DigitalCraftsman\Ids\ValueObject\OrderedIdList;
 
 /** @extends OrderedIdList<UserId> */
-final class OrderedUserIdList extends OrderedIdList
+final readonly class OrderedUserIdList extends OrderedIdList
 {
     public static function handlesIdClass(): string
     {

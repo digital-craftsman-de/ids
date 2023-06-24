@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0
+
+- **[Breaking change](./UPGRADE.md#switch-your-id-and-idlist-classes-to-readonly)**: Added `readonly` keyword to `Id` and `IdList`.
+- Drop support for PHP 8.1.
+- Add support for PHP 8.3.
+
 ## 0.8.0
 
 - **[Breaking change](./UPGRADE.md#updated-behaviour-of-idlistremoveid)**: Updated method `removeId` from `IdList` to throw an exception when the id is not in the list. This is the same behaviour as the `addId` method has.

@@ -28,10 +28,10 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
  *
  * @psalm-suppress UnsafeGenericInstantiation
  */
-abstract class OrderedIdList implements \IteratorAggregate, \Countable
+abstract readonly class OrderedIdList implements \IteratorAggregate, \Countable
 {
     /** @var array<int, T> */
-    public readonly array $ids;
+    public array $ids;
 
     // -- Construction
 
@@ -495,11 +495,7 @@ abstract class OrderedIdList implements \IteratorAggregate, \Countable
         }
     }
 
-    /**
-     * @param T $id
-     *
-     * @throws IdListIsNotEmpty
-     */
+    /** @throws IdListIsNotEmpty */
     public function mustBeEmpty(): void
     {
         if ($this->isNotEmpty()) {

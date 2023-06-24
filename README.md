@@ -20,7 +20,7 @@ composer require digital-craftsman/ids
 
 It's recommended that you install the [`uuid` PHP extension](https://pecl.php.net/package/uuid) for better performance of id creation and validation.  `symfony/polyfill-uuid` is used as a fallback. You can [prevent installing the polyfill](./docs/prevent-polyfill-usage.md) when you've installed the PHP extension.
 
-> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/ids:0.8.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
+> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/ids:0.9.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
 
 ## Working with ids
 
@@ -37,8 +37,7 @@ namespace App\ValueObject;
 
 use DigitalCraftsman\Ids\ValueObject\Id;
 
-/** @psalm-immutable */
-final class UserId extends Id
+final readonly class UserId extends Id
 {
 }
 ```
@@ -66,12 +65,12 @@ If you're injecting the `SerializerInterface` directly, there is nothing to do. 
 ```php
 namespace App\DTO;
 
-final class UserPayload
+final readonly class UserPayload
 {
     public function __construct(
-        UserId $userId,
-        string $firstName,
-        string $lastName,
+        public UserId $userId,
+        public string $firstName,
+        public string $lastName,
     ) {
     }
 }
@@ -182,7 +181,7 @@ namespace App\ValueObject;
 use DigitalCraftsman\Ids\ValueObject\IdList;
 
 /** @extends IdList<UserId> */
-final class UserIdList extends IdLIst
+final readonly class UserIdList extends IdLIst
 {
     public static function handlesIdClass(): string
     {
