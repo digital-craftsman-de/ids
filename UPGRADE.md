@@ -1,5 +1,15 @@
 # Upgrade guide
 
+## From 0.8.* to 0.9.0
+
+### Upgrade to at least PHP 8.2
+
+Support for PHP 8.1 was dropped, so you have to upgrade to at least PHP 8.2.
+
+### Switch your `Id` and `IdList` classes to `readonly`
+
+The `Id` and `IdList` classes are now `readonly`. This means you need to add the `readonly` keyword to your classes that extend from them. You can remove `@psalm-immutable` annotations from your classes.
+
 ## From 0.7.* to 0.8.0
 
 ### Updated behaviour of `IdList::removeId`
