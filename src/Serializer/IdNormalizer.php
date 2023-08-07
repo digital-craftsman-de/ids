@@ -49,6 +49,18 @@ final readonly class IdNormalizer implements NormalizerInterface, DenormalizerIn
         return $type::fromString($data);
     }
 
+    /**
+     * @return array<class-string, bool>
+     *
+     * @codeCoverageIgnore
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Id::class => true,
+        ];
+    }
+
     /** @codeCoverageIgnore */
     public function hasCacheableSupportsMethod(): bool
     {

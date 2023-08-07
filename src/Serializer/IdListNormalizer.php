@@ -70,6 +70,19 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
         return new $type($ids);
     }
 
+    /**
+     * @return array<class-string, bool>
+     *
+     * @codeCoverageIgnore
+     */
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            IdList::class => true,
+            OrderedIdList::class => true,
+        ];
+    }
+
     /** @codeCoverageIgnore */
     public function hasCacheableSupportsMethod(): bool
     {
