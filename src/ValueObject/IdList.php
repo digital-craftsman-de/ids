@@ -74,6 +74,25 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
         return new static($ids);
     }
 
+    /**
+     * @template TT of T
+     *
+     * @param callable(mixed):Id $mapFunction
+     *
+     * @psalm-param callable(mixed):TT $mapFunction
+     */
+    public static function fromMap(
+        iterable $items,
+        callable $mapFunction,
+    ): self {
+        $ids = [];
+        foreach ($items as $item) {
+            $ids[] = $mapFunction($item);
+        }
+
+        return new static($ids);
+    }
+
     final public static function emptyList(): static
     {
         return new static([]);

@@ -152,6 +152,42 @@ final class IdListTest extends TestCase
     /**
      * @test
      *
+     * @covers ::fromMap
+     */
+    public function id_list_construction_from_map_works(): void
+    {
+        // -- Arrange
+        $users = [
+            [
+                'id' => (string) UserId::generateRandom(),
+                'name' => 'Tom',
+            ],
+            [
+                'id' => (string) UserId::generateRandom(),
+                'name' => 'Ralf',
+            ],
+            [
+                'id' => (string) UserId::generateRandom(),
+                'name' => 'Marc',
+            ],
+        ];
+
+        // -- Act
+        $userIdList = UserIdList::fromMap(
+            $users,
+            static fn (array $user): UserId => UserId::fromString($user['id']),
+        );
+
+        // -- Assert
+        self::assertCount(3, $userIdList);
+        self::assertTrue($userIdList->containsId(UserId::fromString($users[0]['id'])));
+        self::assertTrue($userIdList->containsId(UserId::fromString($users[1]['id'])));
+        self::assertTrue($userIdList->containsId(UserId::fromString($users[2]['id'])));
+    }
+
+    /**
+     * @test
+     *
      * @covers ::emptyList
      */
     public function empty_list_works(): void
