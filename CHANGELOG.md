@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.10.0
+
+- Added new method `mustNotBeEqualTo(self $idList): void` to `IdList`.
+- Added new method `mustNotBeEqualTo(self $idList): void` to `OrderedIdList`.
+
 ## 0.9.0
 
 - **[Breaking change](./UPGRADE.md#switch-your-id-and-idlist-classes-to-readonly)**: Added `readonly` keyword to `Id` and `IdList`.

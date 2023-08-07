@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 0.9.* to 0.10.0
+
+No changes necessary.
+
 ## From 0.8.* to 0.9.0
 
 ### Upgrade to at least PHP 8.2

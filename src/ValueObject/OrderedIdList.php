@@ -15,6 +15,7 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainSomeIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustNotBeEqual;
 
 /**
  * @template T extends Id
@@ -508,6 +509,14 @@ abstract readonly class OrderedIdList implements \IteratorAggregate, \Countable
     {
         if ($this->isNotEqualTo($idList)) {
             throw new IdListsMustBeEqual();
+        }
+    }
+
+    /** @param static $idList */
+    public function mustNotBeEqualTo(self $idList): void
+    {
+        if ($this->isEqualTo($idList)) {
+            throw new IdListsMustNotBeEqual();
         }
     }
 
