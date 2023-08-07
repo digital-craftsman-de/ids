@@ -4,6 +4,7 @@
 
 - Added new method `mustNotBeEqualTo(self $idList): void` to `IdList`.
 - Added new method `mustNotBeEqualTo(self $idList): void` to `OrderedIdList`.
+- Added support for `getSupportedTypes` to `IdNormalizer` and `IdListNormalizer` for new Symfony 6.3 serializer performance improvements.
 
 ## 0.9.0
 
