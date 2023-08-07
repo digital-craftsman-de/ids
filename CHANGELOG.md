@@ -4,6 +4,7 @@
 
 - Added new method `mustNotBeEqualTo(self $idList): void` to `IdList`.
 - Added new method `mustNotBeEqualTo(self $idList): void` to `OrderedIdList`.
+- Added new method `fromMap(iterable $items, callable $mapFunction): static` to `IdList`.
 
 ## 0.9.0
 
