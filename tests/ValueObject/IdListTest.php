@@ -19,6 +19,7 @@ use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainSomeIds;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
+use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustNotBeEqual;
 use PHPUnit\Framework\TestCase;
 
 /** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\IdList */
@@ -1588,7 +1589,7 @@ final class IdListTest extends TestCase
      *
      * @covers ::mustBeEqualTo
      */
-    public function must_not_be_equal_to(): void
+    public function must_be_equal_to(): void
     {
         // -- Assert
         $this->expectException(IdListsMustBeEqual::class);
@@ -1613,6 +1614,40 @@ final class IdListTest extends TestCase
 
         // -- Act
         $originalList->mustBeEqualTo($partialList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotBeEqualTo
+     */
+    public function must_not_be_equal_to(): void
+    {
+        // -- Assert
+        $this->expectException(IdListsMustNotBeEqual::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $originalList = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $sameListInDifferentOrder = UserIdList::fromIds([
+            $idPaul,
+            $idAnton,
+            $idMarkus,
+            $idTom,
+        ]);
+
+        // -- Act
+        $originalList->mustNotBeEqualTo($sameListInDifferentOrder);
     }
 
     // -- Count
