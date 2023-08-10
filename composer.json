@@ -4,8 +4,8 @@
   "type": "symfony-bundle",
   "require": {
     "php": "8.2.*|8.3.*",
-    "symfony/framework-bundle": "^5.4|^6.0",
-    "symfony/serializer": "^5.4|^6.0",
+    "symfony/framework-bundle": "^6.3",
+    "symfony/serializer": "^6.3",
     "doctrine/dbal": "^2.13.8|^3.3.6",
     "symfony/polyfill-uuid": "^1.26"
   },

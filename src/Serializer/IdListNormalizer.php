@@ -6,11 +6,10 @@ namespace DigitalCraftsman\Ids\Serializer;
 
 use DigitalCraftsman\Ids\ValueObject\IdList;
 use DigitalCraftsman\Ids\ValueObject\OrderedIdList;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final readonly class IdListNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
+final readonly class IdListNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * @param IdList|OrderedIdList|object       $data
@@ -70,9 +69,16 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
         return new $type($ids);
     }
 
-    /** @codeCoverageIgnore */
-    public function hasCacheableSupportsMethod(): bool
+    /**
+     * @return array<class-string, bool>
+     *
+     * @codeCoverageIgnore
+     */
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return [
+            IdList::class => true,
+            OrderedIdList::class => true,
+        ];
     }
 }

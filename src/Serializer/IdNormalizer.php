@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\Serializer;
 
 use DigitalCraftsman\Ids\ValueObject\Id;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final readonly class IdNormalizer implements NormalizerInterface, DenormalizerInterface, CacheableSupportsMethodInterface
+final readonly class IdNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /** @param array<string, string|int|boolean> $context */
     public function supportsNormalization($data, $format = null, array $context = []): bool
@@ -49,9 +48,15 @@ final readonly class IdNormalizer implements NormalizerInterface, DenormalizerIn
         return $type::fromString($data);
     }
 
-    /** @codeCoverageIgnore */
-    public function hasCacheableSupportsMethod(): bool
+    /**
+     * @return array<class-string, bool>
+     *
+     * @codeCoverageIgnore
+     */
+    public function getSupportedTypes(?string $format): array
     {
-        return true;
+        return [
+            Id::class => true,
+        ];
     }
 }
