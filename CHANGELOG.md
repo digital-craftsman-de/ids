@@ -2,6 +2,7 @@
 
 ## 0.10.0
 
+- **[Breaking change](./UPGRADE.md#dropped-support-for-symfony-below-63)**: Dropped support for Symfony below 6.3.
 - Added new method `mustNotBeEqualTo(self $idList): void` to `IdList`.
 - Added new method `mustNotBeEqualTo(self $idList): void` to `OrderedIdList`.
 - Added new method `fromMap(iterable $items, callable $mapFunction): static` to `IdList`.

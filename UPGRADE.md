@@ -2,7 +2,9 @@
 
 ## From 0.9.* to 0.10.0
 
-No changes necessary.
+### Dropped support for Symfony below 6.3
+
+Support for Symfony below 6.3 was dropped, so you have to upgrade to at least Symfony 6.3. This is the only way to prevent deprecations from being thrown for the cachable support.
 
 ## From 0.8.* to 0.9.0
 
