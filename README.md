@@ -135,6 +135,8 @@ doctrine:
       user_id: App\Doctrine\UserIdType
 ```
 
+Alternatively you can also add a compiler pass to [register the types automatically](https://blog.digital-craftsman.de/automatically-register-doctrine-types-in-symfony-with-compiler-pass/).
+
 Then you're already able to add it into your entity like this:
 
 ```php
