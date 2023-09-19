@@ -5,20 +5,18 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\Serializer;
 
 use DigitalCraftsman\Ids\ValueObject\IdList;
-use DigitalCraftsman\Ids\ValueObject\OrderedIdList;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final readonly class IdListNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
-     * @param IdList|OrderedIdList|object       $data
+     * @param IdList|object                     $data
      * @param array<string, string|int|boolean> $context
      */
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return $data instanceof IdList
-            || $data instanceof OrderedIdList;
+        return $data instanceof IdList;
     }
 
     /**
@@ -33,12 +31,11 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
 
         $parentClass = get_parent_class($type);
 
-        return $parentClass === IdList::class
-            || $parentClass === OrderedIdList::class;
+        return $parentClass === IdList::class;
     }
 
     /**
-     * @param IdList|OrderedIdList              $object
+     * @param IdList                            $object
      * @param array<string, string|int|boolean> $context
      *
      * @return array<int, string>
@@ -49,11 +46,11 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
     }
 
     /**
-     * @param ?array<int, string>                $data
-     * @param class-string<IdList|OrderedIdList> $type
-     * @param array<string, string|int|boolean>  $context
+     * @param ?array<int, string>               $data
+     * @param class-string<IdList>              $type
+     * @param array<string, string|int|boolean> $context
      */
-    public function denormalize($data, $type, $format = null, array $context = []): IdList|OrderedIdList|null
+    public function denormalize($data, $type, $format = null, array $context = []): IdList|null
     {
         if ($data === null) {
             return null;
@@ -78,7 +75,6 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
     {
         return [
             IdList::class => true,
-            OrderedIdList::class => true,
         ];
     }
 }
