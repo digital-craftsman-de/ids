@@ -9,12 +9,12 @@ use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 
 final class UserIdType extends IdType
 {
-    protected function getTypeName(): string
+    public static function getTypeName(): string
     {
         return 'user_id';
     }
 
-    protected function getIdClass(): string
+    public static function getClass(): string
     {
         return UserId::class;
     }

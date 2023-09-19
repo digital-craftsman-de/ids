@@ -10,17 +10,17 @@ use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 
 final class OrderedUserIdListType extends IdListType
 {
-    protected function getTypeName(): string
+    public static function getTypeName(): string
     {
         return 'ordered_user_id_list';
     }
 
-    protected function getIdListClass(): string
+    public static function getClass(): string
     {
         return OrderedUserIdList::class;
     }
 
-    protected function getIdClass(): string
+    public static function getIdClass(): string
     {
         return UserId::class;
     }

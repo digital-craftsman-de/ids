@@ -10,17 +10,17 @@ use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 
 final class UserIdListType extends IdListType
 {
-    protected function getTypeName(): string
+    public static function getTypeName(): string
     {
         return 'user_id_list';
     }
 
-    protected function getIdListClass(): string
+    public static function getClass(): string
     {
         return UserIdList::class;
     }
 
-    protected function getIdClass(): string
+    public static function getIdClass(): string
     {
         return UserId::class;
     }

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.0
+
+- **[Breaking change](./UPGRADE.md#changed-abstract-methods-of-types)**: Changed abstract methods of types to be `public` and `static` to enable automatic registration.
+
 ## 0.10.0
 
 - **[Breaking change](./UPGRADE.md#dropped-support-for-symfony-below-63)**: Dropped support for Symfony below 6.3.

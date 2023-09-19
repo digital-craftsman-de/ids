@@ -1,5 +1,90 @@
 # Upgrade guide
 
+## From 0.10.* to 0.11.0
+
+### Changed abstract methods of types
+
+They are now `public` and `static` to enable automatic registration.
+And the function `getIdListClass` from `IdListType` was renamed to `getClass`.
+
+Before:
+
+```php
+final class UserIdType extends IdType
+{
+    protected function getTypeName(): string
+    {
+        return 'user_id';
+    }
+
+    protected function getClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
+After:
+
+```php
+final class UserIdType extends IdType
+{
+    public static function getTypeName(): string
+    {
+        return 'user_id';
+    }
+
+    public static function getClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
+Before:
+
+```php
+final class UserIdListType extends IdListType
+{
+    protected function getTypeName(): string
+    {
+        return 'user_id_list';
+    }
+
+    protected function getIdListClass(): string
+    {
+        return UserIdList::class;
+    }
+
+    protected function getIdClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
+After:
+
+```php
+final class UserIdListType extends IdListType
+{
+    public static function getTypeName(): string
+    {
+        return 'user_id_list';
+    }
+
+    public static function getClass(): string
+    {
+        return UserIdList::class;
+    }
+
+    public static function getIdClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
 ## From 0.9.* to 0.10.0
 
 ### Dropped support for Symfony below 6.3
