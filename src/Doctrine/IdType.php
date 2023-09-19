@@ -10,10 +10,10 @@ use Doctrine\DBAL\Types\Type;
 
 abstract class IdType extends Type
 {
-    abstract protected function getTypeName(): string;
+    abstract public static function getTypeName(): string;
 
     /** @return class-string<Id> */
-    abstract protected function getIdClass(): string;
+    abstract public static function getClass(): string;
 
     /** @codeCoverageIgnore */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
@@ -38,13 +38,13 @@ abstract class IdType extends Type
             return null;
         }
 
-        return $this->getIdClass()::fromString($value);
+        return static::getClass()::fromString($value);
     }
 
     /** @codeCoverageIgnore */
     public function getName(): string
     {
-        return $this->getTypeName();
+        return static::getTypeName();
     }
 
     /** @codeCoverageIgnore */

@@ -12,13 +12,13 @@ use Doctrine\DBAL\Types\Type;
 
 abstract class IdListType extends Type
 {
-    abstract protected function getTypeName(): string;
+    abstract public static function getTypeName(): string;
 
     /** @psalm-return class-string<IdList|OrderedIdList> */
-    abstract protected function getIdListClass(): string;
+    abstract public static function getClass(): string;
 
     /** @psalm-return class-string<Id> */
-    abstract protected function getIdClass(): string;
+    abstract public static function getIdClass(): string;
 
     /** @codeCoverageIgnore */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
@@ -43,26 +43,24 @@ abstract class IdListType extends Type
             return null;
         }
 
-        $idListClass = $this->getIdListClass();
-        $idClass = $this->getIdClass();
+        $idListClass = static::getClass();
+        $idClass = static::getIdClass();
 
         /** @var array<int, string> $idStrings */
         $idStrings = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
 
         $ids = [];
         foreach ($idStrings as $idString) {
-            /** @noinspection PhpUndefinedMethodInspection */
             $ids[] = new $idClass($idString);
         }
 
-        /** @noinspection PhpUndefinedMethodInspection */
         return new $idListClass($ids);
     }
 
     /** @codeCoverageIgnore */
     public function getName(): string
     {
-        return $this->getTypeName();
+        return static::getTypeName();
     }
 
     /** @codeCoverageIgnore */
