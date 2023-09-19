@@ -180,6 +180,7 @@ final class IdListTest extends TestCase
 
         // -- Assert
         self::assertCount(3, $userIdList);
+        self::assertSame(UserIdList::class, $userIdList::class);
         self::assertTrue($userIdList->containsId(UserId::fromString($users[0]['id'])));
         self::assertTrue($userIdList->containsId(UserId::fromString($users[1]['id'])));
         self::assertTrue($userIdList->containsId(UserId::fromString($users[2]['id'])));
