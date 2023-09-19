@@ -84,7 +84,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
     public static function fromMap(
         iterable $items,
         callable $mapFunction,
-    ): self {
+    ): static {
         $ids = [];
         foreach ($items as $item) {
             $ids[] = $mapFunction($item);
