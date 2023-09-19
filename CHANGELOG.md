@@ -3,6 +3,7 @@
 ## 0.11.0
 
 - **[Breaking change](./UPGRADE.md#changed-abstract-methods-of-types)**: Changed abstract methods of types to be `public` and `static` to enable automatic registration.
+- Fixed return type of `IdList::fromMap` to be `static` instead of `self`.
 
 ## 0.10.0
 
