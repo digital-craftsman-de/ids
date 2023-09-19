@@ -85,6 +85,10 @@ final class UserIdListType extends IdListType
 }
 ```
 
+### Removed `OrderedIdList`
+
+The `OrderedIdList` was removed. If you need an ordered list, you can copy it from the previous version and manage it yourself.
+
 ## From 0.9.* to 0.10.0
 
 ### Dropped support for Symfony below 6.3

@@ -3,6 +3,7 @@
 ## 0.11.0
 
 - **[Breaking change](./UPGRADE.md#changed-abstract-methods-of-types)**: Changed abstract methods of types to be `public` and `static` to enable automatic registration.
+- **[Breaking change](./UPGRADE.md#removed-orderedidlist)**: Removed `OrderedIdList` as there weren't enough use cases for it.
 
 ## 0.10.0
 
