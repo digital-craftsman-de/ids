@@ -4,13 +4,13 @@
   "type": "symfony-bundle",
   "require": {
     "php": "8.2.*|8.3.*",
-    "symfony/framework-bundle": "^6.3",
-    "symfony/serializer": "^6.3",
+    "symfony/framework-bundle": "^6.3|^7.0",
+    "symfony/serializer": "^6.3|^7.0",
     "doctrine/dbal": "^2.13.8|^3.3.6",
     "symfony/polyfill-uuid": "^1.26"
   },
   "require-dev": {
-    "vimeo/psalm": "^4.12",
+    "vimeo/psalm": "^5.17",
     "friendsofphp/php-cs-fixer": "^3.3",
     "phpunit/phpunit": "^9.5",
     "infection/infection": "^0.26.15",
