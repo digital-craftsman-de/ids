@@ -52,9 +52,9 @@ reset: .reset
 .PHONY: .reset
 .reset: .down .install .up
 
-## install			Install PHP dependencies with the default PHP version (8.1).
+## install			Install PHP dependencies with the default PHP version (8.3).
 .PHONY: .install
-install: install-8.2
+install: install-8.3
 
 ## install-8.2			Install PHP dependencies with PHP 8.2.
 .PHONY: install-8.2
@@ -66,9 +66,9 @@ install-8.2:
 install-8.3:
 	docker-compose run --rm php-8.3 composer install
 
-## php-cli			Enter a shell for the default PHP version (8.2).
+## php-cli			Enter a shell for the default PHP version (8.3).
 .PHONY: php-cli
-php-cli: php-8.2-cli
+php-cli: php-8.3-cli
 
 ## php-8.2-cli			Enter a shell for PHP 8.2.
 .PHONY: php-8.2-cli
