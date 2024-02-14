@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.0
+
+- Dropped `final` keyword from method `generateRandom(): static` from `Id`, so that it can be overridden in subclasses. For example to be able to create UUID version 7 ids instead of the default version 4. 
+
 ## 0.11.0
 
 - **[Breaking change](./UPGRADE.md#changed-abstract-methods-of-types)**: Changed abstract methods of types to be `public` and `static` to enable automatic registration.
