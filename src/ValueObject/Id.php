@@ -20,7 +20,7 @@ abstract readonly class Id implements \Stringable
         }
     }
 
-    final public static function generateRandom(): static
+    public static function generateRandom(): static
     {
         return new static(uuid_create());
     }
