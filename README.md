@@ -277,3 +277,10 @@ class Investor
     ...
 }
 ```
+
+## Additional documentation
+
+- [Prevent polyfill usage](./docs/prevent-polyfill-usage.md)
+- [Use other UUID versions](./docs/use-other-uuid-versions.md)
+- [Changelog](./CHANGELOG.md)
+- [Upgrade guide](./UPGRADE.md)
