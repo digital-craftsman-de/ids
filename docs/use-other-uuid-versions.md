@@ -10,7 +10,7 @@ use Symfony\Component\Uid\UuidV7;
 final readonly class UserId extends Id
 {
     #[\Override]
-    public static function generateRandom(): static
+    public static function generateRandom(): UserId
     {
         $uuid7 = new UuidV7();
         
