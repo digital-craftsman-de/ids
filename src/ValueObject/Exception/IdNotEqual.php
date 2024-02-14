@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject\Exception;
 
-use DigitalCraftsman\Ids\ValueObject\Id;
+use DigitalCraftsman\Ids\ValueObject\IdInterface;
 
 /** @psalm-immutable */
 final class IdNotEqual extends \DomainException
 {
-    public function __construct(Id $idA, Id $idB)
+    public function __construct(IdInterface $idA, IdInterface $idB)
     {
         parent::__construct(sprintf(
             'The id %s is not equal to id %s',

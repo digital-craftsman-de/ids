@@ -14,10 +14,12 @@
     "friendsofphp/php-cs-fixer": "^3.3",
     "phpunit/phpunit": "^9.5",
     "infection/infection": "^0.26.15",
-    "phpstan/phpstan": "^1.9"
+    "phpstan/phpstan": "^1.9",
+    "symfony/uid": "^6.3"
   },
   "suggest": {
-    "ext-uuid": "Improves performance of id creation and validation. symfony/polyfill-uuid is used as a fallback."
+    "ext-uuid": "Improves performance of id creation and validation. symfony/polyfill-uuid is used as a fallback.",
+    "symfony/uid": "To be able to use Symonfy Uid component."
   },
   "autoload": {
     "psr-4": {
