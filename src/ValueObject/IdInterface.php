@@ -5,11 +5,14 @@ namespace DigitalCraftsman\Ids\ValueObject;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
 
-interface IdInterface
+/**
+ * @property string $value
+ */
+interface IdInterface extends \Stringable
 {
-    public static function generateRandom();
+    public static function generateRandom(): static;
 
-    public static function fromString(string $id);
+    public static function fromString(string $id): static;
 
     // Accessors
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Doctrine;
 
-use DigitalCraftsman\Ids\ValueObject\Id;
+use DigitalCraftsman\Ids\ValueObject\IdInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 
@@ -12,7 +12,7 @@ abstract class IdType extends Type
 {
     abstract public static function getTypeName(): string;
 
-    /** @return class-string<Id> */
+    /** @return class-string<IdInterface> */
     abstract public static function getClass(): string;
 
     /** @codeCoverageIgnore */
@@ -21,7 +21,7 @@ abstract class IdType extends Type
         return $platform->getGuidTypeDeclarationSQL($column);
     }
 
-    /** @param ?Id $value */
+    /** @param ?IdInterface $value */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
@@ -32,7 +32,7 @@ abstract class IdType extends Type
     }
 
     /** @param ?string $value */
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Id
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?IdInterface
     {
         if ($value === null) {
             return null;

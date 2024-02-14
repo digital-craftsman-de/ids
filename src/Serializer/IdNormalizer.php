@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Serializer;
 
-use DigitalCraftsman\Ids\ValueObject\Id;
+use DigitalCraftsman\Ids\ValueObject\IdInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final readonly class IdNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param array<string, string|int|boolean> $context */
+    /** @param array<string, string|int|bool> $context */
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
-        return $data instanceof Id;
+        return $data instanceof IdInterface;
     }
 
     /**
-     * @param string                            $type
-     * @param array<string, string|int|boolean> $context
+     * @param string                         $type
+     * @param array<string, string|int|bool> $context
      */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
-        return is_subclass_of($type, Id::class);
+        return is_subclass_of($type, IdInterface::class);
     }
 
     /**
-     * @param Id                                $object
-     * @param array<string, string|int|boolean> $context
+     * @param IdInterface                    $object
+     * @param array<string, string|int|bool> $context
      */
     public function normalize($object, $format = null, array $context = []): string
     {
@@ -35,11 +35,11 @@ final readonly class IdNormalizer implements NormalizerInterface, DenormalizerIn
     }
 
     /**
-     * @param ?string                           $data
-     * @param class-string<Id>                  $type
-     * @param array<string, string|int|boolean> $context
+     * @param ?string                        $data
+     * @param class-string<IdInterface>      $type
+     * @param array<string, string|int|bool> $context
      */
-    public function denormalize($data, $type, $format = null, array $context = []): ?Id
+    public function denormalize($data, $type, $format = null, array $context = []): ?IdInterface
     {
         if ($data === null) {
             return null;
@@ -56,7 +56,7 @@ final readonly class IdNormalizer implements NormalizerInterface, DenormalizerIn
     public function getSupportedTypes(?string $format): array
     {
         return [
-            Id::class => true,
+            IdInterface::class => true,
         ];
     }
 }

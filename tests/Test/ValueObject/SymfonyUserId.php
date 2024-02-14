@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\Test\ValueObject;
 
-use DigitalCraftsman\Ids\ValueObject\Id;
 use DigitalCraftsman\Ids\ValueObject\SymfonyId;
 use Symfony\Component\Uid\UuidV7;
 

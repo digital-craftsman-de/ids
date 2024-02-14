@@ -5,9 +5,7 @@ namespace DigitalCraftsman\Ids\ValueObject;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
 use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
-use phpDocumentor\Reflection\Types\Self_;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Uid\UuidV7;
 
 abstract readonly class SymfonyId implements IdInterface, \Stringable
 {
@@ -27,15 +25,17 @@ abstract readonly class SymfonyId implements IdInterface, \Stringable
 
     abstract protected static function getClass(): string;
 
-    public static function generateRandom()
+    public static function generateRandom(): static
     {
         $class = static::getClass();
-        return new static(new $class);
+
+        return new static(new $class());
     }
 
-    public static function fromString(string $id)
+    public static function fromString(string $id): static
     {
         $class = static::getClass();
+
         return new static(new $class($id));
     }
 
@@ -73,5 +73,4 @@ abstract readonly class SymfonyId implements IdInterface, \Stringable
             throw new IdEqual($this, $id);
         }
     }
-
 }
