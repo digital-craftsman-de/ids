@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 0.11.* to 0.12.0
+
+Nothing to do.
+
 ## From 0.10.* to 0.11.0
 
 ### Changed abstract methods of types
