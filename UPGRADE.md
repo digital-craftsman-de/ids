@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 0.12.* to 0.13.0
+
+Nothing to do.
+
 ## From 0.11.* to 0.12.0
 
 Nothing to do.

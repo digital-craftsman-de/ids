@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.0
+
+- Added compatibility for Symfony 7.
+
 ## 0.12.0
 
 - Dropped `final` keyword from method `generateRandom(): static` from `Id`, so that it can be overridden in subclasses. For example to be able to create UUID version 7 ids instead of the default version 4. 
