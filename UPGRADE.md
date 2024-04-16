@@ -1,5 +1,17 @@
 # Upgrade guide
 
+## From 0.13.* to 0.14.0
+
+### Converted database column type from `JSON` to `JSONB` for `IdListType`
+
+The database column type for `IdListType` was converted from `JSON` to `JSONB` to improve comparison performance and enable index creation. The migration for existing lists need to be created manually as Doctrine doesn't realize the changes (as `JSONB` is just an option for `JSON` in doctrine).
+
+Search your project for usages of the id lists and create a migration to set the column type to `JSONB` for the id lists. A migration query could look like this:
+
+```sql
+ALTER TABLE project ALTER COLUMN ids_of_users_with_access SET DATA TYPE JSONB USING ids_of_users_with_access::jsonb;
+```
+
 ## From 0.12.* to 0.13.0
 
 Nothing to do.
