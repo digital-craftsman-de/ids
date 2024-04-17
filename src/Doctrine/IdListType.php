@@ -22,6 +22,8 @@ abstract class IdListType extends Type
     /** @codeCoverageIgnore */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
+        $column['jsonb'] = true;
+
         return $platform->getJsonTypeDeclarationSQL($column);
     }
 

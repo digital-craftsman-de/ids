@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.0
+
+- **[Breaking change](./UPGRADE.md#converted-database-column-type-from-json-to-jsonb-for-idlisttype)**: Converted database column type from `JSON` to `JSONB` for `IdListType` to improve comparison performance and enable index creation.
+
 ## 0.13.0
 
 - Added compatibility for Symfony 7.
