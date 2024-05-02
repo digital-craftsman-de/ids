@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
-use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
-use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
-
 abstract readonly class Id implements \Stringable
 {
     // Construction
@@ -16,7 +12,7 @@ abstract readonly class Id implements \Stringable
         public string $value,
     ) {
         if (!uuid_is_valid($value)) {
-            throw new InvalidId($value);
+            throw new Exception\InvalidId($value);
         }
     }
 
@@ -51,19 +47,19 @@ abstract readonly class Id implements \Stringable
 
     // Guards
 
-    /** @throws IdNotEqual */
+    /** @throws Exception\IdNotEqual */
     public function mustBeEqualTo(self $id): void
     {
         if ($this->isNotEqualTo($id)) {
-            throw new IdNotEqual($this, $id);
+            throw new Exception\IdNotEqual($this, $id);
         }
     }
 
-    /** @throws IdEqual */
+    /** @throws Exception\IdEqual */
     public function mustNotBeEqualTo(self $id): void
     {
         if ($this->isEqualTo($id)) {
-            throw new IdEqual($this, $id);
+            throw new Exception\IdEqual($this, $id);
         }
     }
 }

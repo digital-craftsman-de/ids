@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\ValueObject;
 
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdEqual;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdNotEqual;
-use DigitalCraftsman\Ids\ValueObject\Exception\InvalidId;
 use PHPUnit\Framework\TestCase;
 
 /** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\Id */
@@ -37,7 +34,7 @@ final class IdTest extends TestCase
     public function construction_with_invalid_id_fails(): void
     {
         // -- Assert
-        $this->expectException(InvalidId::class);
+        $this->expectException(Exception\InvalidId::class);
 
         // -- Act
         new UserId('test');
@@ -115,7 +112,7 @@ final class IdTest extends TestCase
     public function user_id_must_be_equal_fails(): void
     {
         // -- Assert
-        $this->expectException(IdNotEqual::class);
+        $this->expectException(Exception\IdNotEqual::class);
 
         // -- Arrange
         $userId1 = UserId::generateRandom();
@@ -133,7 +130,7 @@ final class IdTest extends TestCase
     public function user_id_must_not_be_equal_fails(): void
     {
         // -- Assert
-        $this->expectException(IdEqual::class);
+        $this->expectException(Exception\IdEqual::class);
 
         // -- Arrange
         $userId1 = UserId::generateRandom();

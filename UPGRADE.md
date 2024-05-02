@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 0.14.* to 0.15.0
+
+Nothing to do.
+
 ## From 0.13.* to 0.14.0
 
 ### Converted database column type from `JSON` to `JSONB` for `IdListType`
