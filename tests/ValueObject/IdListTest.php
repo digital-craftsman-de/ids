@@ -9,17 +9,6 @@ use DigitalCraftsman\Ids\Test\ValueObject\InstructorId;
 use DigitalCraftsman\Ids\Test\ValueObject\ProjectId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainEveryId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainNoneIds;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainEveryId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainSomeIds;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustNotBeEqual;
 use PHPUnit\Framework\TestCase;
 
 /** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\IdList */
@@ -91,7 +80,7 @@ final class IdListTest extends TestCase
     public function id_list_construction_fails_with_ids_of_different_id_class(): void
     {
         // -- Assert
-        $this->expectException(IdClassNotHandledInList::class);
+        $this->expectException(Exception\IdClassNotHandledInList::class);
 
         // -- Arrange & Act
         /**
@@ -297,7 +286,7 @@ final class IdListTest extends TestCase
     public function add_id_fails_with_duplicate_id(): void
     {
         // -- Assert
-        $this->expectException(IdAlreadyInList::class);
+        $this->expectException(Exception\IdAlreadyInList::class);
 
         // -- Arrange
         $existingUserId = UserId::generateRandom();
@@ -378,7 +367,7 @@ final class IdListTest extends TestCase
     public function add_ids_fails_with_duplicate_id(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesContainNoneIds::class);
+        $this->expectException(Exception\IdListDoesContainNoneIds::class);
 
         // -- Arrange
         $existingUserId = UserId::generateRandom();
@@ -465,7 +454,7 @@ final class IdListTest extends TestCase
     public function remove_id_fails_when_id_is_not_in_list(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesNotContainId::class);
+        $this->expectException(Exception\IdListDoesNotContainId::class);
 
         // -- Arrange
         $idToRemove = UserId::generateRandom();
@@ -523,7 +512,7 @@ final class IdListTest extends TestCase
     public function remove_ids_fails_when_id_is_not_in_list(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesNotContainEveryId::class);
+        $this->expectException(Exception\IdListDoesNotContainEveryId::class);
 
         // -- Arrange
         $idToRemove1 = UserId::generateRandom();
@@ -759,7 +748,7 @@ final class IdListTest extends TestCase
     public function id_list_must_contain_throws_exception(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesNotContainId::class);
+        $this->expectException(Exception\IdListDoesNotContainId::class);
 
         // -- Arrange
         $idAnton = UserId::generateRandom();
@@ -783,7 +772,7 @@ final class IdListTest extends TestCase
     public function id_list_must_not_contain_throws_exception(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesContainId::class);
+        $this->expectException(Exception\IdListDoesContainId::class);
 
         // -- Arrange
         $idAnton = UserId::generateRandom();
@@ -806,7 +795,7 @@ final class IdListTest extends TestCase
     public function id_list_must_contain_every_id(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesNotContainEveryId::class);
+        $this->expectException(Exception\IdListDoesNotContainEveryId::class);
 
         // -- Arrange
         $idAnton = UserId::generateRandom();
@@ -859,7 +848,7 @@ final class IdListTest extends TestCase
     public function id_list_must_not_contain_every_id(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesContainEveryId::class);
+        $this->expectException(Exception\IdListDoesContainEveryId::class);
 
         // -- Arrange
         $idAnton = UserId::generateRandom();
@@ -912,7 +901,7 @@ final class IdListTest extends TestCase
     public function id_list_must_contain_some_ids(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesNotContainSomeIds::class);
+        $this->expectException(Exception\IdListDoesNotContainSomeIds::class);
 
         // -- Arrange
         $idAnton = UserId::generateRandom();
@@ -970,7 +959,7 @@ final class IdListTest extends TestCase
     public function id_list_must_contain_none_ids(): void
     {
         // -- Assert
-        $this->expectException(IdListDoesContainNoneIds::class);
+        $this->expectException(Exception\IdListDoesContainNoneIds::class);
 
         // -- Arrange
         $idAnton = UserId::generateRandom();
@@ -1046,7 +1035,7 @@ final class IdListTest extends TestCase
     public function id_list_must_be_empty_throws_exception_when_not_empty(): void
     {
         // -- Assert
-        $this->expectException(IdListIsNotEmpty::class);
+        $this->expectException(Exception\IdListIsNotEmpty::class);
 
         // -- Arrange
         $notEmptyList = new UserIdList([
@@ -1055,6 +1044,43 @@ final class IdListTest extends TestCase
 
         // -- Act
         $notEmptyList->mustBeEmpty();
+    }
+
+    // -- Must not be empty
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotBeEmpty
+     *
+     * @doesNotPerformAssertions
+     */
+    public function id_list_must_not_be_empty_works(): void
+    {
+        // -- Arrange
+        $notEmptyList = new UserIdList([
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act
+        $notEmptyList->mustNotBeEmpty();
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotBeEmpty
+     */
+    public function id_list_must_not_be_empty_throws_exception_when_empty(): void
+    {
+        // -- Assert
+        $this->expectException(Exception\IdListIsEmpty::class);
+
+        // -- Arrange
+        $emptyList = UserIdList::emptyList();
+
+        // -- Act
+        $emptyList->mustNotBeEmpty();
     }
 
     // -- Empty
@@ -1629,7 +1655,7 @@ final class IdListTest extends TestCase
     public function must_be_equal_to(): void
     {
         // -- Assert
-        $this->expectException(IdListsMustBeEqual::class);
+        $this->expectException(Exception\IdListsMustBeEqual::class);
 
         // -- Arrange
         $idAnton = UserId::generateRandom();
@@ -1661,7 +1687,7 @@ final class IdListTest extends TestCase
     public function must_not_be_equal_to(): void
     {
         // -- Assert
-        $this->expectException(IdListsMustNotBeEqual::class);
+        $this->expectException(Exception\IdListsMustNotBeEqual::class);
 
         // -- Arrange
         $idAnton = UserId::generateRandom();

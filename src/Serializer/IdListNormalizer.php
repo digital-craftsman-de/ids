@@ -50,7 +50,7 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
      * @param class-string<IdList>              $type
      * @param array<string, string|int|boolean> $context
      */
-    public function denormalize($data, $type, $format = null, array $context = []): IdList|null
+    public function denormalize($data, $type, $format = null, array $context = []): IdList | null
     {
         if ($data === null) {
             return null;

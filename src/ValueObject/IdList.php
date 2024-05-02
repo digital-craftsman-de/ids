@@ -4,18 +4,6 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
-use DigitalCraftsman\Ids\ValueObject\Exception\IdAlreadyInList;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdClassNotHandledInList;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainEveryId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesContainNoneIds;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainEveryId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainId;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListDoesNotContainSomeIds;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListIsNotEmpty;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustBeEqual;
-use DigitalCraftsman\Ids\ValueObject\Exception\IdListsMustNotBeEqual;
-
 /**
  * @template T extends Id
  *
@@ -135,7 +123,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
     public function addId(Id $id): static
     {
         if ($this->containsId($id)) {
-            throw new IdAlreadyInList($id);
+            throw new Exception\IdAlreadyInList($id);
         }
 
         $ids = $this->ids;
@@ -426,64 +414,72 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
     /**
      * @param T $id
      *
-     * @throws IdListDoesNotContainId
+     * @throws Exception\IdListDoesNotContainId
      */
     public function mustContainId(Id $id): void
     {
         if ($this->notContainsId($id)) {
-            throw new IdListDoesNotContainId($id);
+            throw new Exception\IdListDoesNotContainId($id);
         }
     }
 
     /**
      * @param T $id
      *
-     * @throws IdListDoesContainId
+     * @throws Exception\IdListDoesContainId
      */
     public function mustNotContainId(Id $id): void
     {
         if ($this->containsId($id)) {
-            throw new IdListDoesContainId($id);
+            throw new Exception\IdListDoesContainId($id);
         }
     }
 
-    /** @throws IdListDoesNotContainEveryId */
+    /** @throws Exception\IdListDoesNotContainEveryId */
     public function mustContainEveryId(self $idList): void
     {
         if (!$this->containsEveryId($idList)) {
-            throw new IdListDoesNotContainEveryId();
+            throw new Exception\IdListDoesNotContainEveryId();
         }
     }
 
-    /** @throws IdListDoesContainEveryId */
+    /** @throws Exception\IdListDoesContainEveryId */
     public function mustNotContainEveryId(self $idList): void
     {
         if (!$this->notContainsEveryId($idList)) {
-            throw new IdListDoesContainEveryId();
+            throw new Exception\IdListDoesContainEveryId();
         }
     }
 
-    /** @throws IdListDoesNotContainSomeIds */
+    /** @throws Exception\IdListDoesNotContainSomeIds */
     public function mustContainSomeIds(self $idList): void
     {
         if (!$this->containsSomeIds($idList)) {
-            throw new IdListDoesNotContainSomeIds();
+            throw new Exception\IdListDoesNotContainSomeIds();
         }
     }
 
-    /** @throws IdListDoesContainNoneIds */
+    /** @throws Exception\IdListDoesContainNoneIds */
     public function mustContainNoneIds(self $idList): void
     {
         if (!$this->containsNoneIds($idList)) {
-            throw new IdListDoesContainNoneIds();
+            throw new Exception\IdListDoesContainNoneIds();
         }
     }
 
-    /** @throws IdListIsNotEmpty */
+    /** @throws Exception\IdListIsNotEmpty */
     public function mustBeEmpty(): void
     {
         if ($this->isNotEmpty()) {
-            throw new IdListIsNotEmpty();
+            throw new Exception\IdListIsNotEmpty();
+        }
+    }
+
+    /** @throws Exception\IdListIsEmpty */
+    public function mustNotBeEmpty(): void
+    {
+        if ($this->isEmpty()) {
+            throw new Exception\IdListIsEmpty();
         }
     }
 
@@ -491,7 +487,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
     public function mustBeEqualTo(self $idList): void
     {
         if ($this->isNotEqualTo($idList)) {
-            throw new IdListsMustBeEqual();
+            throw new Exception\IdListsMustBeEqual();
         }
     }
 
@@ -499,7 +495,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
     public function mustNotBeEqualTo(self $idList): void
     {
         if ($this->isEqualTo($idList)) {
-            throw new IdListsMustNotBeEqual();
+            throw new Exception\IdListsMustNotBeEqual();
         }
     }
 
@@ -510,14 +506,14 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
      *
      * @psalm-param array<int, TT> $ids
      *
-     * @throws IdClassNotHandledInList
+     * @throws Exception\IdClassNotHandledInList
      */
     private static function mustOnlyContainIdsOfHandledClass(array $ids): void
     {
         $idClass = static::handlesIdClass();
         foreach ($ids as $id) {
             if (!$id instanceof $idClass) {
-                throw new IdClassNotHandledInList(static::class, $id::class);
+                throw new Exception\IdClassNotHandledInList(static::class, $id::class);
             }
         }
     }
