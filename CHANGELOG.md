@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+Reached stability after 2 years of usage in multiple scaled production systems.
+
 ## 0.15.0
 
 - Added new guard method `mustNotBeEmpty(): void` to `IdList`.
