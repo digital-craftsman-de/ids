@@ -52,8 +52,17 @@ if ($userId->isEqualTo($command->userId)) {
 }
 ```
 
+Guard against invalid usages:
 ```php
 $requestingUser->userId->mustNotBeEqualTo($command->targetUserId);
+```
+
+Or with a custom exception:
+```php
+$requestingUser->userId->mustNotBeEqualTo(
+    $command->targetUserId,
+    static fn () => new Exception\UserCanNotTargetItself(),
+);
 ```
 
 ### Symfony serializer
@@ -202,8 +211,17 @@ if ($idsOfEnabledUsers->contains($command->userId)) {
 }
 ```
 
+Guard against invalid usages:
 ```php
-$idsOfEnabledUsers->mustContain($command->targetUserId);
+$idsOfEnabledUsers->mustContainId($command->targetUserId);
+```
+
+Or with custom exception:
+```php
+$idsOfEnabledUsers->mustContainId(
+    $command->targetUserId,
+    static fn () => new Exception\UserIsNotEnabled(),
+);
 ```
 
 ### Symfony serializer

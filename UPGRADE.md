@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 1.0.0 to 1.1.0
+
+Nothing to do.
+
 ## From 0.15.* to 1.0.0
 
 Nothing to do.

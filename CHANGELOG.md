@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.0
+
+- Added option to supply a custom exception to the guard methods of `Id` and `IdList`. This allows for more specific exceptions when the guard fails.
+
+Example of using the new (optional) parameter:
+```php
+$requestingUser->userId->mustNotBeEqualTo(
+    $command->targetUserId,
+    static fn () => new Exception\UserCanNotTargetItself(),
+);
+```
+
 ## 1.0.0
 
 Reached stability after 2 years of usage in multiple scaled production systems.
