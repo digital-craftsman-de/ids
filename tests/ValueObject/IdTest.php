@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\Ids\Test\Exception\NotTheSameUser;
+use DigitalCraftsman\Ids\Test\Exception\SameUser;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use PHPUnit\Framework\TestCase;
 
@@ -125,6 +127,27 @@ final class IdTest extends TestCase
     /**
      * @test
      *
+     * @covers ::mustBeEqualTo
+     */
+    public function user_id_must_be_equal_fails_with_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(NotTheSameUser::class);
+
+        // -- Arrange
+        $userId1 = UserId::generateRandom();
+        $userId2 = UserId::generateRandom();
+
+        // -- Act
+        $userId1->mustBeEqualTo(
+            $userId2,
+            static fn () => new NotTheSameUser(),
+        );
+    }
+
+    /**
+     * @test
+     *
      * @covers ::mustNotBeEqualTo
      */
     public function user_id_must_not_be_equal_fails(): void
@@ -138,5 +161,26 @@ final class IdTest extends TestCase
 
         // -- Act
         $userId1->mustNotBeEqualTo($userId2);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotBeEqualTo
+     */
+    public function user_id_must_not_be_equal_fails_with_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(SameUser::class);
+
+        // -- Arrange
+        $userId1 = UserId::generateRandom();
+        $userId2 = new UserId((string) $userId1);
+
+        // -- Act
+        $userId1->mustNotBeEqualTo(
+            $userId2,
+            static fn () => new SameUser(),
+        );
     }
 }
