@@ -41,5 +41,8 @@ return (new PhpCsFixer\Config())
 
         // Nullable types should be explicit even with default values
         'nullable_type_declaration_for_default_null_value' => false,
+
+        // Throw in a single line is worse to read when using ternary operator
+        'single_line_throw' => false,
     ])
     ->setFinder($finder);
