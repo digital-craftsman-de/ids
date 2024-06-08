@@ -211,8 +211,17 @@ if ($idsOfEnabledUsers->contains($command->userId)) {
 }
 ```
 
+Guard against invalid usages:
 ```php
-$idsOfEnabledUsers->mustContain($command->targetUserId);
+$idsOfEnabledUsers->mustContainId($command->targetUserId);
+```
+
+Or with custom exception:
+```php
+$idsOfEnabledUsers->mustContainId(
+    $command->targetUserId,
+    static fn () => new Exception\UserIsNotEnabled(),
+);
 ```
 
 ### Symfony serializer
