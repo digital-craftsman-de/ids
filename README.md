@@ -52,8 +52,17 @@ if ($userId->isEqualTo($command->userId)) {
 }
 ```
 
+Guard against invalid usages:
 ```php
 $requestingUser->userId->mustNotBeEqualTo($command->targetUserId);
+```
+
+Or with a custom exception:
+```php
+$requestingUser->userId->mustNotBeEqualTo(
+    $command->targetUserId,
+    static fn () => new Exception\UserCanNotTargetItself(),
+);
 ```
 
 ### Symfony serializer
