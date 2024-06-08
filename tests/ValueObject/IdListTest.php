@@ -4,6 +4,16 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\Ids\Test\Exception\AllUsersMustBeAbleToPerformAction;
+use DigitalCraftsman\Ids\Test\Exception\ListOfUsersHasNotChanged;
+use DigitalCraftsman\Ids\Test\Exception\NotAllUsersAreDisabled;
+use DigitalCraftsman\Ids\Test\Exception\NotAllUsersAreEnabled;
+use DigitalCraftsman\Ids\Test\Exception\NoUserCanPerformAction;
+use DigitalCraftsman\Ids\Test\Exception\SomeUsersAreAlreadyEnabled;
+use DigitalCraftsman\Ids\Test\Exception\ThereAreStillUsersWithIssues;
+use DigitalCraftsman\Ids\Test\Exception\ThereMustBeAtLeastOneUserWithAccess;
+use DigitalCraftsman\Ids\Test\Exception\UserIsDisabled;
+use DigitalCraftsman\Ids\Test\Exception\UserIsNotEnabled;
 use DigitalCraftsman\Ids\Test\ValueObject\AdminId;
 use DigitalCraftsman\Ids\Test\ValueObject\InstructorId;
 use DigitalCraftsman\Ids\Test\ValueObject\ProjectId;
@@ -767,6 +777,33 @@ final class IdListTest extends TestCase
     /**
      * @test
      *
+     * @covers ::mustContainId
+     */
+    public function id_list_must_contain_throws_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(UserIsNotEnabled::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idsOfEnabledUsers = UserIdList::fromIds([
+            $idAnton,
+            $idPaul,
+        ]);
+
+        // -- Act
+        $idsOfEnabledUsers->mustContainId(
+            $idMarkus,
+            static fn () => new UserIsNotEnabled(),
+        );
+    }
+
+    /**
+     * @test
+     *
      * @covers ::mustNotContainId
      */
     public function id_list_must_not_contain_throws_exception(): void
@@ -785,6 +822,32 @@ final class IdListTest extends TestCase
 
         // -- Act
         $partialList->mustNotContainId($idAnton);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotContainId
+     */
+    public function id_list_must_not_contain_throws_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(UserIsDisabled::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idsOfDisabledUsers = UserIdList::fromIds([
+            $idAnton,
+            $idPaul,
+        ]);
+
+        // -- Act
+        $idsOfDisabledUsers->mustNotContainId(
+            $idAnton,
+            static fn () => new UserIsDisabled(),
+        );
     }
 
     /**
@@ -812,6 +875,36 @@ final class IdListTest extends TestCase
 
         // -- Act
         $partialList->mustContainEveryId($fullList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustContainEveryId
+     */
+    public function id_list_must_contain_every_id_throws_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(NotAllUsersAreEnabled::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idsOfAllUsers = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $idsOfEnabledUsers = UserIdList::fromIds([
+            clone $idAnton,
+        ]);
+
+        // -- Act
+        $idsOfEnabledUsers->mustContainEveryId(
+            $idsOfAllUsers,
+            static fn () => new NotAllUsersAreEnabled(),
+        );
     }
 
     /**
@@ -865,6 +958,36 @@ final class IdListTest extends TestCase
 
         // -- Act
         $fullList->mustNotContainEveryId($partialList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotContainEveryId
+     */
+    public function id_list_must_not_contain_every_id_throws_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(NotAllUsersAreDisabled::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idsOfEnabledUsers = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $idsOfDisabledUsers = UserIdList::fromIds([
+            clone $idAnton,
+        ]);
+
+        // -- Act
+        $idsOfEnabledUsers->mustNotContainEveryId(
+            $idsOfDisabledUsers,
+            static fn () => new NotAllUsersAreDisabled(),
+        );
     }
 
     /**
@@ -926,6 +1049,38 @@ final class IdListTest extends TestCase
      * @test
      *
      * @covers ::mustContainSomeIds
+     */
+    public function id_list_must_contain_some_ids_throws_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(NoUserCanPerformAction::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        $idsOfUserWithAccess = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $idsOfUsersToPerformAction = UserIdList::fromIds([
+            clone $idPeter,
+        ]);
+
+        // -- Act
+        $idsOfUserWithAccess->mustContainSomeIds(
+            $idsOfUsersToPerformAction,
+            static fn () => new NoUserCanPerformAction(),
+        );
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustContainSomeIds
      *
      * @doesNotPerformAssertions
      */
@@ -979,6 +1134,39 @@ final class IdListTest extends TestCase
 
         // -- Act
         $idListWithPartialMatchingIds->mustContainNoneIds($almostFullList);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustContainNoneIds
+     */
+    public function id_list_must_contain_none_ids_throws_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(SomeUsersAreAlreadyEnabled::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+
+        $idPeter = UserId::generateRandom();
+
+        $idsOfUserToEnable = UserIdList::fromIds([
+            clone $idAnton,
+            clone $idPaul,
+        ]);
+
+        $idsOfEnabledUsers = UserIdList::fromIds([
+            clone $idPeter,
+            clone $idPaul,
+        ]);
+
+        // -- Act
+        $idsOfEnabledUsers->mustContainNoneIds(
+            $idsOfUserToEnable,
+            static fn () => new SomeUsersAreAlreadyEnabled(),
+        );
     }
 
     /**
@@ -1046,6 +1234,27 @@ final class IdListTest extends TestCase
         $notEmptyList->mustBeEmpty();
     }
 
+    /**
+     * @test
+     *
+     * @covers ::mustBeEmpty
+     */
+    public function id_list_must_be_empty_throws_custom_exception_when_not_empty(): void
+    {
+        // -- Assert
+        $this->expectException(ThereAreStillUsersWithIssues::class);
+
+        // -- Arrange
+        $idsOfUsersWithOutstandingIssues = new UserIdList([
+            UserId::generateRandom(),
+        ]);
+
+        // -- Act
+        $idsOfUsersWithOutstandingIssues->mustBeEmpty(
+            static fn () => new ThereAreStillUsersWithIssues(),
+        );
+    }
+
     // -- Must not be empty
 
     /**
@@ -1081,6 +1290,25 @@ final class IdListTest extends TestCase
 
         // -- Act
         $emptyList->mustNotBeEmpty();
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotBeEmpty
+     */
+    public function id_list_must_not_be_empty_throws_custom_exception_when_empty(): void
+    {
+        // -- Assert
+        $this->expectException(ThereMustBeAtLeastOneUserWithAccess::class);
+
+        // -- Arrange
+        $idsOfUserWithAccess = UserIdList::emptyList();
+
+        // -- Act
+        $idsOfUserWithAccess->mustNotBeEmpty(
+            static fn () => new ThereMustBeAtLeastOneUserWithAccess(),
+        );
     }
 
     // -- Empty
@@ -1682,6 +1910,41 @@ final class IdListTest extends TestCase
     /**
      * @test
      *
+     * @covers ::mustBeEqualTo
+     */
+    public function must_be_equal_to_throws_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(AllUsersMustBeAbleToPerformAction::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idsOfUserAllUsers = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $idsOfUsersTopPerformAction = UserIdList::fromIds([
+            $idAnton,
+            $idPaul,
+        ]);
+
+        // -- Act
+        $idsOfUserAllUsers->mustBeEqualTo(
+            $idsOfUsersTopPerformAction,
+            static fn () => new AllUsersMustBeAbleToPerformAction(),
+        );
+    }
+
+    /**
+     * @test
+     *
      * @covers ::mustNotBeEqualTo
      */
     public function must_not_be_equal_to(): void
@@ -1711,6 +1974,43 @@ final class IdListTest extends TestCase
 
         // -- Act
         $originalList->mustNotBeEqualTo($sameListInDifferentOrder);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mustNotBeEqualTo
+     */
+    public function must_not_be_equal_to_throws_custom_exception(): void
+    {
+        // -- Assert
+        $this->expectException(ListOfUsersHasNotChanged::class);
+
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $idsOfUsersWithAccess = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $updatedIdsOfUsersWithAccess = UserIdList::fromIds([
+            $idPaul,
+            $idAnton,
+            $idMarkus,
+            $idTom,
+        ]);
+
+        // -- Act
+        $idsOfUsersWithAccess->mustNotBeEqualTo(
+            $updatedIdsOfUsersWithAccess,
+            static fn () => new ListOfUsersHasNotChanged(),
+        );
     }
 
     // -- Count
