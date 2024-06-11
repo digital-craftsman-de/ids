@@ -48,35 +48,35 @@ abstract readonly class Id implements \Stringable
     // Guards
 
     /**
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdNotEqual
      */
     public function mustBeEqualTo(
         self $id,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if ($this->isNotEqualTo($id)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdNotEqual($this, $id);
         }
     }
 
     /**
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdEqual
      */
     public function mustNotBeEqualTo(
         self $id,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if ($this->isEqualTo($id)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdEqual($this, $id);
         }
     }

@@ -797,7 +797,7 @@ final class IdListTest extends TestCase
         // -- Act
         $idsOfEnabledUsers->mustContainId(
             $idMarkus,
-            static fn () => new UserIsNotEnabled(),
+            otherwiseThrow: static fn () => new UserIsNotEnabled(),
         );
     }
 
@@ -846,7 +846,7 @@ final class IdListTest extends TestCase
         // -- Act
         $idsOfDisabledUsers->mustNotContainId(
             $idAnton,
-            static fn () => new UserIsDisabled(),
+            otherwiseThrow: static fn () => new UserIsDisabled(),
         );
     }
 
@@ -903,7 +903,7 @@ final class IdListTest extends TestCase
         // -- Act
         $idsOfEnabledUsers->mustContainEveryId(
             $idsOfAllUsers,
-            static fn () => new NotAllUsersAreEnabled(),
+            otherwiseThrow: static fn () => new NotAllUsersAreEnabled(),
         );
     }
 
@@ -986,7 +986,7 @@ final class IdListTest extends TestCase
         // -- Act
         $idsOfEnabledUsers->mustNotContainEveryId(
             $idsOfDisabledUsers,
-            static fn () => new NotAllUsersAreDisabled(),
+            otherwiseThrow: static fn () => new NotAllUsersAreDisabled(),
         );
     }
 
@@ -1073,7 +1073,7 @@ final class IdListTest extends TestCase
         // -- Act
         $idsOfUserWithAccess->mustContainSomeIds(
             $idsOfUsersToPerformAction,
-            static fn () => new NoUserCanPerformAction(),
+            otherwiseThrow: static fn () => new NoUserCanPerformAction(),
         );
     }
 
@@ -1165,7 +1165,7 @@ final class IdListTest extends TestCase
         // -- Act
         $idsOfEnabledUsers->mustContainNoneIds(
             $idsOfUserToEnable,
-            static fn () => new SomeUsersAreAlreadyEnabled(),
+            otherwiseThrow: static fn () => new SomeUsersAreAlreadyEnabled(),
         );
     }
 
@@ -1251,7 +1251,7 @@ final class IdListTest extends TestCase
 
         // -- Act
         $idsOfUsersWithOutstandingIssues->mustBeEmpty(
-            static fn () => new ThereAreStillUsersWithIssues(),
+            otherwiseThrow: static fn () => new ThereAreStillUsersWithIssues(),
         );
     }
 
@@ -1307,7 +1307,7 @@ final class IdListTest extends TestCase
 
         // -- Act
         $idsOfUserWithAccess->mustNotBeEmpty(
-            static fn () => new ThereMustBeAtLeastOneUserWithAccess(),
+            otherwiseThrow: static fn () => new ThereMustBeAtLeastOneUserWithAccess(),
         );
     }
 
