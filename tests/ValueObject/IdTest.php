@@ -141,7 +141,7 @@ final class IdTest extends TestCase
         // -- Act
         $userId1->mustBeEqualTo(
             $userId2,
-            static fn () => new NotTheSameUser(),
+            otherwiseThrow: static fn () => new NotTheSameUser(),
         );
     }
 
@@ -180,7 +180,7 @@ final class IdTest extends TestCase
         // -- Act
         $userId1->mustNotBeEqualTo(
             $userId2,
-            static fn () => new SameUser(),
+            otherwiseThrow: static fn () => new SameUser(),
         );
     }
 }

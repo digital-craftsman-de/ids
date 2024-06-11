@@ -415,172 +415,172 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
 
     /**
      * @param T                       $id
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListDoesNotContainId
      */
     public function mustContainId(
         Id $id,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if ($this->notContainsId($id)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListDoesNotContainId($id);
         }
     }
 
     /**
      * @param T                       $id
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListDoesContainId
      */
     public function mustNotContainId(
         Id $id,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if ($this->containsId($id)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListDoesContainId($id);
         }
     }
 
     /**
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListDoesNotContainEveryId
      */
     public function mustContainEveryId(
         self $idList,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if (!$this->containsEveryId($idList)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListDoesNotContainEveryId();
         }
     }
 
     /**
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListDoesContainEveryId
      */
     public function mustNotContainEveryId(
         self $idList,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if (!$this->notContainsEveryId($idList)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListDoesContainEveryId();
         }
     }
 
     /**
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListDoesNotContainSomeIds
      */
     public function mustContainSomeIds(
         self $idList,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if (!$this->containsSomeIds($idList)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListDoesNotContainSomeIds();
         }
     }
 
     /**
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListDoesContainNoneIds
      */
     public function mustContainNoneIds(
         self $idList,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if (!$this->containsNoneIds($idList)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListDoesContainNoneIds();
         }
     }
 
     /**
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListIsNotEmpty
      */
     public function mustBeEmpty(
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if ($this->isNotEmpty()) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListIsNotEmpty();
         }
     }
 
     /**
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListIsEmpty
      */
     public function mustNotBeEmpty(
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if ($this->isEmpty()) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListIsEmpty();
         }
     }
 
     /**
      * @param static                  $idList
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListsMustBeEqual
      */
     public function mustBeEqualTo(
         self $idList,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if ($this->isNotEqualTo($idList)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListsMustBeEqual();
         }
     }
 
     /**
      * @param static                  $idList
-     * @param ?callable(): \Throwable $exception
+     * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
      * @throws Exception\IdListsMustNotBeEqual
      */
     public function mustNotBeEqualTo(
         self $idList,
-        ?callable $exception = null,
+        ?callable $otherwiseThrow = null,
     ): void {
         if ($this->isEqualTo($idList)) {
-            throw $exception !== null
-                ? $exception()
+            throw $otherwiseThrow !== null
+                ? $otherwiseThrow()
                 : new Exception\IdListsMustNotBeEqual();
         }
     }
