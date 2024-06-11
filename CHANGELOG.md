@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0
+
+- Renamed parameter `$exception` to `$otherwiseThrow` in the guard methods of `Id` and `IdList` to make it more clear what the parameter does when using named parameters.
+
 ## 1.1.0
 
 - Added option to supply a custom exception to the guard methods of `Id` and `IdList`. This allows for more specific exceptions when the guard fails.
