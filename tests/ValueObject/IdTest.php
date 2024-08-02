@@ -6,7 +6,6 @@ namespace DigitalCraftsman\Ids\ValueObject;
 
 use DigitalCraftsman\Ids\Test\Exception\NotTheSameUser;
 use DigitalCraftsman\Ids\Test\Exception\SameUser;
-use DigitalCraftsman\Ids\Test\ValueObject\ProjectId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use PHPUnit\Framework\TestCase;
 
