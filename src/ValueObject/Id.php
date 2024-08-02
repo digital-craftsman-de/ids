@@ -35,11 +35,18 @@ abstract readonly class Id implements \Stringable
 
     // Accessors
 
+    /**
+     * @param static $id
+     */
     public function isEqualTo(self $id): bool
     {
+        // TODO: Performance check of class check
         return $this->value === $id->value;
     }
 
+    /**
+     * @param static $id
+     */
     public function isNotEqualTo(self $id): bool
     {
         return $this->value !== $id->value;
@@ -48,6 +55,7 @@ abstract readonly class Id implements \Stringable
     // Guards
 
     /**
+     * @param static                  $id
      * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable
@@ -65,6 +73,7 @@ abstract readonly class Id implements \Stringable
     }
 
     /**
+     * @param static                  $id
      * @param ?callable(): \Throwable $otherwiseThrow
      *
      * @throws \Throwable

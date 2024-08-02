@@ -6,6 +6,6 @@ namespace DigitalCraftsman\Ids\Test\ValueObject;
 
 use DigitalCraftsman\Ids\ValueObject\Id;
 
-readonly class UserId extends Id
+final readonly class UserId extends Id
 {
 }

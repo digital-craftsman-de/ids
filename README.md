@@ -24,7 +24,7 @@ It's recommended that you install the [`uuid` PHP extension](https://pecl.php.ne
 
 ### Creating a new id
 
-The bulk of the logic is in the `Id` class. Creating a new id is as simple as creating a new class and extending from it like the following:
+The bulk of the logic is in the `Id` class. Creating a new id is as simple as creating a new `final readonly class` and extending from it like the following:
 
 ```php
 <?php
@@ -178,7 +178,7 @@ The `IdList` is immutable. Therefore, the mutation methods (like `add`, `remove`
 
 ### Creating a new id list
 
-The bulk of the logic is in the `IdList` class. Creating a new id list is as simple as creating a new class and extending from it like the following:
+The bulk of the logic is in the `IdList` class. Creating a new id list is as simple as creating a new `final readonly class` and extending from it like the following:
 
 ```php
 <?php
