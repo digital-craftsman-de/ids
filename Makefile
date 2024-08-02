@@ -93,6 +93,10 @@ verify: php-code-validation php-tests php-mutation-testing
 .PHONY: php-tests
 php-tests: php-8.2-tests php-8.3-tests
 
+## php-tests-coverage			Run the tests for all relevant PHP versions including coverage report as HTML.
+.PHONY: php-tests-coverage
+php-tests-coverage: php-8.3-tests-html-coverage
+
 ## php-8.2-tests			Run tests with PHP 8.2.
 .PHONY: php-8.2-tests
 php-8.2-tests:
