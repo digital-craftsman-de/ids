@@ -40,7 +40,10 @@ abstract readonly class Id implements \Stringable
      */
     public function isEqualTo(self $id): bool
     {
-        // TODO: Performance check of class check
+        if (static::class !== $id::class) {
+            throw new Exception\DifferentId($this, $id);
+        }
+
         return $this->value === $id->value;
     }
 
@@ -49,6 +52,10 @@ abstract readonly class Id implements \Stringable
      */
     public function isNotEqualTo(self $id): bool
     {
+        if (static::class !== $id::class) {
+            throw new Exception\DifferentId($this, $id);
+        }
+
         return $this->value !== $id->value;
     }
 
