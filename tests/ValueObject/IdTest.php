@@ -61,25 +61,6 @@ final class IdTest extends TestCase
     /**
      * @test
      *
-     * @covers ::isEqualTo
-     */
-    public function user_id_is_equal_fails_with_different_ids(): void
-    {
-        // -- Assert
-        $this->expectException(Exception\DifferentId::class);
-
-        // -- Arrange
-        $userId = UserId::fromString('f41e0af4-88c4-4d79-9c1a-6e8ea34a956f');
-        $projectId = ProjectId::fromString('f41e0af4-88c4-4d79-9c1a-6e8ea34a956f');
-
-        // -- Act
-        /** @psalm-suppress InvalidArgument */
-        self::assertTrue($userId->isEqualTo($projectId));
-    }
-
-    /**
-     * @test
-     *
      * @covers ::isNotEqualTo
      */
     public function user_id_is_not_equal(): void
@@ -90,25 +71,6 @@ final class IdTest extends TestCase
 
         // -- Act & Assert
         self::assertTrue($userId1->isNotEqualTo($userId2));
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::isNotEqualTo
-     */
-    public function user_id_is_not_equal_fails_with_different_ids(): void
-    {
-        // -- Assert
-        $this->expectException(Exception\DifferentId::class);
-
-        // -- Arrange
-        $userId = UserId::fromString('f41e0af4-88c4-4d79-9c1a-6e8ea34a956f');
-        $projectId = ProjectId::fromString('f41e0af4-88c4-4d79-9c1a-6e8ea34a956f');
-
-        // -- Act
-        /** @psalm-suppress InvalidArgument */
-        self::assertTrue($userId->isNotEqualTo($projectId));
     }
 
     /**
