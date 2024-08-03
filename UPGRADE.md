@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 1.2.0 to 1.2.1
+
+- Run Psalm to see if the new annotations find any issues know visible (make sure that all your `Id` and `IdList` classes are `final`).
+
 ## From 1.1.0 to 1.2.0
 
 Nothing to do.

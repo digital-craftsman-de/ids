@@ -14,8 +14,6 @@ use DigitalCraftsman\Ids\Test\Exception\ThereAreStillUsersWithIssues;
 use DigitalCraftsman\Ids\Test\Exception\ThereMustBeAtLeastOneUserWithAccess;
 use DigitalCraftsman\Ids\Test\Exception\UserIsDisabled;
 use DigitalCraftsman\Ids\Test\Exception\UserIsNotEnabled;
-use DigitalCraftsman\Ids\Test\ValueObject\AdminId;
-use DigitalCraftsman\Ids\Test\ValueObject\InstructorId;
 use DigitalCraftsman\Ids\Test\ValueObject\ProjectId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
@@ -60,25 +58,6 @@ final class IdListTest extends TestCase
 
         // -- Assert
         self::assertCount(3, $idList->ids);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::mustOnlyContainIdsOfHandledClass
-     *
-     * @doesNotPerformAssertions
-     */
-    public function id_list_construction_works_with_ids_of_subclass(): void
-    {
-        // -- Arrange & Act
-        new UserIdList([
-            UserId::generateRandom(),
-            UserId::generateRandom(),
-            InstructorId::generateRandom(),
-            AdminId::generateRandom(),
-        ]);
     }
 
     /**
