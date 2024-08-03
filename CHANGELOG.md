@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+
+- Extend annotations for `Id` and `IdList`.
+
 ## 1.2.0
 
 - Renamed parameter `$exception` to `$otherwiseThrow` in the guard methods of `Id` and `IdList` to make it more clear what the parameter does when using named parameters.
