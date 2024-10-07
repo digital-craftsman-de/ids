@@ -1358,7 +1358,7 @@ final class IdListTest extends TestCase
     /**
      * @test
      *
-     * @covers ::map
+     * @covers ::mapWithIdKeys
      */
     public function id_list_map_with_id_keys_works(): void
     {
