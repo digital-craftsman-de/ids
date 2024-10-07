@@ -1353,6 +1353,45 @@ final class IdListTest extends TestCase
         self::assertSame($expectedArray, $stringArray);
     }
 
+    // -- Map with id keys
+
+    /**
+     * @test
+     *
+     * @covers ::map
+     */
+    public function id_list_map_with_id_keys_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $listWithAllIds = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $expectedArray = [
+            (string) $idAnton => (string) $idAnton,
+            (string) $idMarkus => (string) $idMarkus,
+            (string) $idPaul => (string) $idPaul,
+            (string) $idTom => (string) $idTom,
+        ];
+
+        // -- Act
+        /** @var array<int, string> $stringArray */
+        $stringArray = $listWithAllIds->mapWithIdKeys(
+            static fn (UserId $userId) => (string) $userId,
+        );
+
+        // -- Assert
+        self::assertSame($expectedArray, $stringArray);
+    }
+
     // -- Filter
 
     /**

@@ -299,6 +299,27 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
     }
 
     /**
+     * Psalm doesn't yet realize when a function is pure and when not. To prevent us from marking every single use by hand (which will
+     * reduce the readability), we ignore the purity for now and will change the call here to pure-callable as soon as Psalm can handle
+     * it.
+     *
+     * @template R
+     *
+     * @psalm-param callable(T):R $mapFunction
+     *
+     * @return array<string, R>
+     */
+    public function mapWithIdKeys(callable $mapFunction): array
+    {
+        $map = [];
+        foreach ($this->ids as $idString => $id) {
+            $map[$idString] = $mapFunction($id);
+        }
+
+        return $map;
+    }
+
+    /**
      * @psalm-param callable(T):bool $filterFunction
      */
     public function filter(callable $filterFunction): static
