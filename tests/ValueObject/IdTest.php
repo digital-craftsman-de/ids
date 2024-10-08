@@ -7,19 +7,16 @@ namespace DigitalCraftsman\Ids\ValueObject;
 use DigitalCraftsman\Ids\Test\Exception\NotTheSameUser;
 use DigitalCraftsman\Ids\Test\Exception\SameUser;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\Id */
+#[CoversClass(Id::class)]
 final class IdTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::fromString
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function construction_works(): void
     {
         // -- Act
@@ -28,11 +25,7 @@ final class IdTest extends TestCase
         UserId::generateRandom();
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     */
+    #[Test]
     public function construction_with_invalid_id_fails(): void
     {
         // -- Assert
@@ -42,11 +35,7 @@ final class IdTest extends TestCase
         new UserId('test');
     }
 
-    /**
-     * @test
-     *
-     * @covers ::isEqualTo
-     */
+    #[Test]
     public function user_id_is_equal(): void
     {
         // -- Arrange
@@ -57,11 +46,7 @@ final class IdTest extends TestCase
         self::assertTrue($userId1->isEqualTo($userId2));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::isNotEqualTo
-     */
+    #[Test]
     public function user_id_is_not_equal(): void
     {
         // -- Arrange
@@ -72,13 +57,8 @@ final class IdTest extends TestCase
         self::assertTrue($userId1->isNotEqualTo($userId2));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustBeEqualTo
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function user_id_must_be_equal(): void
     {
         // -- Arrange
@@ -89,13 +69,8 @@ final class IdTest extends TestCase
         $userId1->mustBeEqualTo($userId2);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotBeEqualTo
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function user_id_must_not_be_equal(): void
     {
         // -- Arrange
@@ -106,11 +81,7 @@ final class IdTest extends TestCase
         $userId1->mustNotBeEqualTo($userId2);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustBeEqualTo
-     */
+    #[Test]
     public function user_id_must_be_equal_fails(): void
     {
         // -- Assert
@@ -124,11 +95,7 @@ final class IdTest extends TestCase
         $userId1->mustBeEqualTo($userId2);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustBeEqualTo
-     */
+    #[Test]
     public function user_id_must_be_equal_fails_with_custom_exception(): void
     {
         // -- Assert
@@ -145,11 +112,7 @@ final class IdTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotBeEqualTo
-     */
+    #[Test]
     public function user_id_must_not_be_equal_fails(): void
     {
         // -- Assert
@@ -163,11 +126,7 @@ final class IdTest extends TestCase
         $userId1->mustNotBeEqualTo($userId2);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotBeEqualTo
-     */
+    #[Test]
     public function user_id_must_not_be_equal_fails_with_custom_exception(): void
     {
         // -- Assert

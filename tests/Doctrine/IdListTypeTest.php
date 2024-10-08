@@ -8,11 +8,14 @@ use DigitalCraftsman\Ids\Test\Doctrine\UserIdListType;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(IdListType::class)]
 final class IdListTypeTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function convert_from_and_to_id_list_php_value_works(): void
     {
         // -- Arrange
@@ -33,7 +36,7 @@ final class IdListTypeTest extends TestCase
         self::assertEquals($userIdList, $phpValue);
     }
 
-    /** @test */
+    #[Test]
     public function convert_from_and_to_value_value_works(): void
     {
         // -- Arrange

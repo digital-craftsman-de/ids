@@ -6,17 +6,14 @@ namespace DigitalCraftsman\Ids\Serializer;
 
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\Ids\Serializer\IdListNormalizer */
+#[CoversClass(IdListNormalizer::class)]
 final class IdListNormalizerTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::normalize
-     * @covers ::denormalize
-     */
+    #[Test]
     public function id_list_normalization_and_denormalization_works(): void
     {
         // -- Arrange
@@ -37,11 +34,7 @@ final class IdListNormalizerTest extends TestCase
         self::assertEquals($userIdList, $denormalizedData);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::denormalize
-     */
+    #[Test]
     public function id_list_denormalization_with_null_works(): void
     {
         // -- Arrange
@@ -54,11 +47,7 @@ final class IdListNormalizerTest extends TestCase
         self::assertNull($denormalizedData);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::supportsNormalization
-     */
+    #[Test]
     public function supports_normalization_for_list(): void
     {
         // -- Arrange
@@ -70,11 +59,7 @@ final class IdListNormalizerTest extends TestCase
         self::assertTrue($normalizer->supportsNormalization($userIdList));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::supportsNormalization
-     */
+    #[Test]
     public function supports_normalization_fails_with_wrong_data(): void
     {
         // -- Arrange
@@ -86,11 +71,7 @@ final class IdListNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsNormalization($userId));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::supportsDenormalization
-     */
+    #[Test]
     public function supports_denormalization_for_id_list(): void
     {
         // -- Arrange
@@ -106,11 +87,7 @@ final class IdListNormalizerTest extends TestCase
         self::assertTrue($normalizer->supportsDenormalization($idListData, UserIdList::class));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::supportsDenormalization
-     */
+    #[Test]
     public function supports_denormalization_with_array_of_ids(): void
     {
         // -- Arrange
@@ -126,11 +103,7 @@ final class IdListNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsDenormalization($idListData, sprintf('%s[]', UserId::class)));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::supportsDenormalization
-     */
+    #[Test]
     public function supports_denormalization_with_wrong_type(): void
     {
         // -- Arrange
