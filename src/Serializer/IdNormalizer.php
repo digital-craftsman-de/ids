@@ -10,15 +10,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final readonly class IdNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    /** @param array<string, string|int|boolean> $context */
+    /** @param array<string, string|int|bool> $context */
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return $data instanceof Id;
     }
 
     /**
-     * @param string                            $type
-     * @param array<string, string|int|boolean> $context
+     * @param string                         $type
+     * @param array<string, string|int|bool> $context
      */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
@@ -26,8 +26,8 @@ final readonly class IdNormalizer implements NormalizerInterface, DenormalizerIn
     }
 
     /**
-     * @param Id                                $object
-     * @param array<string, string|int|boolean> $context
+     * @param Id                             $object
+     * @param array<string, string|int|bool> $context
      */
     public function normalize($object, $format = null, array $context = []): string
     {
@@ -35,9 +35,9 @@ final readonly class IdNormalizer implements NormalizerInterface, DenormalizerIn
     }
 
     /**
-     * @param ?string                           $data
-     * @param class-string<Id>                  $type
-     * @param array<string, string|int|boolean> $context
+     * @param ?string                        $data
+     * @param class-string<Id>               $type
+     * @param array<string, string|int|bool> $context
      */
     public function denormalize($data, $type, $format = null, array $context = []): ?Id
     {

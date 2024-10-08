@@ -17,18 +17,17 @@ use DigitalCraftsman\Ids\Test\Exception\UserIsNotEnabled;
 use DigitalCraftsman\Ids\Test\ValueObject\ProjectId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Test\ValueObject\UserIdList;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\Ids\ValueObject\IdList */
+#[CoversClass(IdList::class)]
 final class IdListTest extends TestCase
 {
     // -- Construct
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     */
+    #[Test]
     public function id_list_construction_works(): void
     {
         // -- Arrange & Act
@@ -42,11 +41,7 @@ final class IdListTest extends TestCase
         self::assertCount(3, $idList->ids);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     */
+    #[Test]
     public function id_list_construction_works_with_index_that_is_not_a_list(): void
     {
         // -- Arrange & Act
@@ -60,12 +55,7 @@ final class IdListTest extends TestCase
         self::assertCount(3, $idList->ids);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::mustOnlyContainIdsOfHandledClass
-     */
+    #[Test]
     public function id_list_construction_fails_with_ids_of_different_id_class(): void
     {
         // -- Assert
@@ -85,11 +75,7 @@ final class IdListTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::fromIds
-     */
+    #[Test]
     public function id_list_construction_from_ids_works(): void
     {
         // -- Arrange
@@ -106,11 +92,7 @@ final class IdListTest extends TestCase
         self::assertCount(3, $userIdList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::fromIdStrings
-     */
+    #[Test]
     public function id_list_construction_from_id_strings_works(): void
     {
         // -- Arrange
@@ -127,11 +109,7 @@ final class IdListTest extends TestCase
         self::assertCount(3, $userIdList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::fromMap
-     */
+    #[Test]
     public function id_list_construction_from_map_works(): void
     {
         // -- Arrange
@@ -164,11 +142,7 @@ final class IdListTest extends TestCase
         self::assertTrue($userIdList->containsId(UserId::fromString($users[2]['id'])));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::emptyList
-     */
+    #[Test]
     public function empty_list_works(): void
     {
         // -- Arrange
@@ -180,11 +154,7 @@ final class IdListTest extends TestCase
 
     // -- Merge
 
-    /**
-     * @test
-     *
-     * @covers ::fromIdLists
-     */
+    #[Test]
     public function from_id_lists_works(): void
     {
         // -- Arrange
@@ -210,11 +180,7 @@ final class IdListTest extends TestCase
         self::assertCount(6, $mergedIdList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::fromIdLists
-     */
+    #[Test]
     public function from_id_lists_with_duplicates_works(): void
     {
         // -- Arrange
@@ -242,11 +208,7 @@ final class IdListTest extends TestCase
 
     // -- Add id
 
-    /**
-     * @test
-     *
-     * @covers ::addId
-     */
+    #[Test]
     public function add_id_works(): void
     {
         // -- Arrange
@@ -267,11 +229,7 @@ final class IdListTest extends TestCase
         self::assertTrue($addedList->containsId($newId));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addId
-     */
+    #[Test]
     public function add_id_fails_with_duplicate_id(): void
     {
         // -- Assert
@@ -288,11 +246,7 @@ final class IdListTest extends TestCase
         $idList->addId($existingUserId);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addIdWhenNotInList
-     */
+    #[Test]
     public function add_id_when_not_in_list_works(): void
     {
         // -- Arrange
@@ -320,11 +274,7 @@ final class IdListTest extends TestCase
 
     // -- Add ids
 
-    /**
-     * @test
-     *
-     * @covers ::addIds
-     */
+    #[Test]
     public function add_ids_works(): void
     {
         // -- Arrange
@@ -348,11 +298,7 @@ final class IdListTest extends TestCase
         self::assertTrue($addedList->containsEveryId($newIds));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addIds
-     */
+    #[Test]
     public function add_ids_fails_with_duplicate_id(): void
     {
         // -- Assert
@@ -375,11 +321,7 @@ final class IdListTest extends TestCase
         $idList->addIds($newIds);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::addIdsWhenNotInList
-     */
+    #[Test]
     public function add_ids_when_not_in_list_works(): void
     {
         // -- Arrange
@@ -409,11 +351,7 @@ final class IdListTest extends TestCase
 
     // -- Remove id
 
-    /**
-     * @test
-     *
-     * @covers ::removeId
-     */
+    #[Test]
     public function remove_id_works(): void
     {
         // -- Arrange
@@ -435,11 +373,7 @@ final class IdListTest extends TestCase
         self::assertTrue($removedList->notContainsId($idToRemove));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::removeId
-     */
+    #[Test]
     public function remove_id_fails_when_id_is_not_in_list(): void
     {
         // -- Assert
@@ -459,11 +393,7 @@ final class IdListTest extends TestCase
 
     // Remove ids
 
-    /**
-     * @test
-     *
-     * @covers ::removeIds
-     */
+    #[Test]
     public function remove_ids_works(): void
     {
         // -- Arrange
@@ -493,11 +423,7 @@ final class IdListTest extends TestCase
         self::assertTrue($removedList->notContainsId($idToRemove2));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::removeIds
-     */
+    #[Test]
     public function remove_ids_fails_when_id_is_not_in_list(): void
     {
         // -- Assert
@@ -522,11 +448,7 @@ final class IdListTest extends TestCase
         $idList->removeIds($idsToRemove);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::removeIdsWhenInList
-     */
+    #[Test]
     public function remove_ids_when_in_list_works(): void
     {
         // -- Arrange
@@ -558,11 +480,7 @@ final class IdListTest extends TestCase
         self::assertTrue($removedList->notContainsId($idToRemove2));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::removeIdWhenInList
-     */
+    #[Test]
     public function remove_id_when_in_list_works(): void
     {
         // -- Arrange
@@ -589,11 +507,7 @@ final class IdListTest extends TestCase
 
     // -- Diff
 
-    /**
-     * @test
-     *
-     * @covers ::diff
-     */
+    #[Test]
     public function id_list_diff_works(): void
     {
         // -- Arrange
@@ -626,11 +540,7 @@ final class IdListTest extends TestCase
         self::assertTrue($diffListFromOriginalList->containsId($idTom));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::diff
-     */
+    #[Test]
     public function id_list_diff_works_with_empty_list(): void
     {
         // -- Arrange
@@ -659,11 +569,7 @@ final class IdListTest extends TestCase
 
     // -- Intersect
 
-    /**
-     * @test
-     *
-     * @covers ::intersect
-     */
+    #[Test]
     public function id_list_intersect_works(): void
     {
         // -- Arrange
@@ -696,14 +602,8 @@ final class IdListTest extends TestCase
 
     // -- Must and must not contain
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainId
-     * @covers ::mustNotContainId
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function id_list_must_and_must_not_contains_works(): void
     {
         // -- Arrange
@@ -729,11 +629,7 @@ final class IdListTest extends TestCase
         $partialList->mustNotContainId($idMarkus);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainId
-     */
+    #[Test]
     public function id_list_must_contain_throws_exception(): void
     {
         // -- Assert
@@ -753,11 +649,7 @@ final class IdListTest extends TestCase
         $partialList->mustContainId($idMarkus);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainId
-     */
+    #[Test]
     public function id_list_must_contain_throws_custom_exception(): void
     {
         // -- Assert
@@ -780,11 +672,7 @@ final class IdListTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotContainId
-     */
+    #[Test]
     public function id_list_must_not_contain_throws_exception(): void
     {
         // -- Assert
@@ -803,11 +691,7 @@ final class IdListTest extends TestCase
         $partialList->mustNotContainId($idAnton);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotContainId
-     */
+    #[Test]
     public function id_list_must_not_contain_throws_custom_exception(): void
     {
         // -- Assert
@@ -829,11 +713,7 @@ final class IdListTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainEveryId
-     */
+    #[Test]
     public function id_list_must_contain_every_id(): void
     {
         // -- Assert
@@ -856,11 +736,7 @@ final class IdListTest extends TestCase
         $partialList->mustContainEveryId($fullList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainEveryId
-     */
+    #[Test]
     public function id_list_must_contain_every_id_throws_custom_exception(): void
     {
         // -- Assert
@@ -886,13 +762,8 @@ final class IdListTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainEveryId
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function id_list_must_contain_every_id_when_every_id_is_present(): void
     {
         // -- Arrange
@@ -912,11 +783,7 @@ final class IdListTest extends TestCase
         $fullList->mustContainEveryId($partialList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotContainEveryId
-     */
+    #[Test]
     public function id_list_must_not_contain_every_id(): void
     {
         // -- Assert
@@ -939,11 +806,7 @@ final class IdListTest extends TestCase
         $fullList->mustNotContainEveryId($partialList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotContainEveryId
-     */
+    #[Test]
     public function id_list_must_not_contain_every_id_throws_custom_exception(): void
     {
         // -- Assert
@@ -969,13 +832,8 @@ final class IdListTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotContainEveryId
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function id_list_must_not_contain_every_id_when_every_id_is_present(): void
     {
         // -- Arrange
@@ -995,11 +853,7 @@ final class IdListTest extends TestCase
         $partialList->mustNotContainEveryId($fullList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainSomeIds
-     */
+    #[Test]
     public function id_list_must_contain_some_ids(): void
     {
         // -- Assert
@@ -1024,11 +878,7 @@ final class IdListTest extends TestCase
         $almostFullList->mustContainSomeIds($idListWithDifferentId);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainSomeIds
-     */
+    #[Test]
     public function id_list_must_contain_some_ids_throws_custom_exception(): void
     {
         // -- Assert
@@ -1056,13 +906,8 @@ final class IdListTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainSomeIds
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function id_list_must_contain_some_ids_when_one_id_is_available(): void
     {
         // -- Arrange
@@ -1085,11 +930,7 @@ final class IdListTest extends TestCase
         $almostFullList->mustContainSomeIds($idListWithDifferentId);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainNoneIds
-     */
+    #[Test]
     public function id_list_must_contain_none_ids(): void
     {
         // -- Assert
@@ -1115,11 +956,7 @@ final class IdListTest extends TestCase
         $idListWithPartialMatchingIds->mustContainNoneIds($almostFullList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainNoneIds
-     */
+    #[Test]
     public function id_list_must_contain_none_ids_throws_custom_exception(): void
     {
         // -- Assert
@@ -1148,13 +985,8 @@ final class IdListTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustContainNoneIds
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function id_list_must_contain_none_ids_when_no_id_is_available(): void
     {
         // -- Arrange
@@ -1178,13 +1010,8 @@ final class IdListTest extends TestCase
 
     // -- Must be empty
 
-    /**
-     * @test
-     *
-     * @covers ::mustBeEmpty
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function id_list_must_be_empty_works(): void
     {
         // -- Arrange
@@ -1194,11 +1021,7 @@ final class IdListTest extends TestCase
         $emptyList->mustBeEmpty();
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustBeEmpty
-     */
+    #[Test]
     public function id_list_must_be_empty_throws_exception_when_not_empty(): void
     {
         // -- Assert
@@ -1213,11 +1036,7 @@ final class IdListTest extends TestCase
         $notEmptyList->mustBeEmpty();
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustBeEmpty
-     */
+    #[Test]
     public function id_list_must_be_empty_throws_custom_exception_when_not_empty(): void
     {
         // -- Assert
@@ -1236,13 +1055,8 @@ final class IdListTest extends TestCase
 
     // -- Must not be empty
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotBeEmpty
-     *
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function id_list_must_not_be_empty_works(): void
     {
         // -- Arrange
@@ -1254,11 +1068,7 @@ final class IdListTest extends TestCase
         $notEmptyList->mustNotBeEmpty();
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotBeEmpty
-     */
+    #[Test]
     public function id_list_must_not_be_empty_throws_exception_when_empty(): void
     {
         // -- Assert
@@ -1271,11 +1081,7 @@ final class IdListTest extends TestCase
         $emptyList->mustNotBeEmpty();
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotBeEmpty
-     */
+    #[Test]
     public function id_list_must_not_be_empty_throws_custom_exception_when_empty(): void
     {
         // -- Assert
@@ -1292,12 +1098,7 @@ final class IdListTest extends TestCase
 
     // -- Empty
 
-    /**
-     * @test
-     *
-     * @covers ::isEmpty
-     * @covers ::isNotEmpty
-     */
+    #[Test]
     public function id_list_is_empty_works(): void
     {
         // -- Arrange
@@ -1316,11 +1117,7 @@ final class IdListTest extends TestCase
 
     // -- Map
 
-    /**
-     * @test
-     *
-     * @covers ::map
-     */
+    #[Test]
     public function id_list_map_works(): void
     {
         // -- Arrange
@@ -1353,13 +1150,44 @@ final class IdListTest extends TestCase
         self::assertSame($expectedArray, $stringArray);
     }
 
+    // -- Map with id keys
+
+    #[Test]
+    public function id_list_map_with_id_keys_works(): void
+    {
+        // -- Arrange
+        $idAnton = UserId::generateRandom();
+        $idMarkus = UserId::generateRandom();
+        $idPaul = UserId::generateRandom();
+        $idTom = UserId::generateRandom();
+
+        $listWithAllIds = UserIdList::fromIds([
+            $idAnton,
+            $idMarkus,
+            $idPaul,
+            $idTom,
+        ]);
+
+        $expectedArray = [
+            (string) $idAnton => (string) $idAnton,
+            (string) $idMarkus => (string) $idMarkus,
+            (string) $idPaul => (string) $idPaul,
+            (string) $idTom => (string) $idTom,
+        ];
+
+        // -- Act
+        /** @var array<int, string> $stringArray */
+        $stringArray = $listWithAllIds->mapWithIdKeys(
+            static fn (UserId $userId) => (string) $userId,
+        );
+
+        // -- Assert
+        self::assertSame($expectedArray, $stringArray);
+    }
+
     // -- Filter
 
-    /**
-     * @test
-     *
-     * @covers ::filter
-     */
+    #[Test]
     public function id_list_filter_works(): void
     {
         // -- Arrange
@@ -1396,11 +1224,7 @@ final class IdListTest extends TestCase
 
     // -- Every
 
-    /**
-     * @test
-     *
-     * @covers ::every
-     */
+    #[Test]
     public function id_list_every_works(): void
     {
         // -- Arrange
@@ -1444,11 +1268,7 @@ final class IdListTest extends TestCase
 
     // -- Some
 
-    /**
-     * @test
-     *
-     * @covers ::some
-     */
+    #[Test]
     public function id_list_some_works(): void
     {
         // -- Arrange
@@ -1493,11 +1313,7 @@ final class IdListTest extends TestCase
 
     // -- Reduce
 
-    /**
-     * @test
-     *
-     * @covers ::reduce
-     */
+    #[Test]
     public function id_list_reduce_works(): void
     {
         // -- Arrange
@@ -1532,12 +1348,7 @@ final class IdListTest extends TestCase
 
     // -- Contains
 
-    /**
-     * @test
-     *
-     * @covers ::containsId
-     * @covers ::notContainsId
-     */
+    #[Test]
     public function id_list_contains_and_not_contains_works(): void
     {
         // -- Arrange
@@ -1569,11 +1380,7 @@ final class IdListTest extends TestCase
 
     // -- Contains every id
 
-    /**
-     * @test
-     *
-     * @covers ::containsEveryId
-     */
+    #[Test]
     public function id_list_contains_every_id_works(): void
     {
         // -- Arrange
@@ -1611,11 +1418,7 @@ final class IdListTest extends TestCase
         self::assertFalse($partialList->containsEveryId($listWithDifferentId));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::notContainsEveryId
-     */
+    #[Test]
     public function id_list_not_contains_every_id_works(): void
     {
         // -- Arrange
@@ -1655,11 +1458,7 @@ final class IdListTest extends TestCase
 
     // -- Contains some ids
 
-    /**
-     * @test
-     *
-     * @covers ::containsSomeIds
-     */
+    #[Test]
     public function id_list_contains_some_ids_works(): void
     {
         // -- Arrange
@@ -1704,11 +1503,7 @@ final class IdListTest extends TestCase
         self::assertFalse($partialList->containsSomeIds($listWithOnlyDifferentIds));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::containsNoneIds
-     */
+    #[Test]
     public function id_list_contains_none_ids_works(): void
     {
         // -- Arrange
@@ -1755,12 +1550,7 @@ final class IdListTest extends TestCase
 
     // -- Is equal and not equal
 
-    /**
-     * @test
-     *
-     * @covers ::isEqualTo
-     * @covers ::isNotEqualTo
-     */
+    #[Test]
     public function id_list_is_equal_to(): void
     {
         // -- Arrange
@@ -1806,12 +1596,7 @@ final class IdListTest extends TestCase
         self::assertFalse($originalList->isNotEqualTo($copyOfOriginalList));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::isEqualTo
-     * @covers ::isNotEqualTo
-     */
+    #[Test]
     public function empty_id_list_is_not_equal_to(): void
     {
         // -- Arrange
@@ -1830,12 +1615,7 @@ final class IdListTest extends TestCase
         $this->assertTrue($emptyIdList->isNotEqualTo($userIdList));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::isEqualTo
-     * @covers ::isNotEqualTo
-     */
+    #[Test]
     public function id_list_is_not_equal_to_empty_id_list(): void
     {
         // -- Arrange
@@ -1854,11 +1634,7 @@ final class IdListTest extends TestCase
         $this->assertTrue($userIdList->isNotEqualTo($emptyIdList));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustBeEqualTo
-     */
+    #[Test]
     public function must_be_equal_to(): void
     {
         // -- Assert
@@ -1886,11 +1662,7 @@ final class IdListTest extends TestCase
         $originalList->mustBeEqualTo($partialList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustBeEqualTo
-     */
+    #[Test]
     public function must_be_equal_to_throws_custom_exception(): void
     {
         // -- Assert
@@ -1921,11 +1693,7 @@ final class IdListTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotBeEqualTo
-     */
+    #[Test]
     public function must_not_be_equal_to(): void
     {
         // -- Assert
@@ -1955,11 +1723,7 @@ final class IdListTest extends TestCase
         $originalList->mustNotBeEqualTo($sameListInDifferentOrder);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mustNotBeEqualTo
-     */
+    #[Test]
     public function must_not_be_equal_to_throws_custom_exception(): void
     {
         // -- Assert
@@ -1994,11 +1758,7 @@ final class IdListTest extends TestCase
 
     // -- Count
 
-    /**
-     * @test
-     *
-     * @covers ::count
-     */
+    #[Test]
     public function id_list_count_works(): void
     {
         // -- Arrange
@@ -2014,11 +1774,7 @@ final class IdListTest extends TestCase
 
     // -- Iteration
 
-    /**
-     * @test
-     *
-     * @covers ::getIterator
-     */
+    #[Test]
     public function id_list_iteration_works(): void
     {
         // -- Arrange
@@ -2062,11 +1818,7 @@ final class IdListTest extends TestCase
         self::assertEquals($duplicatedIdList, $idList);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getIterator
-     */
+    #[Test]
     public function id_list_works_with_gaps_in_input_list(): void
     {
         // -- Arrange
@@ -2099,11 +1851,7 @@ final class IdListTest extends TestCase
 
     // -- Ids as string
 
-    /**
-     * @test
-     *
-     * @covers ::idsAsStringList
-     */
+    #[Test]
     public function id_list_as_string_works(): void
     {
         // -- Arrange

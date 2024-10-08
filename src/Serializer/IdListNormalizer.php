@@ -11,8 +11,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final readonly class IdListNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
-     * @param IdList|object                     $data
-     * @param array<string, string|int|boolean> $context
+     * @param IdList|object                  $data
+     * @param array<string, string|int|bool> $context
      */
     public function supportsNormalization($data, $format = null, array $context = []): bool
     {
@@ -20,8 +20,8 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
     }
 
     /**
-     * @param string                            $type
-     * @param array<string, string|int|boolean> $context
+     * @param string                         $type
+     * @param array<string, string|int|bool> $context
      */
     public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
@@ -35,8 +35,8 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
     }
 
     /**
-     * @param IdList                            $object
-     * @param array<string, string|int|boolean> $context
+     * @param IdList                         $object
+     * @param array<string, string|int|bool> $context
      *
      * @return array<int, string>
      */
@@ -46,11 +46,11 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
     }
 
     /**
-     * @param ?array<int, string>               $data
-     * @param class-string<IdList>              $type
-     * @param array<string, string|int|boolean> $context
+     * @param ?array<int, string>            $data
+     * @param class-string<IdList>           $type
+     * @param array<string, string|int|bool> $context
      */
-    public function denormalize($data, $type, $format = null, array $context = []): IdList | null
+    public function denormalize($data, $type, $format = null, array $context = []): ?IdList
     {
         if ($data === null) {
             return null;

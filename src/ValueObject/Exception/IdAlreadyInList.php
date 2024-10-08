@@ -6,7 +6,11 @@ namespace DigitalCraftsman\Ids\ValueObject\Exception;
 
 use DigitalCraftsman\Ids\ValueObject\Id;
 
-/** @psalm-immutable */
+/**
+ * @psalm-immutable
+ *
+ * @codeCoverageIgnore
+ */
 final class IdAlreadyInList extends \DomainException
 {
     public function __construct(Id $id)

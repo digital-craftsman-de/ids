@@ -5,17 +5,14 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\Serializer;
 
 use DigitalCraftsman\Ids\Test\ValueObject\UserId;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\Ids\Serializer\IdNormalizer */
+#[CoversClass(IdNormalizer::class)]
 final class IdNormalizerTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::normalize
-     * @covers ::denormalize
-     */
+    #[Test]
     public function id_normalization_and_denormalization_works(): void
     {
         // -- Arrange
@@ -31,11 +28,7 @@ final class IdNormalizerTest extends TestCase
         self::assertEquals($userId, $denormalizedData);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::denormalize
-     */
+    #[Test]
     public function id_denormalization_with_null_works(): void
     {
         // -- Arrange
@@ -48,11 +41,7 @@ final class IdNormalizerTest extends TestCase
         self::assertNull($denormalizedData);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::supportsNormalization
-     */
+    #[Test]
     public function supports_normalization(): void
     {
         // -- Arrange
@@ -64,11 +53,7 @@ final class IdNormalizerTest extends TestCase
         self::assertTrue($normalizer->supportsNormalization($userId));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::supportsNormalization
-     */
+    #[Test]
     public function supports_normalization_fails_with_invalid_data(): void
     {
         // -- Arrange
@@ -80,11 +65,7 @@ final class IdNormalizerTest extends TestCase
         self::assertFalse($normalizer->supportsNormalization($userId));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::supportsDenormalization
-     */
+    #[Test]
     public function supports_denormalization(): void
     {
         // -- Arrange

@@ -4,7 +4,7 @@ A Symfony bundle to work with id and id list value objects in Symfony. It includ
 
 As it's a central part of an application, it's tested thoroughly (including mutation testing).
 
-[![Latest Stable Version](https://img.shields.io/badge/stable-1.2.1-blue)](https://packagist.org/packages/digital-craftsman/ids)
+[![Latest Stable Version](https://img.shields.io/badge/stable-1.3.0-blue)](https://packagist.org/packages/digital-craftsman/ids)
 [![PHP Version Require](https://img.shields.io/badge/php-8.2|8.3-5b5d95)](https://packagist.org/packages/digital-craftsman/ids)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/ids/branch/main/graph/badge.svg?token=BL0JKZYLBG)](https://codecov.io/gh/digital-craftsman-de/ids)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/digital-craftsman/ids)

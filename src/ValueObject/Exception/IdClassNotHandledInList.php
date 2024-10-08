@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject\Exception;
 
-/** @psalm-immutable */
+/**
+ * @psalm-immutable
+ *
+ * @codeCoverageIgnore
+ */
 final class IdClassNotHandledInList extends \InvalidArgumentException
 {
     public function __construct(string $idListClass, string $idClass)

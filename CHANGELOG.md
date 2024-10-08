@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0
+
+- Added method `mapWithIdKeys(callable $mapFunction): array` to `IdList`.
+
 ## 1.2.1
 
 - Extend annotations for `Id` and `IdList`.
