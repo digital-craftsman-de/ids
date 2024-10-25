@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0
+
+- Drop support for PHP 8.2.
+- Add support for PHP 8.4.
+
 ## 1.3.0
 
 - Added method `mapWithIdKeys(callable $mapFunction): array` to `IdList`.

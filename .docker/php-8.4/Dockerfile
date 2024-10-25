@@ -1,7 +1,7 @@
 # Build with
-# docker buildx build --platform linux/arm64,linux/amd64 -t ghcr.io/digital-craftsman-de/ids-php-8.2:latest ./.docker/php-8.2 --push
+# docker buildx build --platform linux/arm64,linux/amd64 -t ghcr.io/digital-craftsman-de/ids-php-8.4:latest ./.docker/php-8.4 --push
 
-FROM php:8.2-fpm-alpine
+FROM php:8.4.0RC3-fpm-alpine
 
 RUN apk add --update \
     autoconf \
@@ -15,7 +15,19 @@ ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/do
 RUN chmod uga+x /usr/local/bin/install-php-extensions && sync
 
 # Debugging
-RUN install-php-extensions xdebug
+# XDebug is not yet compatible with PHP 8.4, therefore we need to build it from source. This will be replaced with the following line once XDebug is compatible with PHP 8.4:
+# RUN pecl install xdebug-3.4.0 && docker-php-ext-enable xdebug
+RUN apk add git
+#RUN apk add -U php8-dev --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+RUN git clone https://github.com/xdebug/xdebug.git \
+    && cd xdebug \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && cd .. \
+    && docker-php-ext-enable xdebug
+#RUN install-php-extensions xdebug
 
 # Ids package
 RUN install-php-extensions uuid
