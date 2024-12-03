@@ -35,14 +35,14 @@ final readonly class IdListNormalizer implements NormalizerInterface, Denormaliz
     }
 
     /**
-     * @param IdList                         $object
+     * @param IdList                         $data
      * @param array<string, string|int|bool> $context
      *
      * @return array<int, string>
      */
-    public function normalize($object, $format = null, array $context = []): array
+    public function normalize($data, $format = null, array $context = []): array
     {
-        return $object->idsAsStringList();
+        return $data->idsAsStringList();
     }
 
     /**

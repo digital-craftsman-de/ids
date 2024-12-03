@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0
+
+- Added method `toString(): string` to `Id`.
+
 ## 1.3.0
 
 - Added method `mapWithIdKeys(callable $mapFunction): array` to `IdList`.
