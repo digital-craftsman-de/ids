@@ -35,6 +35,11 @@ abstract readonly class Id implements \Stringable
 
     // Accessors
 
+    public function toString(): string
+    {
+        return $this->value;
+    }
+
     /**
      * @param static $id
      */

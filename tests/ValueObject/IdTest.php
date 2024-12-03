@@ -36,6 +36,17 @@ final class IdTest extends TestCase
     }
 
     #[Test]
+    public function to_string_works(): void
+    {
+        // -- Arrange
+        $idString = 'f41e0af4-88c4-4d79-9c1a-6e8ea34a956f';
+        $id = UserId::fromString($idString);
+
+        // -- Act & Assert
+        self::assertSame($idString, $id->toString());
+    }
+
+    #[Test]
     public function user_id_is_equal(): void
     {
         // -- Arrange
