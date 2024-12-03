@@ -26,12 +26,12 @@ final readonly class IdNormalizer implements NormalizerInterface, DenormalizerIn
     }
 
     /**
-     * @param Id                             $object
+     * @param Id                             $data
      * @param array<string, string|int|bool> $context
      */
-    public function normalize($object, $format = null, array $context = []): string
+    public function normalize($data, $format = null, array $context = []): string
     {
-        return (string) $object;
+        return (string) $data;
     }
 
     /**
