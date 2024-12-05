@@ -1,5 +1,64 @@
 # Upgrade guide
 
+## From 1.4.* to 2.0.0
+
+### Switched away from custom normalizers
+
+Switched away from custom normalizers to the normalizers from `digital-craftsman/self-aware-normalizers`.
+
+The new normalizers are automatically registered and will handle the normalization of ids and id lists. When you've configured the `IdNormalizer` or `IdListNormalizer` manually somewhere, you need to replace them with the `StringNormalizableNormalizer` and `ArrayNormalizableNormalizer` respectively.
+
+The `Id` and `IdList` classes now contain a `normalize` and `denormalize` methods. So if you've implemented those methods in your classes, you need to rename yours to something else.
+
+### Removed custom doctrine type for IdList
+
+There is no need for the custom doctrine type for `IdList` anymore. Instead, extend your doctrine types from `ArrayNormalizableType`. As the id list knows which id class to construct, the doctrine type doesn't need the `getIdClass` method anymore.
+
+```php
+use DigitalCraftsman\Ids\Doctrine\IdListType;
+
+final class UserIdListType extends IdListType
+{
+    public static function getTypeName(): string
+    {
+        return 'user_id_list';
+    }
+
+    public static function getClass(): string
+    {
+        return UserIdList::class;
+    }
+    
+    public static function getIdClass(): string
+    {
+        return UserId::class;
+    }
+}
+```
+
+After:
+
+```php
+use DigitalCraftsman\SelfAwareNormalizers\Doctrine\ArrayNormalizableType;
+
+final class UserIdListType extends ArrayNormalizableType
+{
+    public static function getTypeName(): string
+    {
+        return 'user_id_list';
+    }
+
+    public static function getClass(): string
+    {
+        return UserIdList::class;
+    }
+}
+```
+
+### Upgrade to at least PHP 8.3
+
+Support for PHP 8.2 was dropped, so you have to upgrade to at least PHP 8.3.
+
 ## From 1.3.* to 1.4.0
 
 Nothing to do.

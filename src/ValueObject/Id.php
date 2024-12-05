@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
-abstract readonly class Id implements \Stringable
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizable;
+
+abstract readonly class Id implements \Stringable, StringNormalizable
 {
-    // Construction
+    // -- Construction
 
     final public function __construct(
         public string $value,
@@ -26,14 +28,26 @@ abstract readonly class Id implements \Stringable
         return new static($id);
     }
 
-    // Magic
+    // -- String normalizable
+
+    public static function denormalize(string $data): static
+    {
+        return new static($data);
+    }
+
+    public function normalize(): string
+    {
+        return $this->value;
+    }
+
+    // -- Magic
 
     public function __toString(): string
     {
         return $this->value;
     }
 
-    // Accessors
+    // -- Accessors
 
     public function toString(): string
     {
@@ -56,7 +70,7 @@ abstract readonly class Id implements \Stringable
         return $this->value !== $id->value;
     }
 
-    // Guards
+    // -- Guards
 
     /**
      * @param static                  $id

@@ -4,8 +4,8 @@ A Symfony bundle to work with id and id list value objects in Symfony. It includ
 
 As it's a central part of an application, it's tested thoroughly (including mutation testing).
 
-[![Latest Stable Version](https://img.shields.io/badge/stable-1.4.0-blue)](https://packagist.org/packages/digital-craftsman/ids)
-[![PHP Version Require](https://img.shields.io/badge/php-8.2|8.3-5b5d95)](https://packagist.org/packages/digital-craftsman/ids)
+[![Latest Stable Version](https://img.shields.io/badge/stable-2.0.0-blue)](https://packagist.org/packages/digital-craftsman/ids)
+[![PHP Version Require](https://img.shields.io/badge/php-8.3|8.4-5b5d95)](https://packagist.org/packages/digital-craftsman/ids)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/ids/branch/main/graph/badge.svg?token=BL0JKZYLBG)](https://codecov.io/gh/digital-craftsman-de/ids)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/digital-craftsman/ids)
 ![Packagist License](https://img.shields.io/packagist/l/digital-craftsman/ids)
@@ -67,7 +67,7 @@ $requestingUser->userId->mustNotBeEqualTo(
 
 ### Symfony serializer
 
-If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer for the id is automatically registered.
+If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer from [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers) are registered automatically and will handle the serialization and deserialization of the `Id` class, as it implements the `StringNormalizable` interface.
 
 ```php
 namespace App\DTO;
@@ -103,7 +103,7 @@ public function handle(UserPayload $userPayload): string
 }
 ```
 
-This can be combined with the [CQRS bundle](https://github.com/digital-craftsman-de/cqrs) to have serialized ids there.
+This can be combined with the [CQS bundle](https://github.com/digital-craftsman-de/cqs-routing) to have serialized ids there.
 
 ### Doctrine types
 
@@ -226,7 +226,7 @@ $idsOfEnabledUsers->mustContainId(
 
 ### Symfony serializer
 
-If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer for the id list is automatically registered.
+If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer from [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers) are registered automatically and will handle the serialization and deserialization of the `IdList` class, as it implements the `ArrayNormalizable` interface.
 
 ### Doctrine types
 
@@ -239,25 +239,19 @@ declare(strict_types=1);
 
 namespace App\Doctrine;
 
-use App\ValueObject\UserId;
 use App\ValueObject\UserIdList;
-use DigitalCraftsman\Ids\Doctrine\IdListType;
+use DigitalCraftsman\SelfAwareNormalizers\Doctrine\ArrayNormalizableType;
 
-final class UserIdListType extends IdListType
+final class UserIdListType extends ArrayNormalizableType
 {
     protected function getTypeName(): string
     {
         return 'user_id_list';
     }
 
-    protected function getIdListClass(): string
+    protected function getClass(): string
     {
         return UserIdList::class;
-    }
-    
-    protected function getIdClass(): string
-    {
-        return UserId::class;
     }
 }
 ```

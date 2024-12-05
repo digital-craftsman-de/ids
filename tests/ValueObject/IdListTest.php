@@ -272,6 +272,36 @@ final class IdListTest extends TestCase
         self::assertTrue($addedList->containsId($newId));
     }
 
+    // -- Array normalizable
+
+    #[Test]
+    public function normalize_and_denormalize_works(): void
+    {
+        // -- Arrange
+        $idOfUserPeter = UserId::generateRandom();
+        $idOfUserTony = UserId::generateRandom();
+        $idOfUserBruce = UserId::generateRandom();
+
+        $idList = new UserIdList([
+            $idOfUserPeter,
+            $idOfUserTony,
+            $idOfUserBruce,
+        ]);
+        $data = [
+            $idOfUserPeter->normalize(),
+            $idOfUserTony->normalize(),
+            $idOfUserBruce->normalize(),
+        ];
+
+        // -- Act
+        $normalized = $idList->normalize();
+        $denormalized = UserIdList::denormalize($data);
+
+        // -- Assert
+        self::assertSame($data, $normalized);
+        self::assertEquals($idList, $denormalized);
+    }
+
     // -- Add ids
 
     #[Test]

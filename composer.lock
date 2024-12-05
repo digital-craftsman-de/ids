@@ -4,8 +4,60 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6f51eb6d4b97dc65d21419fd6d9ca8c",
+    "content-hash": "8cc08f8de9a90307656d2899880f2f2c",
     "packages": [
+        {
+            "name": "digital-craftsman/self-aware-normalizers",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/digital-craftsman-de/self-aware-normalizers.git",
+                "reference": "4ba3f01ddebba83ef77ba9e77c8183bd43f81154"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/digital-craftsman-de/self-aware-normalizers/zipball/4ba3f01ddebba83ef77ba9e77c8183bd43f81154",
+                "reference": "4ba3f01ddebba83ef77ba9e77c8183bd43f81154",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^3.3.6",
+                "php": "8.3.*|8.4.*",
+                "symfony/framework-bundle": "^7.1",
+                "symfony/serializer": "^7.1"
+            },
+            "require-dev": {
+                "digital-craftsman/ids": "^1.3",
+                "friendsofphp/php-cs-fixer": "^v3.59.3",
+                "infection/infection": "0.27.*",
+                "phpunit/phpunit": "^10.5",
+                "symfony/property-access": "^7.1",
+                "symfony/property-info": "^7.1",
+                "vimeo/psalm": "^5.25"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "DigitalCraftsman\\SelfAwareNormalizers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Kolb",
+                    "email": "info@digital-craftsman.de"
+                }
+            ],
+            "description": "Adds interfaces and normalizers that allow value objects to normalize and denormalize themselves.",
+            "support": {
+                "issues": "https://github.com/digital-craftsman-de/self-aware-normalizers/issues",
+                "source": "https://github.com/digital-craftsman-de/self-aware-normalizers/tree/v0.2.0"
+            },
+            "time": "2024-12-05T12:13:12+00:00"
+        },
         {
             "name": "doctrine/cache",
             "version": "2.2.0",
@@ -7408,7 +7460,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "8.2.*|8.3.*"
+        "php": "8.3.*|8.4.*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

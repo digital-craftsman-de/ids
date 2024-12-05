@@ -3,11 +3,12 @@
   "description": "Working with value objects for ids in Symfony",
   "type": "symfony-bundle",
   "require": {
-    "php": "8.2.*|8.3.*",
-    "symfony/framework-bundle": "^6.3|^7.0",
-    "symfony/serializer": "^6.3|^7.0",
-    "doctrine/dbal": "^2.13.8|^3.3.6",
-    "symfony/polyfill-uuid": "^1.26"
+    "php": "8.3.*|8.4.*",
+    "symfony/framework-bundle": "^7.0",
+    "symfony/serializer": "^7.0",
+    "doctrine/dbal": "^3.3.6",
+    "symfony/polyfill-uuid": "^1.26",
+    "digital-craftsman/self-aware-normalizers": "^0.2.0"
   },
   "require-dev": {
     "vimeo/psalm": "^5.25",
