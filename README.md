@@ -67,7 +67,7 @@ $requestingUser->userId->mustNotBeEqualTo(
 
 ### Symfony serializer
 
-If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer from [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers) are registered automatically and will handle the serialization and deserialization of the id as it implements the `StringNormalizable` interface.
+If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer from [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers) are registered automatically and will handle the serialization and deserialization of the `Id` class, as it implements the `StringNormalizable` interface.
 
 ```php
 namespace App\DTO;
@@ -226,7 +226,7 @@ $idsOfEnabledUsers->mustContainId(
 
 ### Symfony serializer
 
-If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer from [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers) are registered automatically and will handle the serialization and deserialization of the id as it implements the `ArrayNormalizable` interface.
+If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer from [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers) are registered automatically and will handle the serialization and deserialization of the `IdList` class, as it implements the `ArrayNormalizable` interface.
 
 ### Doctrine types
 
