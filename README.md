@@ -239,7 +239,6 @@ declare(strict_types=1);
 
 namespace App\Doctrine;
 
-use App\ValueObject\UserId;
 use App\ValueObject\UserIdList;
 use DigitalCraftsman\Ids\Doctrine\IdListType;
 
