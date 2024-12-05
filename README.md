@@ -103,7 +103,7 @@ public function handle(UserPayload $userPayload): string
 }
 ```
 
-This can be combined with the [CQRS bundle](https://github.com/digital-craftsman-de/cqrs) to have serialized ids there.
+This can be combined with the [CQS bundle](https://github.com/digital-craftsman-de/cqs-routing) to have serialized ids there.
 
 ### Doctrine types
 
