@@ -240,7 +240,7 @@ declare(strict_types=1);
 namespace App\Doctrine;
 
 use App\ValueObject\UserIdList;
-use DigitalCraftsman\Ids\Doctrine\IdListType;
+use DigitalCraftsman\SelfAwareNormalizers\Doctrine\ArrayNormalizableType;
 
 final class UserIdListType extends ArrayNormalizableType
 {
