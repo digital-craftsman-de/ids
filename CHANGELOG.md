@@ -5,6 +5,7 @@
 - **[Breaking change](./UPGRADE.md#switched-away-from-custom-normalizers)**: Switched away from custom normalizers to the normalizers from `digital-craftsman/self-aware-normalizers`.
 - **[Breaking change](./UPGRADE.md#removed-custom-doctrine-type-for-idlist)**: Removed base doctrine type `IdListType` in favor of `ArrayNormalizableType` of `digital-craftsman/self-aware-normalizers`.
 - **[Breaking change](./UPGRADE.md#upgrade-to-at-least-php-83)**: Dropped support for PHP 8.2.
+- Added support for PHP 8.4.
 
 ## 1.4.0
 
