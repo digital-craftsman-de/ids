@@ -46,7 +46,7 @@ install-8.4:
 	docker compose run --rm php-8.4 composer install
 
 .PHONY: php-cli
-php-cli: php-8.4-cli
+php-cli: php-8.3-cli
 
 .PHONY: php-8.3-cli
 php-8.3-cli:

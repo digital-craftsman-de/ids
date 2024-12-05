@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c5d96ef3bf68bce4fba5875675178aa8",
+    "content-hash": "8cc08f8de9a90307656d2899880f2f2c",
     "packages": [
         {
             "name": "digital-craftsman/self-aware-normalizers",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/digital-craftsman-de/self-aware-normalizers.git",
-                "reference": "142e8fe3ddbed4f03b5557bfbc5be83db7dad9db"
+                "reference": "4ba3f01ddebba83ef77ba9e77c8183bd43f81154"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/digital-craftsman-de/self-aware-normalizers/zipball/142e8fe3ddbed4f03b5557bfbc5be83db7dad9db",
-                "reference": "142e8fe3ddbed4f03b5557bfbc5be83db7dad9db",
+                "url": "https://api.github.com/repos/digital-craftsman-de/self-aware-normalizers/zipball/4ba3f01ddebba83ef77ba9e77c8183bd43f81154",
+                "reference": "4ba3f01ddebba83ef77ba9e77c8183bd43f81154",
                 "shasum": ""
             },
             "require": {
@@ -54,9 +54,9 @@
             "description": "Adds interfaces and normalizers that allow value objects to normalize and denormalize themselves.",
             "support": {
                 "issues": "https://github.com/digital-craftsman-de/self-aware-normalizers/issues",
-                "source": "https://github.com/digital-craftsman-de/self-aware-normalizers/tree/v0.1.0"
+                "source": "https://github.com/digital-craftsman-de/self-aware-normalizers/tree/v0.2.0"
             },
-            "time": "2024-12-03T08:25:36+00:00"
+            "time": "2024-12-05T12:13:12+00:00"
         },
         {
             "name": "doctrine/cache",
