@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+
+- **[Breaking change](./UPGRADE.md#switched-away-from-custom-normalizers)**: Switched away from custom normalizers to the normalizers from `digital-craftsman/self-aware-normalizers`.
+- **[Breaking change](./UPGRADE.md#removed-custom-doctrine-type-for-idlist)**: Removed base doctrine type `IdListType` in favor of `ArrayNormalizableType` of `digital-craftsman/self-aware-normalizers`.
+- **[Breaking change](./UPGRADE.md#upgrade-to-at-least-php-83)**: Dropped support for PHP 8.2.
+
 ## 1.4.0
 
 - Added method `toString(): string` to `Id`.

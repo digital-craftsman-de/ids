@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizable;
+
 /**
  * @template T extends Id
  *
@@ -15,8 +17,10 @@ namespace DigitalCraftsman\Ids\ValueObject;
  * didn't find a solution without suppressing this psalm check.
  *
  * @psalm-suppress UnsafeGenericInstantiation
+ *
+ * @psalm-type NormalizedIdList = list<string>
  */
-abstract readonly class IdList implements \IteratorAggregate, \Countable
+abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayNormalizable
 {
     /**
      * @var array<string, T>
@@ -122,6 +126,31 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable
      * @phpstan-return class-string<T>
      */
     abstract public static function handlesIdClass(): string;
+
+    // -- Array normalizable
+
+    /**
+     * @param NormalizedIdList $data
+     */
+    public static function denormalize(array $data): static
+    {
+        $idClass = static::handlesIdClass();
+
+        $ids = [];
+        foreach ($data as $idString) {
+            $ids[] = new $idClass($idString);
+        }
+
+        return new static($ids);
+    }
+
+    /**
+     * @return NormalizedIdList
+     */
+    public function normalize(): array
+    {
+        return $this->idsAsStringList();
+    }
 
     // -- Transformers
 

@@ -46,6 +46,24 @@ final class IdTest extends TestCase
         self::assertSame($idString, $id->toString());
     }
 
+    // -- String normalizable
+
+    #[Test]
+    public function normalize_and_denormalize_works(): void
+    {
+        // -- Arrange
+        $id = UserId::fromString('f41e0af4-88c4-4d79-9c1a-6e8ea34a956f');
+        $data = 'f41e0af4-88c4-4d79-9c1a-6e8ea34a956f';
+
+        // -- Act
+        $normalized = $id->normalize();
+        $denormalized = UserId::denormalize($data);
+
+        // -- Assert
+        self::assertSame($data, $normalized);
+        self::assertEquals($id, $denormalized);
+    }
+
     #[Test]
     public function user_id_is_equal(): void
     {
