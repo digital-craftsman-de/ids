@@ -8,7 +8,7 @@
     "symfony/serializer": "^7.0",
     "doctrine/dbal": "^3.3.6",
     "symfony/polyfill-uuid": "^1.26",
-    "digital-craftsman/self-aware-normalizers": "^0.2.0"
+    "digital-craftsman/self-aware-normalizers": "^0.3.0"
   },
   "require-dev": {
     "vimeo/psalm": "^6.1.0",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- Updated `digital-craftsman/self-aware-normalizers` to get rid of deprecations in PHP 8.4.
+
 ## 2.0.0
 
 - **[Breaking change](./UPGRADE.md#switched-away-from-custom-normalizers)**: Switched away from custom normalizers to the normalizers from `digital-craftsman/self-aware-normalizers`.
