@@ -11,10 +11,10 @@
     "digital-craftsman/self-aware-normalizers": "^0.2.0"
   },
   "require-dev": {
-    "vimeo/psalm": "^5.25",
+    "vimeo/psalm": "^6.1.0",
     "friendsofphp/php-cs-fixer": "^v3.59.3",
     "phpunit/phpunit": "^10.5",
-    "infection/infection": "0.27.*",
+    "infection/infection": "0.29.*",
     "phpstan/phpstan": "^1.9"
   },
   "suggest": {
