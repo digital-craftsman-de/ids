@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b96bceae3de64db540a0ce1de91bec6",
+    "content-hash": "f7030db23c3d35dd37bbcfe58bf733a9",
     "packages": [
         {
             "name": "digital-craftsman/self-aware-normalizers",
@@ -8618,12 +8618,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "8.3.*|8.4.*"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
