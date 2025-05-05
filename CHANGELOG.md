@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2
+
+- Updated `digital-craftsman/self-aware-normalizers` to use the first stable version.
+
 ## 2.0.1
 
 - Updated `digital-craftsman/self-aware-normalizers` to get rid of deprecations in PHP 8.4.
