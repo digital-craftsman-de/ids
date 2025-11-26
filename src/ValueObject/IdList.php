@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\ValueObject;
 
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizable;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableArrayDenormalizable;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableArrayDenormalizableTrait;
 
 /**
  * @template T extends Id
@@ -20,8 +22,10 @@ use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizable;
  *
  * @psalm-type NormalizedIdList = list<string>
  */
-abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayNormalizable
+abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayNormalizable, NullableArrayDenormalizable
 {
+    use NullableArrayDenormalizableTrait;
+
     /**
      * @var array<string, T>
      */
