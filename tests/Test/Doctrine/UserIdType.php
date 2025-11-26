@@ -9,11 +9,13 @@ use DigitalCraftsman\Ids\Test\ValueObject\UserId;
 
 final class UserIdType extends IdType
 {
+    #[\Override]
     public static function getTypeName(): string
     {
         return 'user_id';
     }
 
+    #[\Override]
     public static function getClass(): string
     {
         return UserId::class;

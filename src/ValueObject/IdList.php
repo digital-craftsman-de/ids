@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace DigitalCraftsman\Ids\ValueObject;
 
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizable;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableArrayDenormalizable;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableArrayDenormalizableTrait;
 
 /**
  * @template T extends Id
@@ -20,8 +22,10 @@ use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizable;
  *
  * @psalm-type NormalizedIdList = list<string>
  */
-abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayNormalizable
+abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayNormalizable, NullableArrayDenormalizable
 {
+    use NullableArrayDenormalizableTrait;
+
     /**
      * @var array<string, T>
      */
@@ -132,6 +136,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param NormalizedIdList $data
      */
+    #[\Override]
     public static function denormalize(array $data): static
     {
         $idClass = static::handlesIdClass();
@@ -147,6 +152,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @return NormalizedIdList
      */
+    #[\Override]
     public function normalize(): array
     {
         return $this->idsAsStringList();
@@ -722,6 +728,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @return \Iterator<int, T>
      */
+    #[\Override]
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator(array_values($this->ids));
@@ -729,6 +736,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
 
     // -- Countable
 
+    #[\Override]
     public function count(): int
     {
         return count($this->ids);

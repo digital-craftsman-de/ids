@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+- Updated `digital-craftsman/self-aware-normalizers` and added `denormalizeWhenNotNull` for `Id` and `IdList`.
+
 ## 2.0.2
 
 - Updated `digital-craftsman/self-aware-normalizers` to use the first stable version.

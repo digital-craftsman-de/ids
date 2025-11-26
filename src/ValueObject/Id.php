@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableStringDenormalizable;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableStringDenormalizableTrait;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizable;
 
-abstract readonly class Id implements \Stringable, StringNormalizable
+abstract readonly class Id implements \Stringable, StringNormalizable, NullableStringDenormalizable
 {
+    use NullableStringDenormalizableTrait;
+
     // -- Construction
 
     final public function __construct(
@@ -30,11 +34,13 @@ abstract readonly class Id implements \Stringable, StringNormalizable
 
     // -- String normalizable
 
+    #[\Override]
     public static function denormalize(string $data): static
     {
         return new static($data);
     }
 
+    #[\Override]
     public function normalize(): string
     {
         return $this->value;
@@ -42,6 +48,7 @@ abstract readonly class Id implements \Stringable, StringNormalizable
 
     // -- Magic
 
+    #[\Override]
     public function __toString(): string
     {
         return $this->value;

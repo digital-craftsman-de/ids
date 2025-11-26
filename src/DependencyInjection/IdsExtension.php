@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
  */
 final class IdsExtension extends Extension
 {
+    #[\Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
     }
