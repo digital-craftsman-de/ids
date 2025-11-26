@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2070bd2f5791343d79f4d112f6af690",
+    "content-hash": "c8dfaf8a11700a26d0d9ebd8963cb121",
     "packages": [
         {
             "name": "digital-craftsman/self-aware-normalizers",
-            "version": "dev-denormalize-when-not-null",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/digital-craftsman-de/self-aware-normalizers.git",
-                "reference": "2a92320c5d7f70e062c2e23a8787283b1831e0a7"
+                "reference": "fc4ccd89d8868305b254d4d19d9b306e6bc32527"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/digital-craftsman-de/self-aware-normalizers/zipball/2a92320c5d7f70e062c2e23a8787283b1831e0a7",
-                "reference": "2a92320c5d7f70e062c2e23a8787283b1831e0a7",
+                "url": "https://api.github.com/repos/digital-craftsman-de/self-aware-normalizers/zipball/fc4ccd89d8868305b254d4d19d9b306e6bc32527",
+                "reference": "fc4ccd89d8868305b254d4d19d9b306e6bc32527",
                 "shasum": ""
             },
             "require": {
@@ -55,9 +55,9 @@
             "description": "Adds interfaces and normalizers that allow value objects to normalize and denormalize themselves.",
             "support": {
                 "issues": "https://github.com/digital-craftsman-de/self-aware-normalizers/issues",
-                "source": "https://github.com/digital-craftsman-de/self-aware-normalizers/tree/denormalize-when-not-null"
+                "source": "https://github.com/digital-craftsman-de/self-aware-normalizers/tree/v1.1.0"
             },
-            "time": "2025-11-26T09:06:49+00:00"
+            "time": "2025-11-26T15:14:20+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -8982,18 +8982,9 @@
             "time": "2025-10-29T15:56:20+00:00"
         }
     ],
-    "aliases": [
-        {
-            "package": "digital-craftsman/self-aware-normalizers",
-            "version": "dev-denormalize-when-not-null",
-            "alias": "1.0.0",
-            "alias_normalized": "1.0.0.0"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "digital-craftsman/self-aware-normalizers": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
