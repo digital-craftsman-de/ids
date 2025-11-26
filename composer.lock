@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "db4cb5cb821e7a616994e19def783761",
+    "content-hash": "e2070bd2f5791343d79f4d112f6af690",
     "packages": [
         {
             "name": "digital-craftsman/self-aware-normalizers",
-            "version": "v1.0.0",
+            "version": "dev-denormalize-when-not-null",
             "source": {
                 "type": "git",
                 "url": "https://github.com/digital-craftsman-de/self-aware-normalizers.git",
-                "reference": "453698ce9eb551a45e615d8adaf63b0d690c93b0"
+                "reference": "2a92320c5d7f70e062c2e23a8787283b1831e0a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/digital-craftsman-de/self-aware-normalizers/zipball/453698ce9eb551a45e615d8adaf63b0d690c93b0",
-                "reference": "453698ce9eb551a45e615d8adaf63b0d690c93b0",
+                "url": "https://api.github.com/repos/digital-craftsman-de/self-aware-normalizers/zipball/2a92320c5d7f70e062c2e23a8787283b1831e0a7",
+                "reference": "2a92320c5d7f70e062c2e23a8787283b1831e0a7",
                 "shasum": ""
             },
             "require": {
@@ -30,8 +30,8 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^v3.68.5",
-                "infection/infection": "^0.29.10",
-                "phpunit/phpunit": "^10.5",
+                "infection/infection": "^0.31.8",
+                "phpunit/phpunit": "^12.4",
                 "symfony/property-access": "^7.1",
                 "symfony/property-info": "^7.1",
                 "vimeo/psalm": "^6.0.0"
@@ -55,9 +55,9 @@
             "description": "Adds interfaces and normalizers that allow value objects to normalize and denormalize themselves.",
             "support": {
                 "issues": "https://github.com/digital-craftsman-de/self-aware-normalizers/issues",
-                "source": "https://github.com/digital-craftsman-de/self-aware-normalizers/tree/v1.0.0"
+                "source": "https://github.com/digital-craftsman-de/self-aware-normalizers/tree/denormalize-when-not-null"
             },
-            "time": "2025-05-05T07:55:53+00:00"
+            "time": "2025-11-26T09:06:49+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -8982,14 +8982,23 @@
             "time": "2025-10-29T15:56:20+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "digital-craftsman/self-aware-normalizers",
+            "version": "dev-denormalize-when-not-null",
+            "alias": "1.0.0",
+            "alias_normalized": "1.0.0.0"
+        }
+    ],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "digital-craftsman/self-aware-normalizers": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "8.3.*|8.4.*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

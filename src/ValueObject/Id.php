@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableStringDenormalizable;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableStringDenormalizableTrait;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizable;
 
-abstract readonly class Id implements \Stringable, StringNormalizable
+abstract readonly class Id implements \Stringable, StringNormalizable, NullableStringDenormalizable
 {
+    use NullableStringDenormalizableTrait;
+
     // -- Construction
 
     final public function __construct(
