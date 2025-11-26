@@ -132,6 +132,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param NormalizedIdList $data
      */
+    #[\Override]
     public static function denormalize(array $data): static
     {
         $idClass = static::handlesIdClass();
@@ -147,6 +148,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @return NormalizedIdList
      */
+    #[\Override]
     public function normalize(): array
     {
         return $this->idsAsStringList();
@@ -722,6 +724,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @return \Iterator<int, T>
      */
+    #[\Override]
     public function getIterator(): \Iterator
     {
         return new \ArrayIterator(array_values($this->ids));
@@ -729,6 +732,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
 
     // -- Countable
 
+    #[\Override]
     public function count(): int
     {
         return count($this->ids);

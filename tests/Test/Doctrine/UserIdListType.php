@@ -9,11 +9,13 @@ use DigitalCraftsman\SelfAwareNormalizers\Doctrine\ArrayNormalizableType;
 
 final class UserIdListType extends ArrayNormalizableType
 {
+    #[\Override]
     public static function getTypeName(): string
     {
         return 'user_id_list';
     }
 
+    #[\Override]
     public static function getClass(): string
     {
         return UserIdList::class;

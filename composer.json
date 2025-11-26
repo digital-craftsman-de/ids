@@ -7,7 +7,7 @@
     "symfony/framework-bundle": "^7.0",
     "symfony/serializer": "^7.0",
     "doctrine/dbal": "^3.3.6",
-    "symfony/polyfill-uuid": "^1.26",
+    "symfony/polyfill-uuid": "^1.31",
     "digital-craftsman/self-aware-normalizers": "^1.0.0"
   },
   "require-dev": {

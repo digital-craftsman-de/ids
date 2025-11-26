@@ -30,11 +30,13 @@ abstract readonly class Id implements \Stringable, StringNormalizable
 
     // -- String normalizable
 
+    #[\Override]
     public static function denormalize(string $data): static
     {
         return new static($data);
     }
 
+    #[\Override]
     public function normalize(): string
     {
         return $this->value;
@@ -42,6 +44,7 @@ abstract readonly class Id implements \Stringable, StringNormalizable
 
     // -- Magic
 
+    #[\Override]
     public function __toString(): string
     {
         return $this->value;
