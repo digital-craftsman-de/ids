@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 2.0.* to 2.1.0
+
+Nothing to do.
+
 ## From 1.4.* to 2.0.0
 
 ### Switched away from custom normalizers
