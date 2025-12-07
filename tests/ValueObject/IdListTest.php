@@ -143,6 +143,40 @@ final class IdListTest extends TestCase
     }
 
     #[Test]
+    public function id_list_construction_from_map_ignoring_null_works(): void
+    {
+        // -- Arrange
+        $users = [
+            [
+                'id' => (string) UserId::generateRandom(),
+                'name' => 'Tom',
+            ],
+            [
+                'id' => (string) UserId::generateRandom(),
+                'name' => 'Ralf',
+            ],
+            [
+                'id' => null,
+                'name' => 'Marc',
+            ],
+        ];
+
+        // -- Act
+        $userIdList = UserIdList::fromMapIgnoringNull(
+            $users,
+            static fn (array $user): ?UserId => $user['id'] !== null
+                ? UserId::fromString($user['id'])
+                : null,
+        );
+
+        // -- Assert
+        self::assertCount(2, $userIdList);
+        self::assertSame(UserIdList::class, $userIdList::class);
+        self::assertTrue($userIdList->containsId(UserId::fromString($users[0]['id'])));
+        self::assertTrue($userIdList->containsId(UserId::fromString($users[1]['id'])));
+    }
+
+    #[Test]
     public function empty_list_works(): void
     {
         // -- Arrange
