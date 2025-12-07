@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 2.1.* to 2.2.0
+
+Nothing to do.
+
 ## From 2.0.* to 2.1.0
 
 Nothing to do.
