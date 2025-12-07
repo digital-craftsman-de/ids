@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0
+
+- Added `IdList::fromMapIgnoringNull(callable $mapFunction): static` .
+
 ## 2.1.0
 
 - Updated `digital-craftsman/self-aware-normalizers` and added `denormalizeWhenNotNull` for `Id` and `IdList`.
