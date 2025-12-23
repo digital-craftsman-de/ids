@@ -2,7 +2,7 @@
 
 ## 2.2.0
 
-- Added `IdList::fromMapIgnoringNull(callable $mapFunction): static` .
+- Added `IdList::fromMapIgnoringNull(callable $mapFunction): static`.
 
 ## 2.1.0
 
