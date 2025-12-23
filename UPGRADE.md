@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From 2.2.* to 2.3.0
+
+### Dropped support for PHP 8.3
+
+Upgrade to at least PHP 8.4.
+
 ## From 2.1.* to 2.2.0
 
 Nothing to do.
