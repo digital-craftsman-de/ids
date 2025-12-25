@@ -4,7 +4,11 @@
 
 ### Dropped support for PHP 8.3
 
-Upgrade to at least PHP 8.4.
+Update to at least PHP 8.4.
+
+### Dropped support for Symfony 7.3 and below
+
+Update to at least the LTS version 7.4.
 
 ## From 2.1.* to 2.2.0
 

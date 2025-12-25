@@ -1,12 +1,12 @@
 {
   "name": "digital-craftsman/ids",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Working with value objects for ids in Symfony",
   "type": "symfony-bundle",
   "require": {
     "php": "8.4.*|8.5.*",
-    "symfony/framework-bundle": "^7.0|^8.0",
-    "symfony/serializer": "^7.0|^8.0",
+    "symfony/framework-bundle": "^7.4|^8.0",
+    "symfony/serializer": "^7.4|^8.0",
     "doctrine/dbal": "^3.3.6",
     "symfony/polyfill-uuid": "^1.31",
     "digital-craftsman/self-aware-normalizers": "dev-php-update as 1.2.0"
