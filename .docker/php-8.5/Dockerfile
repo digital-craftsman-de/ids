@@ -15,8 +15,8 @@ RUN apk add --update \
     linux-headers \
     libuuid \
     $PHPIZE_DEPS \
-     libtool \
-     unzip
+    libtool \
+    unzip
 
 RUN curl -L --output /usr/bin/pie https://github.com/php/pie/releases/download/1.3.1/pie.phar \
   && chmod +x /usr/bin/pie
