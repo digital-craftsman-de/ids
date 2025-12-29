@@ -5,7 +5,7 @@
   "type": "symfony-bundle",
   "require": {
     "php": "8.4.*|8.5.*",
-    "digital-craftsman/self-aware-normalizers": "1.2.0",
+    "digital-craftsman/self-aware-normalizers": "^1.2.0",
     "doctrine/dbal": "^4.4",
     "symfony/framework-bundle": "^7.4|^8.0",
     "symfony/polyfill-uuid": "^1.31",
