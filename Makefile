@@ -79,13 +79,13 @@ php-8.5-tests-html-coverage:
 
 .PHONY: php-code-validation
 php-code-validation:
-	docker compose run --rm php-8.5 ./vendor/bin/php-cs-fixer fix
-	docker compose run --rm php-8.5 ./vendor/bin/psalm --show-info=false --no-diff
-	docker compose run --rm php-8.5 ./vendor/bin/phpstan --xdebug
+	docker compose run --rm php-8.4 ./vendor/bin/php-cs-fixer fix
+	docker compose run --rm php-8.4 ./vendor/bin/psalm --show-info=false --no-diff
+	docker compose run --rm php-8.4 ./vendor/bin/phpstan --xdebug
 
 .PHONY: php-mutation-testing
 php-mutation-testing:
-	docker compose run --rm php-8.5 ./vendor/bin/infection --show-mutations --only-covered --threads=8
+	docker compose run --rm php-8.4 ./vendor/bin/infection --show-mutations --only-covered --threads=8
 
 ##
 ## CI
