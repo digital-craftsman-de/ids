@@ -1,8 +1,15 @@
 # Changelog
 
+## 2.3.0
+
+- Added support for PHP 8.5.
+- Dropped support for PHP 8.3.
+- Added support for Symfony ^8.0.
+- Dropped support for Symfony 7.3 and below. Only the 7.4 LTS version is still supported.
+
 ## 2.2.0
 
-- Added `IdList::fromMapIgnoringNull(callable $mapFunction): static` .
+- Added `IdList::fromMapIgnoringNull(callable $mapFunction): static`.
 
 ## 2.1.0
 
