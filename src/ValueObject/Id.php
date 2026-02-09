@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\Ids\ValueObject;
 
+use DigitalCraftsman\SelfAwareNormalizers\Doctrine\NormalizableTypeWithSQLDeclaration;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableStringDenormalizable;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\NullableStringDenormalizableTrait;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizable;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 
-abstract readonly class Id implements \Stringable, StringNormalizable, NullableStringDenormalizable
+abstract readonly class Id implements \Stringable, StringNormalizable, NullableStringDenormalizable, NormalizableTypeWithSQLDeclaration
 {
     use NullableStringDenormalizableTrait;
 
@@ -113,5 +115,16 @@ abstract readonly class Id implements \Stringable, StringNormalizable, NullableS
                 ? $otherwiseThrow()
                 : new Exception\IdEqual($this, $id);
         }
+    }
+
+    /**
+     * @param array<string, mixed> $column
+     *
+     * @codeCoverageIgnore
+     */
+    #[\Override]
+    public static function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    {
+        return $platform->getGuidTypeDeclarationSQL($column);
     }
 }

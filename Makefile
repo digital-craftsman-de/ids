@@ -85,7 +85,7 @@ php-code-validation:
 
 .PHONY: php-mutation-testing
 php-mutation-testing:
-	docker compose run --rm php-8.4 ./vendor/bin/infection --show-mutations --only-covered --threads=8
+	docker compose run --rm php-8.4 ./vendor/bin/infection --show-mutations --threads=8
 
 ##
 ## CI
