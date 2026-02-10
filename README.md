@@ -4,7 +4,7 @@ A Symfony bundle to work with id and id list value objects in Symfony. It includ
 
 As it's a central part of an application, it's tested thoroughly (including mutation testing).
 
-[![Latest Stable Version](https://img.shields.io/badge/stable-2.3.0-blue)](https://packagist.org/packages/digital-craftsman/ids)
+[![Latest Stable Version](https://img.shields.io/badge/stable-2.4.0-blue)](https://packagist.org/packages/digital-craftsman/ids)
 [![PHP Version Require](https://img.shields.io/badge/php-8.4|8.5-5b5d95)](https://packagist.org/packages/digital-craftsman/ids)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/ids/branch/main/graph/badge.svg?token=BL0JKZYLBG)](https://codecov.io/gh/digital-craftsman-de/ids)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/digital-craftsman/ids)
@@ -107,44 +107,7 @@ This can be combined with the [CQS bundle](https://github.com/digital-craftsman-
 
 ### Doctrine types
 
-To use an id in your entities, you just need to register a new type for the id. Create a new class for the new id like the following:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Doctrine;
-
-use App\ValueObject\UserId;
-use DigitalCraftsman\Ids\Doctrine\IdType;
-
-final class UserIdType extends IdType
-{
-    public static function getTypeName(): string
-    {
-        return 'user_id';
-    }
-
-    public static function getClass(): string
-    {
-        return UserId::class;
-    }
-}
-```
-
-Then register the new type in your `config/packages/doctrine.yaml` file:
-
-```yaml
-doctrine:
-  dbal:
-    types:
-      user_id: App\Doctrine\UserIdType
-```
-
-Alternatively you can also add a compiler pass to [register the types automatically](https://blog.digital-craftsman.de/automatically-register-doctrine-types-in-symfony-with-compiler-pass/).
-
-Then you're already able to add it into your entity like this:
+To use an id in your entities, you just need to make sure that the directory your id is in, is added in the `self_aware_normalizers.implementation_directories` configuration of `self-aware-normalizers.php`. They are then automatically registered with the relevant doctrine type and can be used directly with it's class name.
 
 ```php
 <?php
@@ -155,16 +118,14 @@ namespace App\Entity;
 
 use App\ValueObject\UserId;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Entity()]
 #[ORM\Table(name: '`user`')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User
 {
     #[ORM\Id]
-    #[ORM\Column(name: 'id', type: 'user_id')]
-    public UserId $id;
+    #[ORM\Column(name: 'id', type: UserId::class)]
+    public UserId $userId;
     
     ...
 }
@@ -230,40 +191,7 @@ If you're injecting the `SerializerInterface` directly, there is nothing to do. 
 
 ### Doctrine types
 
-To use an id list in your entities, you just need to register a new type for the id list. Create a new class for the new id list like the following:
-
-```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Doctrine;
-
-use App\ValueObject\UserIdList;
-use DigitalCraftsman\SelfAwareNormalizers\Doctrine\ArrayNormalizableType;
-
-final class UserIdListType extends ArrayNormalizableType
-{
-    protected function getTypeName(): string
-    {
-        return 'user_id_list';
-    }
-
-    protected function getClass(): string
-    {
-        return UserIdList::class;
-    }
-}
-```
-
-Then register the new type in your `config/packages/doctrine.yaml` file:
-
-```yaml
-doctrine:
-  dbal:
-    types:
-      user_id_list: App\Doctrine\UserIdListType
-```
+Same as with the ids, you just have to make sure that the directory the id list is in, is part of the `self_aware_normalizers.implementation_directories` configuration of `self-aware-normalizers.php`.
 
 Then you're already able to add it into your entity like this:
 
@@ -277,11 +205,13 @@ namespace App\Entity;
 use App\ValueObject\UserIdList;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: InvestorRepository::class)]
+#[ORM\Entity()]
 #[ORM\Table(name: 'investor')]
 class Investor
 {
-    #[ORM\Column(name: 'ids_of_users_with_access', type: 'user_id_list')]
+    ...
+    
+    #[ORM\Column(name: 'ids_of_users_with_access', type: UserIdList::class)]
     public UserIdList $idsOfUsersWithAccess;
     
     ...
