@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.0
+
+- Switched to automatic doctrine registration.
+- Deprecated `IdType`.
+
 ## 2.3.0
 
 - Added support for PHP 8.5.

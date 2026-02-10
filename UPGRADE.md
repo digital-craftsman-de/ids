@@ -1,5 +1,65 @@
 # Upgrade guide
 
+## From 2.3.* to 2.4.0
+
+### Switch to automatic doctrine types
+
+- Add the directories that contain implementations of the ids to `self_aware_normalizers.implementation_directories`.
+- Use the full class string in the doctrine column `type` instead of the custom names.
+- Remove all custom id doctrine types.
+
+Before:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use App\ValueObject\UserId;
+use App\ValueObject\ProjectIdList;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity()]
+#[ORM\Table(name: '`user`')]
+class User
+{
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'user_id')]
+    public UserId $userId;
+    
+    #[ORM\Column(name: 'ids_of_accessible_projects', type: 'project_id_list')]
+    public ProjectIdList $idsOfAccessibleProjects;
+
+    ...
+```
+
+After:
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use App\ValueObject\UserId;
+use App\ValueObject\ProjectIdList;
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity()]
+#[ORM\Table(name: '`user`')]
+class User
+{
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: UserId::class)]
+    public UserId $userId;
+    
+    #[ORM\Column(name: 'ids_of_accessible_projects', type: ProjectIdList::class)]
+    public ProjectIdList $idsOfAccessibleProjects;
+
+    ...
+```
+
 ## From 2.2.* to 2.3.0
 
 ### Dropped support for PHP 8.3
