@@ -221,10 +221,6 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
      */
     public function addIdWhenNotInList(Id $id): static
     {
-        if ($this->containsId($id)) {
-            return new static($this->ids);
-        }
-
         $ids = $this->ids;
         $ids[$id->value] = $id;
 
@@ -283,10 +279,6 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
      */
     public function removeIdWhenInList(Id $id): static
     {
-        if ($this->notContainsId($id)) {
-            return new static($this->ids);
-        }
-
         $idsWithoutIdToRemove = $this->ids;
         unset($idsWithoutIdToRemove[$id->value]);
 
