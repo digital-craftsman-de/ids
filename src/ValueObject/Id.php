@@ -16,6 +16,9 @@ abstract readonly class Id implements \Stringable, StringNormalizable, NullableS
 
     // -- Construction
 
+    /**
+     * @param non-empty-string $value
+     */
     final public function __construct(
         public string $value,
     ) {
@@ -24,11 +27,17 @@ abstract readonly class Id implements \Stringable, StringNormalizable, NullableS
         }
     }
 
+    /**
+     * @psalm-suppress ArgumentTypeCoercion uuid_create will always create a non-empty-string
+     */
     public static function generateRandom(): static
     {
         return new static(uuid_create());
     }
 
+    /**
+     * @param non-empty-string $id
+     */
     public static function fromString(string $id): static
     {
         return new static($id);
@@ -36,12 +45,18 @@ abstract readonly class Id implements \Stringable, StringNormalizable, NullableS
 
     // -- String normalizable
 
+    /**
+     * @param non-empty-string $data
+     */
     #[\Override]
     public static function denormalize(string $data): static
     {
         return new static($data);
     }
 
+    /**
+     * @return non-empty-string
+     */
     #[\Override]
     public function normalize(): string
     {
@@ -50,6 +65,9 @@ abstract readonly class Id implements \Stringable, StringNormalizable, NullableS
 
     // -- Magic
 
+    /**
+     * @return non-empty-string
+     */
     #[\Override]
     public function __toString(): string
     {
@@ -58,6 +76,9 @@ abstract readonly class Id implements \Stringable, StringNormalizable, NullableS
 
     // -- Accessors
 
+    /**
+     * @return non-empty-string
+     */
     public function toString(): string
     {
         return $this->value;
