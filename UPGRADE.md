@@ -1,5 +1,15 @@
 # Upgrade guide
 
+## From 2.4.* to 2.5.0
+
+### Dropped support for PHP 8.4
+
+Update to at least PHP 8.5.
+
+### `#[\NoDiscard]` on `IdList` transformers
+
+The transformer methods of `IdList` (like `addId`, `removeId` or `filter`) are now marked with `#[\NoDiscard]`. As the lists are immutable, calling them without using the return value has no effect and now triggers a warning. Use the returned list or, when the call is only made for its exception (e.g. in tests), discard it explicitly with `(void)`.
+
 ## From 2.3.* to 2.4.0
 
 ### Switch to automatic doctrine types

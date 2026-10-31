@@ -1,7 +1,7 @@
 services:
 
-  php-8.4:
-    image: ghcr.io/digital-craftsman-de/ids-php-8.4
+  php-8.6:
+    image: ghcr.io/digital-craftsman-de/ids-php-8.6
     env_file:
       - .env
     volumes:

@@ -185,6 +185,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param T $id
      */
+    #[\NoDiscard]
     public function addId(Id $id): static
     {
         if ($this->containsId($id)) {
@@ -204,6 +205,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
      *
      * @return static<TT>
      */
+    #[\NoDiscard]
     public function addIds(self $idList): static
     {
         $this->mustContainNoneIds($idList);
@@ -219,6 +221,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param T $id
      */
+    #[\NoDiscard]
     public function addIdWhenNotInList(Id $id): static
     {
         $ids = $this->ids;
@@ -234,6 +237,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
      *
      * @return static<TT>
      */
+    #[\NoDiscard]
     public function addIdsWhenNotInList(self $idList): static
     {
         $newIds = $this->ids;
@@ -249,6 +253,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param T $id
      */
+    #[\NoDiscard]
     public function removeId(Id $id): static
     {
         $this->mustContainId($id);
@@ -262,6 +267,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param static $idList
      */
+    #[\NoDiscard]
     public function removeIds(self $idList): static
     {
         $this->mustContainEveryId($idList);
@@ -277,6 +283,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param T $id
      */
+    #[\NoDiscard]
     public function removeIdWhenInList(Id $id): static
     {
         $idsWithoutIdToRemove = $this->ids;
@@ -288,6 +295,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param static $idList
      */
+    #[\NoDiscard]
     public function removeIdsWhenInList(self $idList): static
     {
         $idsWithoutIdToRemove = $this->ids;
@@ -303,6 +311,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @param static $idList
      */
+    #[\NoDiscard]
     public function diff(self $idList): static
     {
         $idsNotInList = array_diff($this->ids, $idList->ids);
@@ -316,6 +325,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
      *
      * @param static $idList
      */
+    #[\NoDiscard]
     public function intersect(self $idList): static
     {
         $idsInList = [];
@@ -371,6 +381,7 @@ abstract readonly class IdList implements \IteratorAggregate, \Countable, ArrayN
     /**
      * @psalm-param callable(T):bool $filterFunction
      */
+    #[\NoDiscard]
     public function filter(callable $filterFunction): static
     {
         return new static(array_filter(

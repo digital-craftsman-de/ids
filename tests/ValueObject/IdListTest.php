@@ -277,7 +277,7 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Act
-        $idList->addId($existingUserId);
+        (void) $idList->addId($existingUserId);
     }
 
     #[Test]
@@ -382,7 +382,7 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Act
-        $idList->addIds($newIds);
+        (void) $idList->addIds($newIds);
     }
 
     #[Test]
@@ -452,7 +452,7 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Act
-        $idList->removeId($idToRemove);
+        (void) $idList->removeId($idToRemove);
     }
 
     // Remove ids
@@ -509,7 +509,7 @@ final class IdListTest extends TestCase
         ]);
 
         // -- Act
-        $idList->removeIds($idsToRemove);
+        (void) $idList->removeIds($idsToRemove);
     }
 
     #[Test]
