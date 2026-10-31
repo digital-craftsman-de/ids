@@ -39,6 +39,16 @@ On top of that, you get:
 
 The serializer and Doctrine integration is provided by [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers), which is installed as a dependency.
 
+### Why not `ramsey/uuid` or `symfony/uid`?
+
+Both are great libraries to work with UUIDs, but they aren't built to be the ids of your domain:
+
+- **Performance:** `ramsey/uuid` resolves factories, generators and codecs and builds a whole object graph for every single UUID. For plain v4 UUIDs, which is what most applications need, that's a lot of overhead. This package only creates and validates a string through the `uuid` extension (or the polyfill) and wraps it in one small `readonly` object. That difference adds up quickly when thousands of ids are created or denormalized in a single request.
+- **Custom ids:** Both libraries model *a UUID*, not *the id of a user*. To get a `UserId`, you'd have to wrap or extend their classes, and their static factories, normalizers and Doctrine types still only know about the generic UUID classes. Here, a typed id is a one-liner and everything else works with it automatically.
+- **Id lists:** Neither library has a concept of lists of ids. You end up with `array<UuidInterface>`, which allows duplicates, mixes different kinds of ids and has no set operations or guards.
+
+You can still use `symfony/uid` or `ramsey/uuid` just to *generate* other UUID versions, for example v7. See [Use other UUID versions](./docs/use-other-uuid-versions.md).
+
 ## Installation
 
 Requires PHP 8.5 or 8.6, Symfony 7.4 or 8 and Doctrine DBAL 4.

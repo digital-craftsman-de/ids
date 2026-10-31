@@ -4,7 +4,6 @@
 
 - Added support for PHP 8.6.
 - Dropped support for PHP 8.4.
-- Updated `digital-craftsman/self-aware-normalizers` to `^1.4.0`.
 - Added `#[\NoDiscard]` to all transformer methods of `IdList` (e.g. `addId`, `removeIds`, `filter`), as they return a new instance and an unused return value is always a bug.
 
 ## 2.4.0
