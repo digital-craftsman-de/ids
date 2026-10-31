@@ -28,24 +28,25 @@ down: .down
 .PHONY: .install
 install: install-8.5
 
-.PHONY: install-8.4
-install-8.4:
-	docker compose run --rm php-8.4 composer install
-
 .PHONY: install-8.5
 install-8.5:
 	docker compose run --rm php-8.5 composer install
 
+.PHONY: install-8.6
+install-8.6:
+	# TODO: Remove --ignore-platform-req once vimeo/psalm officially supports PHP 8.6.
+	docker compose run --rm php-8.6 composer install --ignore-platform-req=php+
+
 .PHONY: php-cli
 php-cli: php-8.5-cli
-
-.PHONY: php-8.4-cli
-php-8.4-cli:
-	docker compose run --rm php-8.4 sh
 
 .PHONY: php-8.5-cli
 php-8.5-cli:
 	docker compose run --rm php-8.5 sh
+
+.PHONY: php-8.6-cli
+php-8.6-cli:
+	docker compose run --rm php-8.6 sh
 
 ##
 ## Tests and code validation
@@ -56,49 +57,49 @@ php-8.5-cli:
 verify: php-code-validation php-tests php-mutation-testing
 
 .PHONY: php-tests
-php-tests: php-8.4-tests php-8.5-tests
+php-tests: php-8.5-tests php-8.6-tests
 
 .PHONY: php-tests-coverage
 php-tests-coverage: php-8.5-tests-html-coverage
-
-.PHONY: php-8.4-tests
-php-8.4-tests:
-	docker compose run --rm php-8.4 ./vendor/bin/phpunit
 
 .PHONY: php-8.5-tests
 php-8.5-tests:
 	docker compose run --rm php-8.5 ./vendor/bin/phpunit
 
-.PHONY: php-8.4-tests-html-coverage
-php-8.4-tests-html-coverage:
-	docker compose run --rm php-8.4 ./vendor/bin/phpunit --coverage-html ./coverage
+.PHONY: php-8.6-tests
+php-8.6-tests:
+	docker compose run --rm php-8.6 ./vendor/bin/phpunit
 
 .PHONY: php-8.5-tests-html-coverage
 php-8.5-tests-html-coverage:
 	docker compose run --rm php-8.5 ./vendor/bin/phpunit --coverage-html ./coverage
 
+.PHONY: php-8.6-tests-html-coverage
+php-8.6-tests-html-coverage:
+	docker compose run --rm php-8.6 ./vendor/bin/phpunit --coverage-html ./coverage
+
 .PHONY: php-code-validation
 php-code-validation:
-	docker compose run --rm php-8.4 ./vendor/bin/php-cs-fixer fix
-	docker compose run --rm php-8.4 ./vendor/bin/psalm --show-info=false --no-diff
-	docker compose run --rm php-8.4 ./vendor/bin/phpstan --xdebug
+	docker compose run --rm php-8.5 ./vendor/bin/php-cs-fixer fix
+	docker compose run --rm php-8.5 ./vendor/bin/psalm --show-info=false --no-diff
+	docker compose run --rm php-8.5 ./vendor/bin/phpstan --xdebug
 
 .PHONY: php-mutation-testing
 php-mutation-testing:
-	docker compose run --rm php-8.4 ./vendor/bin/infection --show-mutations --threads=8
+	docker compose run --rm php-8.5 ./vendor/bin/infection --show-mutations --threads=8
 
 ##
 ## CI
 ## --
 ##
 
-.PHONY: php-8.4-tests-ci
-php-8.4-tests-ci:
-	docker compose run --rm php-8.4 ./vendor/bin/phpunit --coverage-clover ./coverage.xml
-
 .PHONY: php-8.5-tests-ci
 php-8.5-tests-ci:
-	docker compose run --rm php-8.5 ./vendor/bin/phpunit
+	docker compose run --rm php-8.5 ./vendor/bin/phpunit --coverage-clover ./coverage.xml
+
+.PHONY: php-8.6-tests-ci
+php-8.6-tests-ci:
+	docker compose run --rm php-8.6 ./vendor/bin/phpunit
 
 .PHONY: php-mutation-testing-ci
 php-mutation-testing-ci:

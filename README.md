@@ -1,30 +1,81 @@
-# Id handling with value objects in Symfony
+# Ids – Typed id value objects for Symfony
 
-A Symfony bundle to work with id and id list value objects in Symfony. It includes Symfony normalizers for automatic normalization and denormalization and Doctrine types to store the ids and id lists directly in the database.  
+Stop passing ids around as plain strings. This bundle lets you create a dedicated, validated value object for every kind of id (`UserId`, `OrderId`, …) and lists of them (`UserIdList`, …), which work out of the box with the Symfony serializer and Doctrine.
 
 As it's a central part of an application, it's tested thoroughly (including mutation testing).
 
-[![Latest Stable Version](https://img.shields.io/badge/stable-2.4.0-blue)](https://packagist.org/packages/digital-craftsman/ids)
-[![PHP Version Require](https://img.shields.io/badge/php-8.4|8.5-5b5d95)](https://packagist.org/packages/digital-craftsman/ids)
+[![Latest Stable Version](https://img.shields.io/badge/stable-2.5.0-blue)](https://packagist.org/packages/digital-craftsman/ids)
+[![PHP Version Require](https://img.shields.io/badge/php-8.5|8.6-5b5d95)](https://packagist.org/packages/digital-craftsman/ids)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/ids/branch/main/graph/badge.svg?token=BL0JKZYLBG)](https://codecov.io/gh/digital-craftsman-de/ids)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/digital-craftsman/ids)
 ![Packagist License](https://img.shields.io/packagist/l/digital-craftsman/ids)
 
-## Installation and configuration
+## Why?
 
-Install package through composer:
+When ids are plain strings, nothing stops you from mixing them up:
+
+```php
+// Which string is which? Neither PHP nor your static analysis can tell.
+public function grantAccess(string $userId, string $projectId): void
+
+$service->grantAccess($projectId, $userId); // Compiles, runs, corrupts data.
+```
+
+With dedicated id classes, the same mistake is caught right away:
+
+```php
+public function grantAccess(UserId $userId, ProjectId $projectId): void
+
+$service->grantAccess($projectId, $userId); // TypeError
+```
+
+On top of that, you get:
+
+- **Validation:** An id can only be constructed from a valid UUID. Invalid input never makes it into your domain.
+- **Expressive code:** Comparisons and guards like `$userId->mustNotBeEqualTo($targetUserId)` instead of string checks spread through the code.
+- **Id lists:** Immutable, typed collections of ids with set operations (`containsId`, `diff`, `intersect`, …) and guards. A `UserIdList` can only contain `UserId`s and never contains duplicates.
+- **Serializer support:** Ids are normalized to strings and id lists to arrays of strings – without writing a single normalizer.
+- **Doctrine support:** Ids and id lists can be used directly as column types – without writing a single Doctrine type.
+
+The serializer and Doctrine integration is provided by [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers), which is installed as a dependency.
+
+## Installation
+
+Requires PHP 8.5 or 8.6, Symfony 7.4 or 8 and Doctrine DBAL 4.
 
 ```shell
 composer require digital-craftsman/ids
 ```
 
-It's recommended that you install the [`uuid` PHP extension](https://pecl.php.net/package/uuid) for better performance of id creation and validation.  `symfony/polyfill-uuid` is used as a fallback. You can [prevent installing the polyfill](./docs/prevent-polyfill-usage.md) when you've installed the PHP extension.
+It's recommended to install the [`uuid` PHP extension](https://pecl.php.net/package/uuid) for better performance of id creation and validation. `symfony/polyfill-uuid` is used as a fallback. When the extension is installed, you can [prevent installing the polyfill](./docs/prevent-polyfill-usage.md).
 
-## Working with ids
+### Configuration
 
-### Creating a new id
+The serializer works without any configuration. For the Doctrine types, add the directories containing your ids and id lists to `config/packages/self-aware-normalizers.php`:
 
-The bulk of the logic is in the `Id` class. Creating a new id is as simple as creating a new `final readonly class` and extending from it like the following:
+```php
+<?php
+
+declare(strict_types=1);
+
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
+
+return App::config([
+    'self_aware_normalizers' => [
+        'implementation_directories' => [
+            '%kernel.project_dir%/src/ValueObject',
+        ],
+    ],
+]);
+```
+
+All ids and id lists in these directories are registered as Doctrine types automatically.
+
+## Ids
+
+### Defining an id
+
+Extend from `Id`. That's all:
 
 ```php
 <?php
@@ -40,24 +91,33 @@ final readonly class UserId extends Id
 }
 ```
 
-Now you're already able to use it in your code like this:
+### Using an id
 
 ```php
+// Create
 $userId = UserId::generateRandom();
-```
+$userId = UserId::fromString('15d6208b-7cf2-49e5-a193-301d594d98a7'); // Throws InvalidId for invalid UUIDs
 
-```php
+// Read
+$userId->value;      // '15d6208b-7cf2-49e5-a193-301d594d98a7'
+$userId->toString(); // Same, also available through (string) $userId
+
+// Compare
 if ($userId->isEqualTo($command->userId)) {
-    ...
+    // ...
 }
 ```
 
-Guard against invalid usages:
+### Guards
+
+Guards throw an exception when the condition isn't met:
+
 ```php
 $requestingUser->userId->mustNotBeEqualTo($command->targetUserId);
 ```
 
-Or with a custom exception:
+Every guard accepts an optional callable to throw a custom exception instead:
+
 ```php
 $requestingUser->userId->mustNotBeEqualTo(
     $command->targetUserId,
@@ -65,13 +125,11 @@ $requestingUser->userId->mustNotBeEqualTo(
 );
 ```
 
-### Symfony serializer
+### Serializer
 
-If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer from [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers) are registered automatically and will handle the serialization and deserialization of the `Id` class, as it implements the `StringNormalizable` interface.
+Ids are normalized to their string value, no matter how deeply they are nested:
 
 ```php
-namespace App\DTO;
-
 final readonly class UserPayload
 {
     public function __construct(
@@ -81,18 +139,8 @@ final readonly class UserPayload
     ) {
     }
 }
-```
 
-```php
-public function __construct(
-    private SerializerInterface $serializer,
-) {
-}
-
-public function handle(UserPayload $userPayload): string
-{
-    return $this->serializer->serialize($userPayload, JsonEncoder::FORMAT);
-}
+$serializer->serialize($userPayload, JsonEncoder::FORMAT);
 ```
 
 ```json
@@ -103,43 +151,28 @@ public function handle(UserPayload $userPayload): string
 }
 ```
 
-This can be combined with the [CQS bundle](https://github.com/digital-craftsman-de/cqs-routing) to have serialized ids there.
+Denormalization works the same way in reverse. This also makes ids usable in commands and queries of the [CQS routing bundle](https://github.com/digital-craftsman-de/cqs-routing).
 
-### Doctrine types
+### Doctrine
 
-To use an id in your entities, you just need to make sure that the directory your id is in, is added in the `self_aware_normalizers.implementation_directories` configuration of `self-aware-normalizers.php`. They are then automatically registered with the relevant doctrine type and can be used directly with it's class name.
+Use the class name as column type. Ids are stored as `guid` (`uuid` in PostgreSQL):
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Entity;
-
-use App\ValueObject\UserId;
-use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity()]
+#[ORM\Entity]
 #[ORM\Table(name: '`user`')]
 class User
 {
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: UserId::class)]
     public UserId $userId;
-    
-    ...
 }
 ```
 
-## Working with id lists
+## Id lists
 
-Id lists are wrapper for an array of ids. They contain a few utility functions and improved type safety.
+### Defining an id list
 
-The `IdList` is immutable. Therefore, the mutation methods (like `add`, `remove`, ...) always return a new instance of the list.
-
-### Creating a new id list
-
-The bulk of the logic is in the `IdList` class. Creating a new id list is as simple as creating a new `final readonly class` and extending from it like the following:
+Extend from `IdList` and define which id class it contains:
 
 ```php
 <?php
@@ -151,8 +184,9 @@ namespace App\ValueObject;
 use DigitalCraftsman\Ids\ValueObject\IdList;
 
 /** @extends IdList<UserId> */
-final readonly class UserIdList extends IdLIst
+final readonly class UserIdList extends IdList
 {
+    #[\Override]
     public static function handlesIdClass(): string
     {
         return UserId::class;
@@ -160,61 +194,96 @@ final readonly class UserIdList extends IdLIst
 }
 ```
 
-Now you're already able to use it in your code like this:
+An id list only accepts ids of this class and never contains the same id twice.
+
+### Creating an id list
 
 ```php
-$userIdList = new UserIdList($userIds);
+$userIds = new UserIdList([$userId1, $userId2]);
+$userIds = UserIdList::emptyList();
+$userIds = UserIdList::fromIdStrings(['15d6208b-…', 'a4f3c1e2-…']);
+$userIds = UserIdList::fromMap($users, static fn (User $user) => $user->userId);
+$userIds = UserIdList::fromIdLists([$admins, $editors]); // Merged, without duplicates
 ```
 
+### Changing an id list
+
+Id lists are immutable. Every change returns a new list:
+
 ```php
-if ($idsOfEnabledUsers->contains($command->userId)) {
-    ...
+$userIds = $userIds->addId($userId);          // Throws when already in list
+$userIds = $userIds->addIdWhenNotInList($userId);
+$userIds = $userIds->removeId($userId);       // Throws when not in list
+$userIds = $userIds->removeIdWhenInList($userId);
+
+$userIds = $userIds->addIds($otherUserIds);   // Same variants exist for lists
+$userIds = $userIds->diff($otherUserIds);
+$userIds = $userIds->intersect($otherUserIds);
+$userIds = $userIds->filter(static fn (UserId $userId) => ...);
+```
+
+These methods are marked with `#[\NoDiscard]`, so PHP warns you when you forget to use the returned list.
+
+### Reading an id list
+
+```php
+$idsOfEnabledUsers->containsId($command->userId);
+$idsOfEnabledUsers->containsEveryId($userIds);
+$idsOfEnabledUsers->containsSomeIds($userIds);
+$idsOfEnabledUsers->containsNoneIds($userIds);
+$idsOfEnabledUsers->isEqualTo($userIds); // Same ids, independent of order
+$idsOfEnabledUsers->isEmpty();
+count($idsOfEnabledUsers);
+$idsOfEnabledUsers->idsAsStringList();   // ['15d6208b-…', …]
+
+foreach ($idsOfEnabledUsers as $userId) {
+    // ...
 }
+
+$names = $idsOfEnabledUsers->map(static fn (UserId $userId) => $userRepository->getName($userId));
 ```
 
-Guard against invalid usages:
+Additionally, there are `notContainsId`, `isNotEqualTo`, `isNotEmpty`, `mapWithIdKeys`, `every`, `some` and `reduce`.
+
+### Guards
+
+As with ids, every check is also available as guard, optionally with a custom exception:
+
 ```php
 $idsOfEnabledUsers->mustContainId($command->targetUserId);
-```
 
-Or with custom exception:
-```php
 $idsOfEnabledUsers->mustContainId(
     $command->targetUserId,
     static fn () => new Exception\UserIsNotEnabled(),
 );
 ```
 
-### Symfony serializer
+Available guards: `mustContainId`, `mustNotContainId`, `mustContainEveryId`, `mustNotContainEveryId`, `mustContainSomeIds`, `mustContainNoneIds`, `mustBeEmpty`, `mustNotBeEmpty`, `mustBeEqualTo` and `mustNotBeEqualTo`.
 
-If you're injecting the `SerializerInterface` directly, there is nothing to do. The normalizer from [`digital-craftsman/self-aware-normalizers`](https://github.com/digital-craftsman-de/self-aware-normalizers) are registered automatically and will handle the serialization and deserialization of the `IdList` class, as it implements the `ArrayNormalizable` interface.
+### Serializer
 
-### Doctrine types
+Id lists are normalized to a list of id strings:
 
-Same as with the ids, you just have to make sure that the directory the id list is in, is part of the `self_aware_normalizers.implementation_directories` configuration of `self-aware-normalizers.php`.
+```json
+{
+  "idsOfUsersWithAccess": [
+    "15d6208b-7cf2-49e5-a193-301d594d98a7",
+    "a4f3c1e2-4b8d-4f6a-9c2e-7d1b3e5f8a90"
+  ]
+}
+```
 
-Then you're already able to add it into your entity like this:
+### Doctrine
+
+Use the class name as column type. Id lists are stored as `jsonb` in PostgreSQL and `json` on other platforms:
 
 ```php
-<?php
-
-declare(strict_types=1);
-
-namespace App\Entity;
-
-use App\ValueObject\UserIdList;
-use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity()]
-#[ORM\Table(name: 'investor')]
-class Investor
+#[ORM\Entity]
+#[ORM\Table(name: 'project')]
+class Project
 {
-    ...
-    
     #[ORM\Column(name: 'ids_of_users_with_access', type: UserIdList::class)]
     public UserIdList $idsOfUsersWithAccess;
-    
-    ...
 }
 ```
 
