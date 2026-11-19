@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.0
+
+- Added `IdListAwareConnection`, a wrapper class for the DBAL connection that allows to pass id lists directly as query parameters, without `idsAsStringList()` and without `ArrayParameterType::STRING`. See [Query parameters](./README.md#query-parameters).
+
 ## 2.5.0
 
 - Added support for PHP 8.6.

@@ -297,6 +297,58 @@ class Project
 }
 ```
 
+## Query parameters
+
+Ids can be passed to a query directly, they are converted to their string value:
+
+```php
+$connection->fetchAllAssociative(
+    'SELECT * FROM project WHERE owner_id = :userId',
+    [
+        'userId' => $userId,
+    ],
+);
+```
+
+To pass id lists directly as well (e.g. for `IN (:userIds)`), register `IdListAwareConnection` as wrapper class of the DBAL connection in `config/packages/doctrine.yaml`:
+
+```yaml
+doctrine:
+  dbal:
+    wrapper_class: DigitalCraftsman\Ids\Doctrine\IdListAwareConnection
+```
+
+Then neither `idsAsStringList()` nor the parameter type are needed anymore:
+
+```php
+// Before
+$connection->fetchAllAssociative(
+    'SELECT * FROM user WHERE user_id IN (:userIds)',
+    [
+        'userIds' => $userIds->idsAsStringList(),
+    ],
+    [
+        'userIds' => ArrayParameterType::STRING,
+    ],
+);
+
+// After
+$connection->fetchAllAssociative(
+    'SELECT * FROM user WHERE user_id IN (:userIds)',
+    [
+        'userIds' => $userIds,
+    ],
+);
+```
+
+This works for every method of the connection (`fetchOne`, `executeStatement`, …) and for native queries of the ORM. How the parameters are handled:
+
+- Without a parameter type or with `ParameterType::STRING` (which the ORM infers for objects in native queries), the id list is converted to its id strings and bound as `ArrayParameterType::STRING`.
+- With an explicit array parameter type (e.g. `ArrayParameterType::ASCII`), the id list is converted and the type is kept.
+- With any other explicit type (e.g. the Doctrine type of the id list to compare it with a JSON column), the id list is left as it is and converted by that type.
+
+When your application already uses a wrapper class of its own, let it extend `IdListAwareConnection` instead of `Connection`.
+
 ## Additional documentation
 
 - [Prevent polyfill usage](./docs/prevent-polyfill-usage.md)
