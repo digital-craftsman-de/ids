@@ -322,8 +322,9 @@ Doctrine then creates the connection as `IdListAwareConnection`. As it extends `
 
 Then neither `idsAsStringList()` nor the parameter type are needed anymore:
 
+Before:
+
 ```php
-// Before
 $connection->fetchAllAssociative(
     'SELECT * FROM user WHERE user_id IN (:userIds)',
     [
@@ -333,8 +334,11 @@ $connection->fetchAllAssociative(
         'userIds' => ArrayParameterType::STRING,
     ],
 );
+```
 
-// After
+After:
+
+```php
 $connection->fetchAllAssociative(
     'SELECT * FROM user WHERE user_id IN (:userIds)',
     [
