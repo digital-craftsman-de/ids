@@ -318,6 +318,8 @@ doctrine:
     wrapper_class: DigitalCraftsman\Ids\Doctrine\IdListAwareConnection
 ```
 
+Doctrine then creates the connection as `IdListAwareConnection`. As it extends `Connection`, nothing else needs to change: every service that injects `Doctrine\DBAL\Connection` and every `$entityManager->getConnection()` already gets it. Only connections that are created outside of the Doctrine configuration (e.g. with `DriverManager::getConnection()`) need the `wrapperClass` parameter themselves.
+
 Then neither `idsAsStringList()` nor the parameter type are needed anymore:
 
 ```php
