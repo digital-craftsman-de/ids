@@ -1,5 +1,9 @@
 # Upgrade guide
 
+## From 2.5.* to 2.6.0
+
+Nothing to do. To pass id lists directly as query parameters, register the new `IdListAwareConnection` as wrapper class of the DBAL connection (see [Query parameters](./README.md#query-parameters)).
+
 ## From 2.4.* to 2.5.0
 
 ### Dropped support for PHP 8.4
